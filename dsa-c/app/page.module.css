@@ -40,7 +40,7 @@
 .headerRight { display: flex; gap: 8px; }
 
 .badge {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-family: var(--font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -77,7 +77,7 @@
 .heroAccent { color: var(--accent-green); }
 
 .heroSub {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   max-width: 480px;
   line-height: 1.7;
@@ -100,7 +100,7 @@
 .progressLabel { display: flex; flex-direction: column; gap: 2px; }
 
 .progressTitle {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-secondary);

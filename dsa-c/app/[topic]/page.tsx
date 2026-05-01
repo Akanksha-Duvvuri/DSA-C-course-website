@@ -1,28 +1,30 @@
 import { topics } from '../data/topics'
-import TopicClient from './TopClient'
+import TopicClient from './TopicClient'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { Topic } from '../types/types'
+import { Topic } from '../types'
 
 interface PageProps {
-  params: { topic: string }
+  params: Promise<{ topic: string }>
 }
 
 export function generateStaticParams(): { topic: string }[] {
   return topics.map((t: Topic) => ({ topic: t.id }))
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const topic = topics.find((t: Topic) => t.id === params.topic)
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { topic: topicId } = await params
+  const topic = topics.find((t: Topic) => t.id === topicId)
   if (!topic) return { title: 'Not Found' }
   return { title: `${topic.label} — DSA in C` }
 }
 
-export default function TopicPage({ params }: PageProps) {
-  const topic = topics.find((t: Topic) => t.id === params.topic)
+export default async function TopicPage({ params }: PageProps) {
+  const { topic: topicId } = await params
+  const topic = topics.find((t: Topic) => t.id === topicId)
   if (!topic) notFound()
 
-  const topicIndex = topics.findIndex((t: Topic) => t.id === params.topic)
+  const topicIndex = topics.findIndex((t: Topic) => t.id === topicId)
   const prev: Topic | null = topicIndex > 0 ? topics[topicIndex - 1] : null
   const next: Topic | null = topicIndex < topics.length - 1 ? topics[topicIndex + 1] : null
 

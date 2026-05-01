@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useProgress } from '../hooks/useProgess'
-import { Topic } from '../types/types'
+import { Topic } from '../types'
 import styles from './topic.module.css'
 
 interface TopicClientProps {
@@ -15,32 +15,114 @@ interface TopicClientProps {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ADD YOUR CODE HERE
-// Create a nested object: { [topicId]: { [subtopicName]: string } }
-// Example:
-//
-// const codeMap: Record<string, Record<string, string>> = {
-//   itc: {
-//     'Arrays': `
-// #include <stdio.h>
-// int main() {
-//     int arr[] = {1, 2, 3};
-//     printf("%d", arr[0]);
-//     return 0;
-// }`,
-//     'Recursion': `...`,
-//   },
-//   searching: {
-//     'Binary Search': `...`,
-//   },
-// }
-//
-// Then in the JSX below, replace the codePlaceholder div with:
-// <pre className={styles.pre}><code>{codeMap[topic.id]?.[topic.subtopics[activeSubtopic]] ?? '// coming soon...'}</code></pre>
+// ADD YOUR CODE HERE — keep adding topic ids and subtopic names as keys
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Similarly for theory notes:
-// const notesMap: Record<string, Record<string, string>> = { ... }
+const codeMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': `#include <stdio.h>
+
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == target)
+            return i;
+    }
+    return -1;
+}
+
+int main() {
+    int arr[] = {10, 25, 3, 47, 8, 15};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 47;
+
+    int result = linearSearch(arr, n, target);
+
+    if (result != -1)
+        printf("Element found at index %d\\n", result);
+    else
+        printf("Element not found\\n");
+
+    return 0;
+}`,
+
+    'Binary Search': `#include <stdio.h>
+
+int binarySearch(int arr[], int low, int high, int target) {
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+        else if (arr[mid] < target)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    // Array MUST be sorted for binary search
+    int arr[] = {3, 8, 10, 15, 25, 47};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 15;
+
+    int result = binarySearch(arr, 0, n - 1, target);
+
+    if (result != -1)
+        printf("Element found at index %d\\n", result);
+    else
+        printf("Element not found\\n");
+
+    return 0;
+}`,
+
+    'Jump Search': `// coming soon...`,
+    'Interpolation Search': `// coming soon...`,
+    'Exponential Search': `// coming soon...`,
+  },
+
+  // Paste your next topic in below, e.g.:
+  // sorting: {
+  //   'Bubble Sort': `#include <stdio.h> ...`,
+  // },
+}
+
+const notesMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': `Checks every element one by one from left to right until the target is found or the array ends.
+
+Time Complexity:
+  Best Case  → O(1)    target is the first element
+  Worst Case → O(n)    target is last or not present
+  Average    → O(n)
+
+Space Complexity: O(1) — no extra space used
+
+Works on both sorted and unsorted arrays.
+Use when the array is small or unsorted.`,
+
+    'Binary Search': `Repeatedly divides the search space in half by comparing the target with the middle element.
+
+Time Complexity:
+  Best Case  → O(1)      target is the middle element
+  Worst Case → O(log n)
+  Average    → O(log n)
+
+Space Complexity:
+  Iterative → O(1)
+  Recursive → O(log n)   due to call stack
+
+IMPORTANT: Array must be sorted before applying binary search.
+Use mid = low + (high - low) / 2 instead of (low + high) / 2 to avoid integer overflow.`,
+
+    'Jump Search': `Notes coming soon...`,
+    'Interpolation Search': `Notes coming soon...`,
+    'Exponential Search': `Notes coming soon...`,
+  },
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function TopicClient({
   topic,
@@ -191,25 +273,9 @@ export default function TopicClient({
           </div>
 
           <div className={styles.codeBody}>
-            {/*
-              ── REPLACE THIS PLACEHOLDER WITH YOUR CODE ──
-              After creating a codeMap above, swap this div for:
-              <pre className={styles.pre}>
-                <code>{codeMap[topic.id]?.[activeSubtopicName] ?? '// coming soon...'}</code>
-              </pre>
-            */}
-            <div className={styles.codePlaceholder}>
-              <div className={styles.codePlaceholderIcon} style={{ color: topic.color }}>
-                {'{ }'}
-              </div>
-              <p className={styles.codePlaceholderTitle}>{activeSubtopicName}</p>
-              <p className={styles.codePlaceholderSub}>
-                Add your C code for this subtopic in{' '}
-                <code className={styles.inlineCode}>TopicClient.tsx</code> using the{' '}
-                <code className={styles.inlineCode}>codeMap</code> pattern described in the
-                comments above.
-              </p>
-            </div>
+            <pre className={styles.pre}>
+              <code>{codeMap[topic.id]?.[activeSubtopicName] ?? '// coming soon...'}</code>
+            </pre>
           </div>
         </div>
 
@@ -217,15 +283,8 @@ export default function TopicClient({
         <div className={styles.notesSection}>
           <div className={styles.notesHeader}>{'// notes & theory'}</div>
           <div className={styles.notesBody}>
-            {/*
-              Similarly for notes — create a notesMap and replace this with:
-              <p>{notesMap[topic.id]?.[activeSubtopicName] ?? 'Notes coming soon...'}</p>
-            */}
-            <p className={styles.notesPlaceholder}>
-              Add theory, complexity analysis, or notes for{' '}
-              <strong>{activeSubtopicName}</strong> here. Use a{' '}
-              <code className={styles.inlineCode}>notesMap</code> object in{' '}
-              <code className={styles.inlineCode}>TopicClient.tsx</code>.
+            <p className={styles.notesPlaceholder} style={{ whiteSpace: 'pre-line' }}>
+              {notesMap[topic.id]?.[activeSubtopicName] ?? 'Notes coming soon...'}
             </p>
           </div>
         </div>

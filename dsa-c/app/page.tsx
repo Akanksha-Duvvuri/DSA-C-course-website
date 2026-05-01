@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { topics } from './data/topics'
 import { useProgress } from './hooks/useProgess'
-import { Topic } from './types/types'
+import { Topic } from './types'
 import styles from './page.module.css'
 
 export default function Home() {
@@ -45,7 +45,7 @@ export default function Home() {
           <span className={styles.heroAccent}>&amp; Algorithms</span>
         </h1>
         <p className={styles.heroSub}>
-          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to open the full page.
+          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to access the codes.
         </p>
       </section>
 

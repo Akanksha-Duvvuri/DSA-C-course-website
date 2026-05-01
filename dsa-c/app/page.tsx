@@ -32,21 +32,20 @@ export default function Home() {
             <span className={styles.logoText}>DSA in C</span>
           </div>
           <div className={styles.headerRight}>
-            <span className={styles.badge}>B.Tech CSE</span>
-            <span className={styles.badge}>Semester Study</span>
+            <span className={styles.badge}>CSE and CB</span>
+            <span className={styles.badge}>CS1002</span>
           </div>
         </div>
       </header>
 
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={styles.heroTag}>{'// study tracker'}</div>
         <h1 className={styles.heroTitle}>
           Data Structures<br />
           <span className={styles.heroAccent}>&amp; Algorithms</span>
         </h1>
         <p className={styles.heroSub}>
-          Tick off topics as you conquer them. Click ▼ to expand subtopics inline, or ↗ to open the full page.
+          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to open the full page.
         </p>
       </section>
 
@@ -77,7 +76,7 @@ export default function Home() {
           />
         </div>
         <div className={styles.progressMilestones}>
-          {([25, 50, 75, 100] as const).map((m) => (
+          {([0, 5, 10, 15, 20, 25, 30 ,35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100] as const).map((m) => (
             <div
               key={m}
               className={`${styles.milestone} ${mounted && percent >= m ? styles.milestoneReached : ''}`}
@@ -182,7 +181,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className={styles.footer}>
-        <span className={styles.footerText}>{'// built for college · DSA in C · keep grinding'}</span>
+        <span className={styles.footerText}>DSA in C · keep grinding</span>
       </footer>
     </main>
   )

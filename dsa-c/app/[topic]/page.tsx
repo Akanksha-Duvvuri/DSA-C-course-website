@@ -1,8 +1,8 @@
 import { topics } from '../data/topics'
-import TopicClient from './TopicClient'
+import TopicClient from './TopClient'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { Topic } from '../types'
+import { Topic } from '../types/types'
 
 interface PageProps {
   params: { topic: string }

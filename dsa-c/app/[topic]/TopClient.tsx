@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useProgress } from '../hooks/useProgress'
-import { Topic } from '../types'
+import { useProgress } from '../hooks/useProgess'
+import { Topic } from '../types/types'
 import styles from './topic.module.css'
 
 interface TopicClientProps {

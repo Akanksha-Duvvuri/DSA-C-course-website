@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-  --bg-primary: #080c14;
+  --bg-primary: #080e1a;
   --bg-secondary: #0d1421;
-  --bg-card: #101828;
+  --bg-card: #01040c;
   --bg-card-hover: #162035;
-  --border: #1e2d45;
+  --border: #27354c;
   --border-bright: #2a3f5f;
-  --text-primary: #e2e8f0;
-  --text-secondary: #64748b;
-  --text-dim: #334155;
-  --accent-green: #00ff88;
-  --accent-cyan: #00cfff;
+  --text-primary: #c3d7d6;
+  --text-secondary: #3b5477;
+  --text-dim: #d8e2f1;
+  --accent-green: #ea5242;
+  --accent-cyan: #ee4343;
   --font-mono: 'JetBrains Mono', monospace;
   --font-display: 'Space Mono', monospace;
 }

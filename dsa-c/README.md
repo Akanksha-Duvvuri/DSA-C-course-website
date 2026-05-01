@@ -1,3 +1,103 @@
+# DSA in C — Study Tracker
+
+A Next.js study tracker for Data Structures & Algorithms in C.
+
+## Setup
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Project Structure
+
+```
+app/
+├── data/
+│   └── topics.js          ← All topics, subtopics, colors, icons
+├── hooks/
+│   └── useProgress.js     ← Progress state (localStorage)
+├── [topic]/
+│   ├── page.js            ← Server component, generates static params
+│   ├── TopicClient.js     ← ⭐ EDIT THIS to add your code
+│   └── topic.module.css   ← Topic page styles
+├── page.js                ← Homepage
+├── page.module.css        ← Homepage styles
+├── layout.js              ← Root layout
+└── globals.css            ← Global styles, CSS variables
+```
+
+---
+
+## How to Add Your Code
+
+Open `app/[topic]/TopicClient.js`.
+
+You'll find a `codePlaceholder` div in the `codeBody` section. Replace it with a code map:
+
+```js
+const codeMap = {
+  "Arrays": `
+#include <stdio.h>
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    return 0;
+}
+  `,
+  "Recursion": `
+#include <stdio.h>
+
+int factorial(int n) {
+    if (n == 0) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    printf("%d", factorial(5)); // 120
+    return 0;
+}
+  `
+}
+```
+
+Then in the JSX, replace the placeholder with:
+
+```jsx
+<pre className={styles.pre}>
+  <code>{codeMap[topic.subtopics[activeSubtopic]] || '// Code coming soon...'}</code>
+</pre>
+```
+
+Same pattern for the notes section — make a `notesMap` object.
+
+---
+
+## Topics Covered
+
+1. ITC Fundamentals (Arrays, Recursion, Pointers)
+2. Searching Algorithms
+3. Sorting Algorithms
+4. Linked Lists
+5. Stacks
+6. Queues
+7. Hashing
+8. Binary Trees
+9. Binary Search Trees
+10. Time & Space Complexity
+11. Dynamic Programming
+12. Graphs
+
+Progress is saved automatically in `localStorage`.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

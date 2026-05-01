@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { topics } from './data/topics'
+import { topics } from './data/topics.ts'
 import { useProgress } from './hooks/useProgress'
-import { Topic } from './types'
+import { Topic } from './types/index.js'
 import styles from './page.module.css'
 
 export default function Home() {

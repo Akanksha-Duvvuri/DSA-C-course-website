@@ -4,28 +4,31 @@ import { useState, useEffect } from 'react'
 import { Topic, TopicProgress, CheckedState } from '../types'
 
 interface UseProgressReturn {
-  toggle: (topicId: string, subtopic: string) => void
-  isChecked: (topicId: string, subtopic: string) => boolean
-  percent: number
-  completedSubtopics: number
-  totalSubtopics: number
-  topicProgress: (topicId: string, subtopics: string[]) => TopicProgress
+  toggle: (topicId: string, subtopic: string) => void  //marks and unmarks
+  isChecked: (topicId: string, subtopic: string) => boolean  //checks if it is completed
+  percent: number  //overall percentage
+  completedSubtopics: number //number of subtopics finished
+  totalSubtopics: number //total subtopics 
+  topicProgress: (topicId: string, subtopics: string[]) => TopicProgress  //progress of one topic
 }
 
-export function useProgress(topics: Topic[]): UseProgressReturn {
-  const [checked, setChecked] = useState<CheckedState>({})
+export function useProgress(topics: Topic[]): UseProgressReturn {  //here topics is the parameter name and Topic[] is the array here so the type of the parameter must be an array with the name Topic -- basically a list of Topic objects
+  const [checked, setChecked] = useState<CheckedState>({})  //initially it starts out as empty - the progess of the subtopics
 
-  useEffect(() => {
-    const stored = localStorage.getItem('dsa-progress')
-    if (stored) {
+  useEffect(() => { //runs once when the page loads
+    const stored = localStorage.getItem('dsa-progress')  //looks in the browser storage for any saved progress
+    if (stored) {  //if data exists
       try {
-        setChecked(JSON.parse(stored) as CheckedState)
-      } catch {
+        setChecked(JSON.parse(stored) as CheckedState)  //load old progress  -- this is a JS snippet used to load, convert and update a state variable with data previously saved as a string - often from localstorage. 
+        //set checked is a state setter function that takes the parsed object and updates  the applications state - triggering a re render
+      } catch {  //if corrupter JSON, ignore instead of crashing
         // ignore malformed data
       }
     }
   }, [])
 
+
+//used when my checkbox is clicked
   const toggle = (topicId: string, subtopic: string): void => {
     const key = `${topicId}::${subtopic}`
     setChecked((prev) => {

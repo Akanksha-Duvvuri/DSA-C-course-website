@@ -28,27 +28,27 @@ export function useProgress(topics: Topic[]): UseProgressReturn {  //here topics
   }, [])
 
 
-//used when my checkbox is clicked
-  const toggle = (topicId: string, subtopic: string): void => {
-    const key = `${topicId}::${subtopic}`
-    setChecked((prev) => {
-      const next: CheckedState = { ...prev, [key]: !prev[key] }
-      localStorage.setItem('dsa-progress', JSON.stringify(next))
+//used when my checkbox is clicked - if a subtopic is checked, make it unchecked and vice versa - so it toggles bw true and false
+  const toggle = (topicId: string, subtopic: string): void => {  //needs two inputs because each checkbox belongs to the topic and the subtopic
+    const key = `${topicId}::${subtopic}`  //creates a unique key with the topic and the subtopic -- using a key because each checkbox needs a unique identifier and the value is either true or false
+    setChecked((prev) => { //updates the reac state - first give the latest previous state
+      const next: CheckedState = { ...prev, [key]: !prev[key] }  //...prev copies all the existing checkboxes as in and key : !prev key flips the one that was clicked - (true -> false and vice versa)
+      localStorage.setItem('dsa-progress', JSON.stringify(next)) //saves this to local storage and returns next
       return next
     })
   }
 
-  const isChecked = (topicId: string, subtopic: string): boolean =>
+  const isChecked = (topicId: string, subtopic: string): boolean => //!! converts any value to a strict boolean. 
     !!checked[`${topicId}::${subtopic}`]
 
-  const totalSubtopics = topics.reduce((sum, t) => sum + t.subtopics.length, 0)
-  const completedSubtopics = Object.values(checked).filter(Boolean).length
+  const totalSubtopics = topics.reduce((sum, t) => sum + t.subtopics.length, 0)  //loops thru every topic and adds up how many subtopics each one has. 
+  const completedSubtopics = Object.values(checked).filter(Boolean).length //object.values(checked) gives you the array with true or false and filter(boolean) keepps only the truth ones - checked ones and the length counts them
   const percent =
     totalSubtopics > 0 ? Math.round((completedSubtopics / totalSubtopics) * 100) : 0
 
   const topicProgress = (topicId: string, subtopics: string[]): TopicProgress => {
     const done = subtopics.filter((s) => !!checked[`${topicId}::${s}`]).length
-    return { done, total: subtopics.length }
+    return { done, total: subtopics.length } //if it is checked - return the length of it 
   }
 
   return { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress }

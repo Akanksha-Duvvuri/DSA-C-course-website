@@ -7,28 +7,28 @@ import { useProgress } from './hooks/useProgess'
 import { Topic } from './types'
 import styles from './page.module.css'
 
-export default function Home() {
-  const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } =
+export default function Home() { //there can only be one export default per file and its usrd to export the main component of a page or module
+  const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } = //destructuring 
     useProgress(topics)
-  const [mounted, setMounted] = useState<boolean>(false)
-  const [expandedCard, setExpandedCard] = useState<string | null>(null)
+  const [mounted, setMounted] = useState<boolean>(false) //initial value is false 
+  const [expandedCard, setExpandedCard] = useState<string | null>(null) //tracks which card is currently expanded - value is either a topic id "string" or just null if nothings open
 
-  useEffect(() => {
+  useEffect(() => { //useeffect runs once after loading the components and flips the initial value of useState to true
     setMounted(true)
   }, [])
 
-  const toggleCard = (e: React.MouseEvent, id: string): void => {
+  const toggleCard = (e: React.MouseEvent, id: string): void => {  //on pressing the button - stops the default behaviour for that click event 
     e.preventDefault()
-    setExpandedCard((prev) => (prev === id ? null : id))
+    setExpandedCard((prev) => (prev === id ? null : id)) //if its already open - close it otherwise open it by setting its id. thats why only one card can open at once because the id is replaced everytime 
   }
 
-  return (
+  return (  //everything in this is jsx (a syntax extension for JS - commonly used with react to describe UI using html like code)
     <main className={styles.main}>
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.logo}>
-            <span className={styles.logoAccent}>&gt;_</span>
+            <span className={styles.logoAccent}>&gt;_</span> {/*terminal logo*/}
             <span className={styles.logoText}>DSA in C</span>
           </div>
           <div className={styles.headerRight}>
@@ -45,7 +45,7 @@ export default function Home() {
           <span className={styles.heroAccent}>&amp; Algorithms</span>
         </h1>
         <p className={styles.heroSub}>
-          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to access the codes.
+          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to view the codes.
         </p>
       </section>
 

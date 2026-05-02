@@ -13,6 +13,15 @@ export default function Home() { //there can only be one export default per file
   const [mounted, setMounted] = useState<boolean>(false) //initial value is false 
   const [expandedCard, setExpandedCard] = useState<string | null>(null) //tracks which card is currently expanded - value is either a topic id "string" or just null if nothings open
 
+// So the mismatch is:  -- for mounted and set mounted
+
+// Server renders → tries to read localStorage, throws an error or returns nothing, so progress is 0
+// Browser renders → reads localStorage, finds your saved progress, shows 42 / 60
+
+// React sees two different outputs for the same component and panics because it can't reconcile them.
+// The mounted trick solves this by making both sides agree — server and browser both render '— / —' on first pass, then after the browser takes over, mounted flips to true and the real data loads in.
+
+
   useEffect(() => { //useeffect runs once after loading the components and flips the initial value of useState to true
     setMounted(true)
   }, [])
@@ -59,7 +68,7 @@ export default function Home() { //there can only be one export default per file
             </span>
           </div>
           <span className={styles.progressPercent}>
-            {mounted ? `${percent}%` : '—%'}
+            {mounted ? `${percent}%` : '—%'} {/*helps you write JS inside this*/}
           </span>
         </div>
         <div className={styles.progressTrack}>

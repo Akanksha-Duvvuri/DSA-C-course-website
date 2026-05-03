@@ -40,7 +40,7 @@ export default function TopicClient({
   const percent = prog.total > 0 ? Math.round((prog.done / prog.total) * 100) : 0
 
   const activeSubtopicName = topic.subtopics[activeSubtopic] ?? ''
-  const pdfUrl = pdfMap[topic.id]?.[activeSubtopicName]
+  const pdfUrls: string[] | undefined = pdfMap[topic.id]?.[activeSubtopicName]
 
   return (
     <div className={styles.wrapper}>
@@ -179,25 +179,28 @@ export default function TopicClient({
         <div className={styles.notesSection}>
           <div className={styles.notesHeader}>{'// notes & theory'}</div>
           <div className={styles.notesBody}>
-            <p className={styles.notesPlaceholder} style={{ whiteSpace: 'pre' }}>
+            <p className={styles.notesPlaceholder} style={{ whiteSpace: 'pre-wrap' }}>
               {notesMap[topic.id]?.[activeSubtopicName] ?? 'Notes coming soon...'}
             </p>
           </div>
         </div>
 
         {/* PDF section */}
-        {pdfUrl && (
+        {pdfUrls && pdfUrls.length > 0 && (
           <div className={styles.pdfSection}>
             <div className={styles.notesHeader}>{'//PDFs'}</div>
-            <a
-              href={pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.pdfLink}
-            >
-              <span>open notes pdf</span>
-              <span>↗</span>
-            </a>
+            {pdfUrls.map((url: string, i: number) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.pdfLink}
+              >
+                <span>open notes pdf {pdfUrls.length > 1 ? `— part ${i + 1}` : ''}</span>
+                <span>↗</span>
+              </a>
+            ))}
           </div>
         )}
 

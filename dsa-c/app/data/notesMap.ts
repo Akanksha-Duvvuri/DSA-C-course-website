@@ -302,4 +302,109 @@ MEMORY
 Time Complexity:  O(n)  — one pass to insert, one to print
 Space Complexity: O(n)  — n nodes allocated on heap`
   },
+
+  stacks: {
+    'Stack using Array': `A stack is a LIFO data structure — Last In First Out.
+The last element pushed is the first one popped.
+
+Implementation using a fixed-size array with a top pointer.
+
+    top = -1  →  stack is empty
+    top = n-1 →  stack is full
+
+Operations:
+    Push  →  increment top, add element at arr[top]
+    Pop   →  return arr[top], decrement top
+    Peek  →  return arr[top] without removing
+
+Conditions:
+    Overflow  →  pushing when top == n-1  (stack is full)
+    Underflow →  popping when top == -1   (stack is empty)
+
+Time Complexity:
+    Push → O(1)
+    Pop  → O(1)
+    Peek → O(1)
+
+Space Complexity: O(n)  — fixed array size declared upfront
+
+Drawback: size must be known in advance, wastes memory if
+underused, crashes if overflow not handled.`,
+
+    'Stack using LL': `Dynamic implementation — no fixed size, grows and shrinks as needed.
+New nodes are pushed and popped from the HEAD (not the tail).
+Head of the LL = top of the stack.
+
+    Push  →  create new node, point it to current head, update head
+    Pop   →  save head data, move head to head->next, free old head
+
+Why insert at head and not tail?
+    Inserting/deleting at head is O(1).
+    Inserting/deleting at tail requires traversal → O(n).
+
+Operations:
+    Push → O(1)
+    Pop  → O(1)
+    Peek → O(1)
+
+Space Complexity: O(n)
+
+Advantage over array: no overflow (limited only by heap memory),
+no wasted space — each node allocated only when needed.`,
+    'Infix to Postfix Conversion and Postfix expression evaluation': `Infix    →  operator is between operands    A + B
+Prefix   →  operator is before operands     + A B
+Postfix  →  operator is after operands      A B +
+
+Why convert?
+    Computers evaluate postfix easier — no need for brackets
+    or precedence rules, just scan left to right.
+
+Operator Precedence (high to low):
+    ^          →  3  (right associative)
+    * /        →  2
+    + -        →  1
+
+Algorithm:
+    Scan expression left to right:
+
+    1. Operand (A, B, 1, 2...)
+           → directly add to output
+
+    2. Opening bracket  (
+           → push to stack
+
+    3. Closing bracket  )
+           → pop and output until ( is found
+           → discard both brackets
+
+    4. Operator (+, -, *, /, ^)
+           → while stack is not empty AND
+             top of stack has >= precedence AND
+             top is not (
+                 → pop and output
+           → then push current operator
+
+    5. End of expression
+           → pop and output everything remaining in stack
+
+─────────────────────────────────────────────
+Dry Run:   A + B * C - D
+
+Token   Stack       Output
+A       []          A
++       [+]         A
+B       [+]         A B
+*       [+ *]       A B          (* has higher precedence than +)
+C       [+ *]       A B C
+-       [-]         A B C * +    (- has lower precedence, pop * and +)
+D       [-]         A B C * + D
+end     []          A B C * + D -
+
+Result: A B C * + D -
+─────────────────────────────────────────────
+
+Time Complexity:  O(n)  - traverser through the entire array 
+Space Complexity: O(n)  — stack can hold up to n operators`,
+    'Recursion implementation': ``
+  },
 }

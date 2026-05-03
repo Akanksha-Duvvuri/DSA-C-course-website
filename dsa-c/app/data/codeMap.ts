@@ -802,4 +802,213 @@ int main(){
 }`
   },
 
+  stacks : {
+    'Stack using Array': `#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+void push(int data) {
+    if(top == MAX - 1) { //full
+        printf("stack overflow\n");
+        return;
+    }
+
+    top++;
+    stack[top] = data;
+}
+
+void pop(){
+    if(top == -1) {
+        printf("empty stack\n");
+    }
+
+    top--;
+}
+
+int peek(){
+    if(top == -1) {
+        printf("empty stack\n");
+    }
+
+    printf("%d", stack[top]);
+}
+
+void display() {
+    if(top == -1) {
+        printf("empty stack\n");
+        return;
+    }
+
+    for(int i=top; i>=0; i--) {
+        printf("%d\n", stack[i]);
+    }
+}
+
+int main() {
+
+    push(3);
+    push(2);
+    push(1);
+
+    display();
+
+    pop();
+    printf("popped: \n");
+
+    display();
+
+    printf("stack top: ");
+    peek();
+
+    display();
+    return 0;
+}`,
+
+    'Stack using LL': `#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* top = NULL; 
+
+Node* createnode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+
+    if(newnode == NULL) {
+        printf("memory allocation failed\n");
+        exit(1);
+    }
+
+    newnode->data = data;
+    newnode->next = NULL;
+
+    return newnode;
+}
+
+void push(int data) {
+    Node* newnode = createnode(data);
+
+    newnode->next = top;
+    top = newnode;
+}
+
+void pop() {
+    Node* temp = top;
+
+    top = top->next;
+    free(temp);
+}
+
+int peek() {
+    if(top == NULL) {
+        printf("empty stack\n");
+        return -1;
+    }
+
+    printf("%d\n", top->data);
+}
+
+void display() {
+    Node* temp = top;
+
+    while(temp != NULL) {
+        printf("%d \n", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+
+}
+
+int main() {
+
+    push(3);
+    push(2);
+    push(1);
+
+    display();
+
+    pop();
+
+    display();
+
+    peek();
+
+    display();
+
+    return 0;
+}`,
+
+    'Infix to Postfix Conversion and Postfix expression evaluation': `#include <stdio.h>
+
+char stack[100];
+int top = -1;
+
+void push(char x){
+    stack[++top] = x;
+}
+
+char pop(){
+    return stack[top--];
+}
+
+char peek(){
+    return stack[top];
+}
+
+int priority(char x){
+    if(x == '+' || x == '-'){
+        return 1;
+    }
+    if(x == '*' || x == '/'){
+        return 2;
+    }
+    return 0;
+}
+
+void infixToPostfix(char infix[], char postfix[]){
+    int k = 0;
+
+    for(int i = 0; infix[i] != '\0'; i++){
+
+        if(infix[i] >= '0' && infix[i] <= '9'){
+            postfix[k++] = infix[i];
+        }
+        else{
+            while(top != -1 && priority(peek()) >= priority(infix[i])){
+                postfix[k++] = pop();
+            }
+
+            push(infix[i]);
+        }
+    }
+
+    while(top != -1){
+        postfix[k++] = pop();
+    }
+
+    postfix[k] = '\0';
+}
+
+int main(){
+    char infix[100] = "2+3*4";
+    char postfix[100];
+
+    infixToPostfix(infix, postfix);
+
+    printf("Postfix = %s\n", postfix);
+
+    return 0;
+}`,
+
+    'Recursion implementation': ``,
+  }
+
 }

@@ -3,9 +3,6 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
     'Linear Search': ['/pdfs/searching/linear-search.pdf'],
     'Binary Search': ['/pdfs/searching/binary-search.pdf'],
   },
-  sorting: {
-    'Bubble Sort': ['/pdfs/sorting/bubble-sort.pdf'],
-  },
   'linked-list': {
     'Singly Linked List : Insertion, deletion, reversing': ['/pdfs/LL/LLp1.pdf', '/pdfs/LL/LLp2.pdf', '/pdfs/LL/LLp3.pdf', '/pdfs/LL/LLp4.pdf'],
     'concatenating two LL': ['/pdfs/LL/LLp4.pdf'],

@@ -38,7 +38,7 @@ export const topics: Topic[] = [
     label: 'Linked Lists',
     icon: '⬦',
     color: '#f59e0b',
-    subtopics: ['Singly Linked List : Insertion, deletion, reversing', 'concatenating two LL', 'Doubly Linked List: Operations: insertion, deletion', 'Circular Linked List and its operations', "Floyd's Cycle Detection", 'Representation of a single two-dimensional array', 'Sparse matrices-array and LL representation'],
+    subtopics: ['Singly Linked List : Insertion, deletion, reversing', 'concatenating two LL', 'Doubly Linked List: Operations: insertion, deletion', 'Circular Linked List and its operations', 'Representation of a single two-dimensional array'],
     description: 'Dynamic linear data structure with node-based chaining.',
   },
   {

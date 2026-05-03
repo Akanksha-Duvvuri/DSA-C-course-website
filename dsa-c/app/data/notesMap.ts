@@ -221,8 +221,7 @@ Uses more memory than singly LL — extra pointer per node.
 Easier deletion — no need to track previous node separately.
 `,
 
-    'Circular Linked List and its operations':  `Same as singly linked list except the last node points back to the head
-instead of NULL. Forms a circle.
+    'Circular Linked List and its operations':  `Same as singly linked list except the last node points back to the head instead of NULL. Forms a circle.
 
 Structure:
     head
@@ -236,34 +235,71 @@ Operations:
 No NULL at the end — be careful with traversal, use a do-while loop
 or check if next == head to avoid infinite loops.
 
+// Use Floyd's cycle detecting algorithm - 
+
+        Detects if a linked list has a cycle (a node whose next pointer points
+        back to a previous node, creating a loop).
+
+        Uses two pointers:
+            slow → moves one step at a time
+            fast → moves two steps at a time
+
+        If there is a cycle, fast will eventually lap slow and they will meet.
+        If there is no cycle, fast will reach NULL.
+
+        Time Complexity:  O(n)
+        Space Complexity: O(1)  — no extra data structures needed
+
+        Also called the Tortoise and Hare algorithm.
+
+        Finding the start of the cycle:
+            Once slow and fast meet inside the cycle,
+            reset slow to head.
+            Move both slow and fast one step at a time.
+            Where they meet again is the start of the cycle.
+
 Used in:
     Round robin scheduling
     Circular buffers
     Music playlists (loop back to start)`,
 
-    "Floyd's Cycle Detection":  `Detects if a linked list has a cycle (a node whose next pointer points
-back to a previous node, creating a loop).
+    'Representation of a single two-dimensional array':  `Singly Linked List — inserting elements from a 2D array
 
-Uses two pointers:
-    slow → moves one step at a time
-    fast → moves two steps at a time
+This program creates a linked list by inserting all elements of a 2D array row by row using a tail pointer.
 
-If there is a cycle, fast will eventually lap slow and they will meet.
-If there is no cycle, fast will reach NULL.
 
-Time Complexity:  O(n)
-Space Complexity: O(1)  — no extra data structures needed
+    head → points to the first node (used for traversal)
+    tail → points to the last node (used for O(1) insertion)
 
-Also called the Tortoise and Hare algorithm.
+    Without tail, every insertion would require traversing
+    to the end → O(n). With tail it's always O(1).
 
-Finding the start of the cycle:
-    Once slow and fast meet inside the cycle,
-    reset slow to head.
-    Move both slow and fast one step at a time.
-    Where they meet again is the start of the cycle.`,
+─────────────────────────────────────────────────────
 
-    'Representation of a single two-dimensional array':  ``,
+2D ARRAY TRAVERSAL
 
-    'Sparse matrices-array and LL representation':  ``,
+    Insertion order: 1 → 2 → 3 → 4 → 5 → 6
+
+    Row 0: insert(1), insert(2), insert(3)
+    Row 1: insert(4), insert(5), insert(6)
+
+─────────────────────────────────────────────────────
+PRINT FUNCTION
+
+    Starts at head, traverses using temp pointer.
+    Never move head directly — you'd lose the list.
+    Always use a separate temp pointer for traversal.
+
+    Output: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> NULL
+
+─────────────────────────────────────────────────────
+MEMORY
+
+    Each node is a separate allocation
+    Should free each node after use to avoid memory leaks:
+
+
+Time Complexity:  O(n)  — one pass to insert, one to print
+Space Complexity: O(n)  — n nodes allocated on heap`
   },
 }

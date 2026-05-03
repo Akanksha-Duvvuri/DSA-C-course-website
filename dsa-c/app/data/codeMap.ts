@@ -627,13 +627,179 @@ int main() {
     return 0;
 }`,
 
-    'Circular Linked List and its operations':  ``,
+    'Circular Linked List and its operations':  `#include <stdio.h>
+#include <stdlib.h>
 
-    "Floyd's Cycle Detection":  ``,
+struct Node{
+    int data;
+    struct Node* next;
+};
 
-    'Representation of a single two-dimensional array':  ``,
+struct Node* head = NULL;
+struct Node* tail = NULL;
 
-    'Sparse matrices-array and LL representation':  ``,
+struct Node* createNode(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->next = NULL;
+
+    return newNode;
+}
+
+void push_front(int val){
+    struct Node* newNode = createNode(val);
+
+    if(head == NULL){
+        head = tail = newNode;
+    }
+    else{
+        newNode->next = head;
+        head = newNode;
+    }
+}
+
+void print(struct Node* headNode){
+    struct Node* temp = headNode;
+
+    while(temp != NULL){
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+// Floyd's cycle finding algorithm
+int isCycle(struct Node* headNode){
+    struct Node* slow = headNode;
+    struct Node* fast = headNode;
+
+    while(fast != NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast){
+            printf("Cycle exists\n");
+            return 1;
+        }
+    }
+
+    printf("Cycle doesn't exist\n");
+    return 0;
+}
+
+void removeCycle(struct Node* headNode){
+    struct Node* slow = headNode;
+    struct Node* fast = headNode;
+    int cycleFound = 0;
+
+    while(fast != NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast){
+            printf("Cycle exists\n");
+            cycleFound = 1;
+            break;
+        }
+    }
+
+    if(cycleFound == 0){
+        printf("Cycle doesn't exist\n");
+        return;
+    }
+
+    slow = headNode;
+
+    if(slow == fast){
+        while(fast->next != slow){
+            fast = fast->next;
+        }
+
+        fast->next = NULL;
+    }
+    else{
+        struct Node* prev = fast;
+
+        while(slow != fast){
+            slow = slow->next;
+            prev = fast;
+            fast = fast->next;
+        }
+
+        prev->next = NULL;
+    }
+}
+
+int main(){
+    push_front(4);
+    push_front(3);
+    push_front(2);
+    push_front(1);
+
+    tail->next = head;
+
+    removeCycle(head);
+    print(head);
+
+    return 0;
+}`,
+
+
+    'Representation of a single two-dimensional array':  `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+struct Node* tail = NULL;
+
+void insert(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->next = NULL;
+
+    if(head == NULL){
+        head = tail = newNode;
+    }
+    else{
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+void print(){
+    struct Node* temp = head;
+
+    while(temp != NULL){
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+int main(){
+    int arr[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 3; j++){
+            insert(arr[i][j]);
+        }
+    }
+
+    print();
+
+    return 0;
+}`
   },
 
 }

@@ -7,7 +7,7 @@
 
 /* ─── SIDEBAR ─── */
 .sidebar {
-  width: 280px;
+  width: clamp(230px, 22vw, 280px);
   flex-shrink: 0;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
@@ -186,11 +186,12 @@
 /* ─── CONTENT ─── */
 .content {
   flex: 1;
-  padding: clamp(24px, 4vw, 48px);
+  padding: clamp(16px, 4vw, 48px);
   display: flex;
   flex-direction: column;
   gap: 24px;
   min-width: 0;
+  overflow-x: hidden;
 }
 
 .breadcrumb {
@@ -200,6 +201,7 @@
   font-size: 0.68rem;
   color: var(--text-dim);
   letter-spacing: 0.04em;
+  flex-wrap: wrap;
 }
 
 .breadcrumb a { color: var(--text-secondary); transition: color 0.15s; }
@@ -211,6 +213,7 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
+  min-width: 0;
 }
 
 .codeHeader {
@@ -223,7 +226,7 @@
   border-bottom: 1px solid var(--border);
 }
 
-.codeTabs { display: flex; }
+.codeTabs { display: flex; min-width: 0; overflow: hidden; }
 
 .codeTab {
   font-size: 0.7rem;
@@ -233,43 +236,28 @@
   border-bottom: 2px solid transparent;
   letter-spacing: 0.04em;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.codeWindowBtns { display: flex; gap: 5px; }
+.codeWindowBtns { display: flex; gap: 5px; flex-shrink: 0; }
 .codeWindowBtns span { width: 10px; height: 10px; border-radius: 50%; background: var(--border-bright); }
 
-.codeBody { min-height: 320px; padding: 24px; }
+.codeBody {
+  min-height: 200px;
+  padding: 16px;
+  overflow-x: auto;
+}
 
 .pre {
   font-family: var(--font-mono);
   font-size: 0.82rem;
   color: var(--text-primary);
   line-height: 1.7;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.codePlaceholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 280px;
-  text-align: center;
-}
-
-.codePlaceholderIcon { font-size: 2.5rem; font-family: var(--font-display); opacity: 0.6; }
-.codePlaceholderTitle { font-family: var(--font-display); font-size: 1rem; color: var(--text-primary); }
-.codePlaceholderSub { font-size: 0.73rem; color: var(--text-secondary); line-height: 1.7; max-width: 420px; }
-
-.inlineCode {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 1px 5px;
-  font-size: 0.7rem;
-  color: var(--accent-cyan);
+  white-space: pre;
+  word-break: normal;
+  overflow-x: auto;
 }
 
 /* Notes */
@@ -277,7 +265,8 @@
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
+  min-width: 0;
 }
 
 .notesHeader {
@@ -289,20 +278,41 @@
   letter-spacing: 0.08em;
 }
 
-.notesBody { padding: 24px; min-height: 140px; }
-.notesPlaceholder { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.8; }
+.notesBody {
+  padding: 16px 20px;
+  min-height: 100px;
+  overflow-x: auto;
+}
+
+.notesPlaceholder {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  display: block;
+}
+
 .notesPlaceholder strong { color: var(--text-primary); }
+
+/* PDF */
+.pdfSection {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
 
 .pdfLink {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px 18px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
   font-size: 0.8rem;
   color: var(--text-secondary);
   transition: all 0.15s;
+  text-decoration: none;
 }
 
 .pdfLink:hover {
@@ -310,11 +320,78 @@
   color: var(--accent-cyan);
 }
 
-
-
-/* Responsive */
+/* ─── MOBILE ─── */
 @media (max-width: 768px) {
-  .wrapper { flex-direction: column; }
-  .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
-  .checklist { max-height: 200px; overflow-y: auto; }
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    /* collapse checklist on mobile */
+    gap: 14px;
+  }
+
+  .checklist {
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  /* hide desc and progress on mobile to save space */
+  .sidebarDesc {
+    display: none;
+  }
+
+  .navLinks {
+    margin-top: 0;
+  }
+
+  .content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .codeBody {
+    padding: 12px;
+    min-height: 160px;
+  }
+
+  .pre {
+    font-size: 0.75rem;
+    white-space: pre-wrap; 
+    word-break: break-word;
+  }
+
+  .notesBody {
+    padding: 12px 14px;
+  }
+
+  .notesPlaceholder {
+    font-size: 0.72rem;
+    white-space: pre-wrap; 
+    word-break: break-word; 
+  }
+
+  .breadcrumb {
+    font-size: 0.62rem;
+  }
 }
+
+@media (max-width: 480px) {
+  .pre {
+    font-size: 0.7rem;
+  }
+
+  .notesPlaceholder {
+    font-size: 0.68rem;
+  }
+
+  .sidebarTitle {
+    font-size: 0.85rem;
+  }
+}
+

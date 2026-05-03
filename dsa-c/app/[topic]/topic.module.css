@@ -293,6 +293,25 @@
 .notesPlaceholder { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.8; }
 .notesPlaceholder strong { color: var(--text-primary); }
 
+.pdfLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.pdfLink:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .wrapper { flex-direction: column; }

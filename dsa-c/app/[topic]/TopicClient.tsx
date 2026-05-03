@@ -14,65 +14,50 @@ interface TopicClientProps {
   allTopics: Topic[]
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ADD YOUR CODE HERE — keep adding topic ids and subtopic names as keys
-// ─────────────────────────────────────────────────────────────────────────────
-
 const codeMap: Record<string, Record<string, string>> = {
   searching: {
-    'Linear Search': `#include <stdio.h>
+    'Linear Search': `#include<stdio.h>
 
-int linearSearch(int arr[], int n, int target) {
-    for (int i = 0; i < n; i++) {
-        if (arr[i] == target)
-            return i;
+int linearSearch(int *arr, int n, int key){
+    for(int i=0; i<n; i++){
+      if(arr[i] == key){
+        return i;
+      }
     }
     return -1;
 }
 
-int main() {
-    int arr[] = {10, 25, 3, 47, 8, 15};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int target = 47;
+int main(){
+    int arr[6] = {1, 4, 3, 9, 10};
+    int n = sizeof(arr) / sizeof(int);
 
-    int result = linearSearch(arr, n, target);
-
-    if (result != -1)
-        printf("Element found at index %d\\n", result);
-    else
-        printf("Element not found\\n");
+    printf("%d", linearSearch(arr, n, 9));
 
     return 0;
 }`,
 
-    'Binary Search': `#include <stdio.h>
+    'Binary Search': `#include<stdio.h>
 
-int binarySearch(int arr[], int low, int high, int target) {
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
+int binarySearch(int *arr, int start, int end, int key){
+    while(start <= end){
+        int mid = start + (end - start) / 2;
 
-        if (arr[mid] == target)
+        if(arr[mid] == key){
             return mid;
-        else if (arr[mid] < target)
-            low = mid + 1;
-        else
-            high = mid - 1;
+        } else if(key > arr[mid]){
+            start = mid + 1;
+        } else {
+            end = mid - 1;
+        }
     }
     return -1;
 }
 
-int main() {
-    // Array MUST be sorted for binary search
-    int arr[] = {3, 8, 10, 15, 25, 47};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int target = 15;
+int main(){
+    int arr[7] = {1, 2, 18, 39, 54, 81, 109};
+    int n = sizeof(arr) / sizeof(int);
 
-    int result = binarySearch(arr, 0, n - 1, target);
-
-    if (result != -1)
-        printf("Element found at index %d\\n", result);
-    else
-        printf("Element not found\\n");
+    printf("%d", binarySearch(arr, 0, n-1, 18));
 
     return 0;
 }`,
@@ -82,43 +67,76 @@ int main() {
     'Exponential Search': `// coming soon...`,
   },
 
-  // Paste your next topic in below, e.g.:
-  // sorting: {
-  //   'Bubble Sort': `#include <stdio.h> ...`,
-  // },
+  sorting: {
+    'Bubble Sort': ``,
+    'Selection Sort': ``,
+    'Insertion Sort': ``,
+    'Merge Sort': ``,
+    'Quick Sort': ``,
+    'Heap Sort': ``,
+    'Radix Sort': ``,
+  },
 }
 
 const notesMap: Record<string, Record<string, string>> = {
   searching: {
-    'Linear Search': `Checks every element one by one from left to right until the target is found or the array ends.
+    'Linear Search':
+`Checks every element one by one from left to right until the target is found or the array ends.
+If it doesnt exist / cant be found -> return -1.
+Index always starts at 0 and goes on to n-1.
 
 Time Complexity:
-  Best Case  → O(1)    target is the first element
-  Worst Case → O(n)    target is last or not present
-  Average    → O(n)
+    Best Case  → O(1)    target is the first element
+    Worst Case → O(n)    target is last or not present
+    Average    → O(n)
 
 Space Complexity: O(1) — no extra space used
 
 Works on both sorted and unsorted arrays.
 Use when the array is small or unsorted.`,
 
-    'Binary Search': `Repeatedly divides the search space in half by comparing the target with the middle element.
+    'Binary Search':
+`Repeatedly divides the search space in half by comparing the target with the middle value.
 
 Time Complexity:
-  Best Case  → O(1)      target is the middle element
-  Worst Case → O(log n)
-  Average    → O(log n)
+    Best Case  → O(1)      target is the middle element
+    Worst Case → O(log n)  keeps dividing so search space repeatedly becomes half
+    Average    → O(log n)
+
+Calculating TC:
+    1. Check input size(n) vs number of operations
+    2. Each iteration halves the array:
+
+        1st itr  →  n
+        2nd itr  →  n/2
+        3rd itr  →  n/4
+        ...
+        kth itr  →  1
+
+    n → n/2 → n/4 → n/8 → ... → 1
+
+    After k iterations: n / 2^k = 1
+    So 2^k = n
+    Therefore k = log₂(n)
+
+    Total = O(log n)   ignore constants in TC
 
 Space Complexity:
-  Iterative → O(1)
-  Recursive → O(log n)   due to call stack
+    Iterative → O(1)
+    Recursive → O(log n)   due to call stack
 
 IMPORTANT: Array must be sorted before applying binary search.
-Use mid = low + (high - low) / 2 instead of (low + high) / 2 to avoid integer overflow.`,
+Use mid = start + (end - start) / 2 to avoid integer overflow.`,
+  },
+}
 
-    'Jump Search': `Notes coming soon...`,
-    'Interpolation Search': `Notes coming soon...`,
-    'Exponential Search': `Notes coming soon...`,
+const pdfMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': '/pdfs/searching/linear-search.pdf',
+    'Binary Search': '/pdfs/searching/binary-search.pdf',
+  },
+  sorting: {
+    'Bubble Sort': '/pdfs/sorting/bubble-sort.pdf',
   },
 }
 
@@ -145,6 +163,7 @@ export default function TopicClient({
   const percent = prog.total > 0 ? Math.round((prog.done / prog.total) * 100) : 0
 
   const activeSubtopicName = topic.subtopics[activeSubtopic] ?? ''
+  const pdfUrl = pdfMap[topic.id]?.[activeSubtopicName]
 
   return (
     <div className={styles.wrapper}>
@@ -283,11 +302,28 @@ export default function TopicClient({
         <div className={styles.notesSection}>
           <div className={styles.notesHeader}>{'// notes & theory'}</div>
           <div className={styles.notesBody}>
-            <p className={styles.notesPlaceholder} style={{ whiteSpace: 'pre-line' }}>
+            <p className={styles.notesPlaceholder} style={{ whiteSpace: 'pre' }}>
               {notesMap[topic.id]?.[activeSubtopicName] ?? 'Notes coming soon...'}
             </p>
           </div>
         </div>
+
+        {/* PDF section */}
+        {pdfUrl && (
+          <div className={styles.pdfSection}>
+            <div className={styles.notesHeader}>{'// handwritten notes'}</div>
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.pdfLink}
+            >
+              <span>open notes pdf</span>
+              <span>↗</span>
+            </a>
+          </div>
+        )}
+
       </main>
     </div>
   )

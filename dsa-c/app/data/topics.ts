@@ -23,7 +23,7 @@ export const topics: Topic[] = [
     icon: '◎',
     color: '#00cfff',
     subtopics: ['Linear Search', 'Binary Search'],
-    description: 'Techniques to efficiently locate elements in data structures.',
+    description: 'Algorithms to efficiently locate elements in data structures.',
   },
   {
     id: 'tc-sc',

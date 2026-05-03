@@ -7,49 +7,126 @@ import { useProgress } from './hooks/useProgess'
 import { Topic } from './types'
 import styles from './page.module.css'
 
-export default function Home() { //there can only be one export default per file and its usrd to export the main component of a page or module
-  const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } = //destructuring 
+// ─── RESOURCES DATA ───────────────────────────────────────────────────────────
+const resourceCategories = [
+  {
+    id: 'handouts',
+    label: 'Handouts',
+    color: '#00cfff',
+    items: [
+      { label: 'Handouts', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FHandouts&viewid=46178875%2D5206%2D4fb2%2Dbfc9%2D3efce5b6ceba&ct=1777819275370&or=OWA%2DNT%2DMail' },
+    ],
+  },
+  {
+    id: 'prev-year',
+    label: 'Prev Year Papers',
+    color: '#fbbf24',
+    items: [
+      { label: 'Papers', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FPrevious%20Year%20QPs&viewid=46178875%2D5206%2D4fb2%2Dbfc9%2D3efce5b6ceba&ct=1777819275370&or=OWA%2DNT%2DMail' },
+    ],
+  },
+  {
+    id: 'slides',
+    label: 'Slides',
+    color: '#a78bfa',
+    items: [
+      { label: 'Slides', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FSlides&viewid=46178875%2D5206%2D4fb2%2Dbfc9%2D3efce5b6ceba&ct=1777819275370&or=OWA%2DNT%2DMail' },
+    ],
+  },
+  {
+    id: 'lab-q',
+    label: 'Lab Questions',
+    color: '#00ff88',
+    items: [
+      { label: 'Labs', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FLab%20problems&viewid=46178875%2D5206%2D4fb2%2Dbfc9%2D3efce5b6ceba&ct=1777819275370&or=OWA%2DNT%2DMail' },
+    ],
+  },
+  {
+    id: 'tutorials',
+    label: 'Tutorials',
+    color: '#f472b6',
+    items: [
+      { label: 'Recap of C syntax', url: '/pdfs/tutorials/Tutorial - [Recap of C Syntax].pdf' },
+      { label: 'Arrays and Pointers', url: 'pdfs/tutorials/Arrays and Pointers_ Where we stand_.pdf' },
+      { label: 'Pointers - practice q', url: '/pdfs/tutorials/Pointers - Practice Questions.pdf' },
+      { label: 'Arrays - Tutorial 2 and 3', url: '/pdfs/tutorials/Tutorials on arrays - 2 and 3.pdf' },
+
+
+      { label: 'Basic Searching and Sorting in C', url: '/pdfs/tutorials/Basic Searching and Sorting in C.pdf' },
+      { label: 'Sorting - Tutorial 2', url: '/pdfs/tutorials/Tutorial on Sorting - 2.pdf' },
+
+      { label: 'TC', url: '/pdfs/tutorials/Time Complexity.pdf' },
+      { label: 'TC - Tutorial 7', url: '/pdfs/tutorials/Solved_Tutorial_Complexity-7.pdf' },
+      { label: 'TC - tutorial', url: '/pdfs/tutorials/Tutorial - Time Complexity.pdf' },
+
+      { label: 'LL - tutorial 4', url: '/pdfs/tutorials/Tutorial-4 Linked List.pdf' },
+      { label: 'LL tutorial - 5', url: '/pdfs/tutorials/Linked List Tut-5.pdf' },
+      { label: 'LL- tutorial', url: '/pdfs/tutorials/Tutorial - Linked List.pdf' },
+      { label: 'Stacks - tutorial', url: '/pdfs/tutorials/Tutorial (Stacks).pdf' },
+
+      { label: 'Tutorial 6', url: '/pdfs/tutorials/Tutorial-6.pdf' },
+      { label: 'Tutorial 6 - extra questions', url: '/pdfs/tutorials/Tutorial-6 extra question With Solution.pdf' },
+      { label: 'Stacks and Queues - tutorial 6', url: '/pdfs/tutorials/Tutorial-6 Stack and Queue.pdf' },
+
+      { label: 'Queue - tutorial 7', url: '/pdfs/tutorials/Tutorial 7 Queue.pdf' },
+
+      { label: 'Trees - Tutorial 9', url: '/pdfs/tutorials/Tutorial 9 - trees.pdf' },
+
+      { label: 'Misc Q -1 ', url: '/pdfs/tutorials/Misc_Questions-1.pdf' },
+      { label: 'Practice sheet - 1', url: '/pdfs/tutorials/Practice sheet -1.pdf' },
+      { label: 'Practice questions - 2', url: '/pdfs/tutorials/Practice_Questions_2.pdf' },
+    ],
+  },
+]
+// ─────────────────────────────────────────────────────────────────────────────
+
+export default function Home() {
+  const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } =
     useProgress(topics)
-  const [mounted, setMounted] = useState<boolean>(false) //initial value is false 
-  const [expandedCard, setExpandedCard] = useState<string | null>(null) //tracks which card is currently expanded - value is either a topic id "string" or just null if nothings open
+  const [mounted, setMounted] = useState<boolean>(false)
+  const [expandedCard, setExpandedCard] = useState<string | null>(null)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
-// So the mismatch is:  -- for mounted and set mounted
-
-// Server renders → tries to read localStorage, throws an error or returns nothing, so progress is 0
-// Browser renders → reads localStorage, finds your saved progress, shows 42 / 60
-
-// React sees two different outputs for the same component and panics because it can't reconcile them.
-// The mounted trick solves this by making both sides agree — server and browser both render '— / —' on first pass, then after the browser takes over, mounted flips to true and the real data loads in.
-
-
-  useEffect(() => { //useeffect runs once after loading the components and flips the initial value of useState to true
+  useEffect(() => {
     setMounted(true)
   }, [])
 
-  const toggleCard = (e: React.MouseEvent, id: string): void => {  //on pressing the button - stops the default behaviour for that click event 
+  const toggleCard = (e: React.MouseEvent, id: string): void => {
     e.preventDefault()
-    setExpandedCard((prev) => (prev === id ? null : id)) //if its already open - close it otherwise open it by setting its id. thats why only one card can open at once because the id is replaced everytime 
+    setExpandedCard((prev) => (prev === id ? null : id))
   }
 
-  return (  //everything in this is jsx (a syntax extension for JS - commonly used with react to describe UI using html like code)
+  const toggleDropdown = (id: string): void => {
+    setOpenDropdown((prev) => (prev === id ? null : id))
+  }
+
+  // close dropdown when clicking outside
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest('[data-dropdown]')) {
+        setOpenDropdown(null)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  return (
     <main className={styles.main}>
       {/* Header */}
-     <header className={styles.header}>
-  <div className={styles.headerContent}>
-    <div className={styles.logo}>
-      <span className={styles.logoAccent}>&gt;_</span>
-      <span className={styles.logoText}>DSA in C</span>
-    </div>
-    <div className={styles.headerRight}>
-      <nav className={styles.nav}>
-        <Link href="/" className={styles.navLinkActive}>home</Link>
-        <Link href="/resources">resources</Link>
-      </nav>
-      <span className={styles.badge}>CSE and CB</span>
-      <span className={styles.badge}>CS1002</span>
-    </div>
-  </div>
-</header>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.logo}>
+            <span className={styles.logoAccent}>&gt;_</span>
+            <span className={styles.logoText}>DSA in C</span>
+          </div>
+          <div className={styles.headerRight}>
+            <span className={styles.badge}>CSE and CB</span>
+            <span className={styles.badge}>CS1002</span>
+          </div>
+        </div>
+      </header>
 
       {/* Hero */}
       <section className={styles.hero}>
@@ -72,7 +149,7 @@ export default function Home() { //there can only be one export default per file
             </span>
           </div>
           <span className={styles.progressPercent}>
-            {mounted ? `${percent}%` : '—%'} {/*helps you write JS inside this*/}
+            {mounted ? `${percent}%` : '—%'}
           </span>
         </div>
         <div className={styles.progressTrack}>
@@ -97,6 +174,73 @@ export default function Home() { //there can only be one export default per file
             >
               <div className={styles.milestoneDot} />
               <span className={styles.milestoneLabel}>{m}%</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Quick Links */}
+      <section className={styles.quickLinksSection}>
+        <div className={styles.quickLinksHeader}>{'// quick links'}</div>
+        <div className={styles.quickLinksGrid}>
+          <a
+            href="https://docs.google.com/spreadsheets/d/18Ed_IwybqsLi5Aqyybk3m8mxmZkD86C321xHbbkxcZ8/edit?gid=0#gid=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.quickLink}
+          >
+            <span>Link to the Spread Sheet</span>
+            <span>↗</span>
+          </a>
+          <a
+            href="https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures&ct=1777819275370&or=OWA%2DNT%2DMail&cid=61ae916e%2D10ce%2D5959%2D1a81%2D35490a02f453&ga=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.quickLink}
+          >
+            <span>Link to the One Drive</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </section>
+
+      {/* Resources Dropdowns */}
+      <section className={styles.resourcesSection}>
+        <div className={styles.quickLinksHeader}>{'// resources'}</div>
+        <div className={styles.dropdownsRow}>
+          {resourceCategories.map((cat) => (
+            <div
+              key={cat.id}
+              className={styles.dropdownWrapper}
+              data-dropdown
+            >
+              <button
+                className={`${styles.dropdownBtn} ${openDropdown === cat.id ? styles.dropdownBtnOpen : ''}`}
+                style={{ '--cat-color': cat.color } as React.CSSProperties}
+                onClick={() => toggleDropdown(cat.id)}
+              >
+                <span>{cat.label}</span>
+                <span className={styles.dropdownArrow}>
+                  {openDropdown === cat.id ? '▲' : '▼'}
+                </span>
+              </button>
+              {openDropdown === cat.id && (
+                <div className={styles.dropdownMenu}>
+                  {cat.items.map((item) => (
+                    <a
+                      key={item.url}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.dropdownItem}
+                      style={{ '--cat-color': cat.color } as React.CSSProperties}
+                    >
+                      <span>{item.label}</span>
+                      <span>↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -25,28 +25,6 @@
   justify-content: space-between;
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav a {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  letter-spacing: 0.06em;
-  transition: color 0.15s;
-}
-
-.nav a:hover {
-  color: var(--text-primary);
-}
-
-.navLinkActive {
-  color: var(--accent-cyan) !important;
-}
-
 .logo {
   display: flex;
   align-items: center;
@@ -79,13 +57,6 @@
   padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px) clamp(32px, 5vw, 56px);
 }
 
-.heroTag {
-  font-size: 0.75rem;
-  color: var(--accent-cyan);
-  letter-spacing: 0.12em;
-  margin-bottom: 20px;
-}
-
 .heroTitle {
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 6vw, 4.5rem);
@@ -108,7 +79,7 @@
 /* ─── PROGRESS ─── */
 .progressSection {
   max-width: 1280px;
-  margin: 0 auto 56px;
+  margin: 0 auto 48px;
   padding: 0 clamp(20px, 5vw, 64px);
 }
 
@@ -189,9 +160,137 @@
 }
 
 .milestoneReached .milestoneDot { background: var(--accent-green); }
-
 .milestoneLabel { font-size: 0.6rem; color: var(--text-secondary); letter-spacing: 0.06em; }
 .milestoneReached .milestoneLabel { color: var(--accent-green); }
+
+/* ─── QUICK LINKS ─── */
+.quickLinksSection {
+  max-width: 1280px;
+  margin: 0 auto 32px;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+
+.quickLinksHeader {
+  font-size: 0.68rem;
+  color: var(--accent-cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.quickLinksGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quickLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.quickLink:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+}
+
+/* ─── RESOURCES DROPDOWNS ─── */
+.resourcesSection {
+  max-width: 1280px;
+  margin: 0 auto 48px;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+
+.dropdownsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.dropdownBtn:hover {
+  border-color: var(--cat-color, var(--accent-cyan));
+  color: var(--cat-color, var(--accent-cyan));
+  background: var(--bg-card-hover);
+}
+
+.dropdownBtnOpen {
+  border-color: var(--cat-color, var(--accent-cyan));
+  color: var(--cat-color, var(--accent-cyan));
+  background: var(--bg-card-hover);
+}
+
+.dropdownArrow {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 50;
+  animation: fadeDown 0.15s ease;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 0.73rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.15s;
+  font-family: var(--font-mono);
+}
+
+.dropdownItem:last-child { border-bottom: none; }
+
+.dropdownItem:hover {
+  background: rgba(0, 207, 255, 0.05);
+  color: var(--cat-color, var(--accent-cyan));
+}
 
 /* ─── GRID ─── */
 .grid {
@@ -249,7 +348,6 @@
 }
 
 .cardMeta { display: flex; align-items: center; gap: 10px; }
-
 .cardIcon { font-size: 1.3rem; line-height: 1; }
 
 .cardIndex {
@@ -408,4 +506,7 @@
   .grid { grid-template-columns: 1fr; }
   .badge { display: none; }
   .heroTitle { font-size: 2rem; }
+  .dropdownsRow { flex-direction: column; }
+  .dropdownBtn { width: 100%; justify-content: space-between; }
+  .dropdownMenu { width: 100%; }
 }

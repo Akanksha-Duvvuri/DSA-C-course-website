@@ -1,56 +1,114 @@
 # DSA in C — Study Tracker
 
-A Next.js study tracker for Data Structures & Algorithms in C.
-## Live Site
+A clean and interactive **Next.js study tracker** built for learning **Data Structures & Algorithms in C**.  -- Made for CS1002
+
+Track your progress topic-by-topic, read theory notes, view C implementations, and organize all your DSA prep in one place.
 
 ---
 
-## Local Development
+## Features
+
+* Track completed subtopics with persistent progress
+* View C programs for every algorithm / data structure
+* Read short notes and theory explanations
+* Attach PDFs and study material
+* Organized topic-wise learning flow
+* Clean responsive UI
+* Progress saved automatically using `localStorage`
+
+---
+
+## Topics Covered
+
+| #  | Topic                   | ID             |
+| -- | ----------------------- | -------------- |
+| 1  | Searching Algorithms    | `searching`    |
+| 2  | Sorting Algorithms      | `sorting`      |
+| 3  | Linked Lists            | `linked-list`  |
+| 4  | Stacks                  | `stacks`       |
+| 5  | Queues                  | `queues`       |
+| 6  | Hashing                 | `hashing`      |
+| 7  | Binary Trees            | `binary-trees` |
+| 8  | Binary Search Trees     | `bst`          |
+| 9  | Time & Space Complexity | `tc-sc`        |
+| 10 |Heaps                    | `heaps`        |
+| 11 | Graphs                  | `graphs`       |
+
+---
+
+## Tech Stack
+
+* Next.js (App Router)
+* TypeScript
+* React
+* CSS Modules
+* localStorage
+
+---
+
+## Live Demo
+
+Add your deployed link here:
+
+https://your-site.vercel.app
+
+---
+
+## Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open:
+
+http://localhost:3000
 
 ---
 
 ## Project Structure
 
-```
+```txt
 app/
 ├── data/
-│   ├── topics.ts          ← all 12 topics and subtopics
-│   ├── codeMap.ts         ← C code for each subtopic
-│   ├── notesMap.ts        ← theory notes for each subtopic
-│   └── pdfMap.ts          ← PDF paths per subtopic
+│   ├── topics.ts
+│   ├── codeMap.ts
+│   ├── notesMap.ts
+│   └── pdfMap.ts
 │
 ├── hooks/
-│   └── useProgress.ts     ← localStorage progress tracking
+│   └── useProgress.ts
+│
 ├── [topic]/
-│   ├── page.tsx           ← server component, dynamic route
-│   ├── TopicClient.tsx    ← client component, interactive UI
-│   └── topic.module.css   ← topic page styles
-├── page.tsx               ← homepage
-├── page.module.css        ← homepage styles
-├── layout.tsx             ← root layout
-├── globals.css            ← global styles + CSS variables
-└── types.ts               ← shared TypeScript interfaces
+│   ├── page.tsx
+│   ├── TopicClient.tsx
+│   └── topic.module.css
+│
+├── page.tsx
+├── page.module.css
+├── layout.tsx
+├── globals.css
+└── types.ts
 ```
 
 ---
 
-## Adding Your Code
+## Customization
 
-Open `app/data/codeMap.ts` and add entries:
+### Add C Programs
+
+Edit:
+
+`app/data/codeMap.ts`
 
 ```ts
-export const codeMap: Record<string, Record<string, string>> = {
+export const codeMap = {
   searching: {
     'Linear Search': `#include <stdio.h>
 ...`,
   },
+
   sorting: {
     'Bubble Sort': `#include <stdio.h>
 ...`,
@@ -58,63 +116,63 @@ export const codeMap: Record<string, Record<string, string>> = {
 }
 ```
 
-Key must match `topic.id` from `topics.ts` exactly.
-Subtopic key must match the subtopic string exactly — case sensitive.
+Rules:
+
+* Topic key must match topic ID exactly
+* Subtopic key must match exactly
+* Case sensitive
 
 ---
 
-## Adding Notes
+### Add Notes
 
-Same pattern in `app/data/notesMap.ts`:
+Edit:
+
+`app/data/notesMap.ts`
 
 ```ts
-export const notesMap: Record<string, Record<string, string>> = {
+export const notesMap = {
   searching: {
-    'Linear Search': `your notes here`,
+    'Linear Search': `Search each element one by one.`,
   },
 }
 ```
 
-Use backtick template literals. Indentation is preserved with `white-space: pre-wrap`.
-
 ---
 
-## Adding PDFs
+### Add PDFs
 
-Put PDFs in the `public/` folder:
+Put files inside:
 
-```
-public/
-  pdfs/
-    searching/
-      linear-search.pdf
-    tc-sc/
-      notes.pdf
-    tutorials/
-      tutorial1.pdf
-```
+`public/pdfs/`
 
-Then reference in `app/data/pdfMap.ts`:
+Example:
+
+`public/pdfs/searching/linear-search.pdf`
+
+Then update:
+
+`app/data/pdfMap.ts`
 
 ```ts
-export const pdfMap: Record<string, Record<string, string[]>> = {
+export const pdfMap = {
   searching: {
     'Linear Search': ['/pdfs/searching/linear-search.pdf'],
-    'Binary Search': ['/pdfs/searching/binary-search.pdf'],
-  },
-  'tc-sc': {
-    'Notes & PDFs': ['/pdfs/tc-sc/notes1.pdf', '/pdfs/tc-sc/notes2.pdf'],
   },
 }
 ```
 
-Always use arrays — even for single PDFs wrap in `[]`.
+Always use arrays, even for one file.
 
 ---
 
-## Adding Resources (Homepage Dropdowns)
+### Add Homepage Resources
 
-Edit the `resourceCategories` array at the top of `app/page.tsx`:
+Edit:
+
+`app/page.tsx`
+
+Inside `resourceCategories`:
 
 ```ts
 {
@@ -122,47 +180,37 @@ Edit the `resourceCategories` array at the top of `app/page.tsx`:
   label: 'Handouts',
   color: '#00cfff',
   items: [
-    { label: 'Unit 1 Handout', url: 'https://your-link.com' },
-    { label: 'Unit 2 Handout', url: 'https://your-link.com' },
-  ],
-},
+    { label: 'Unit 1', url: '/pdfs/unit1.pdf' },
+    { label: 'Playlist', url: 'https://youtube.com/...' }
+  ]
+}
 ```
-
-For local PDFs use `/pdfs/...` paths. For external links paste the full URL.
 
 ---
 
-## Deploying to Vercel
+## Deployment
+
+### Vercel
 
 ```bash
-# install Vercel CLI
 npm i -g vercel
-
-# deploy
 vercel
 ```
 
-Or push to GitHub and connect the repo on [vercel.com](https://vercel.com) — it auto-deploys on every push to main.
+Or connect your GitHub repo on Vercel for auto deploys.
 
 ---
 
-## Topics Covered
 
-| # | Topic | ID |
-|---|-------|----|
-| 1 | Searching Algorithms | `searching` |
-| 2 | Sorting Algorithms | `sorting` |
-| 3 | Linked Lists | `linked-list` |
-| 4 | Stacks | `stacks` |
-| 5 | Queues | `queues` |
-| 6 | Hashing | `hashing` |
-| 7 | Binary Trees | `binary-trees` |
-| 8 | Binary Search Trees | `bst` |
-| 9 | Time & Space Complexity | `tc-sc` |
-| 10 | Dynamic Programming | `dp` |
-| 11 | Graphs | `graphs` |
+## Future Improvements
 
-Progress is saved automatically in `localStorage` — persists across sessions per browser.
+* Dark mode
+* Search topics
+* Quiz mode
+* Code runner
+* Cloud sync
+
+---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

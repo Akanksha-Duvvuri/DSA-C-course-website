@@ -25,6 +25,28 @@
   justify-content: space-between;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav a {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.15s;
+}
+
+.nav a:hover {
+  color: var(--text-primary);
+}
+
+.navLinkActive {
+  color: var(--accent-cyan) !important;
+}
+
 .logo {
   display: flex;
   align-items: center;

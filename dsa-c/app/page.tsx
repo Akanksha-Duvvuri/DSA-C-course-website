@@ -34,18 +34,22 @@ export default function Home() { //there can only be one export default per file
   return (  //everything in this is jsx (a syntax extension for JS - commonly used with react to describe UI using html like code)
     <main className={styles.main}>
       {/* Header */}
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.logo}>
-            <span className={styles.logoAccent}>&gt;_</span> {/*terminal logo*/}
-            <span className={styles.logoText}>DSA in C</span>
-          </div>
-          <div className={styles.headerRight}>
-            <span className={styles.badge}>CSE and CB</span>
-            <span className={styles.badge}>CS1002</span>
-          </div>
-        </div>
-      </header>
+     <header className={styles.header}>
+  <div className={styles.headerContent}>
+    <div className={styles.logo}>
+      <span className={styles.logoAccent}>&gt;_</span>
+      <span className={styles.logoText}>DSA in C</span>
+    </div>
+    <div className={styles.headerRight}>
+      <nav className={styles.nav}>
+        <Link href="/" className={styles.navLinkActive}>home</Link>
+        <Link href="/resources">resources</Link>
+      </nav>
+      <span className={styles.badge}>CSE and CB</span>
+      <span className={styles.badge}>CS1002</span>
+    </div>
+  </div>
+</header>
 
       {/* Hero */}
       <section className={styles.hero}>

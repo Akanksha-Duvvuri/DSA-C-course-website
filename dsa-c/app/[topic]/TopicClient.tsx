@@ -311,7 +311,7 @@ export default function TopicClient({
         {/* PDF section */}
         {pdfUrl && (
           <div className={styles.pdfSection}>
-            <div className={styles.notesHeader}>{'// handwritten notes'}</div>
+            <div className={styles.notesHeader}>{'//PDFs'}</div>
             <a
               href={pdfUrl}
               target="_blank"

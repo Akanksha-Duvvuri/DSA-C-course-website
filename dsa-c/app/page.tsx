@@ -85,7 +85,7 @@ export default function Home() { //there can only be one export default per file
           />
         </div>
         <div className={styles.progressMilestones}>
-          {([0, 5, 10, 15, 20, 25, 30 ,35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100] as const).map((m) => (
+          {([0, 25, 50, 75, 100] as const).map((m) => (
             <div
               key={m}
               className={`${styles.milestone} ${mounted && percent >= m ? styles.milestoneReached : ''}`}

@@ -407,4 +407,121 @@ Time Complexity:  O(n)  - traverser through the entire array
 Space Complexity: O(n)  — stack can hold up to n operators`,
     'Recursion implementation': ``
   },
+
+  queues : {
+    'Queue using Array': `A queue is a FIFO data structure — First In First Out.
+The first element enqueued is the first one dequeued.
+
+Implementation using a fixed-size array with two pointers:
+    front = -1  →  points to the first element
+    rear  = -1  →  points to the last element
+
+    Both front and rear = -1  →  queue is empty
+
+Operations:
+    Enqueue  →  increment rear, add element at arr[rear]
+    Dequeue  →  return arr[front], increment front
+    Peek     →  return arr[front] without removing
+
+Conditions:
+    Overflow   →  enqueue when rear == n-1   (queue is full)
+    Underflow  →  dequeue when front == -1 or front > rear
+
+Time Complexity:
+    Enqueue → O(1)
+    Dequeue → O(1)
+    Peek    → O(1)
+
+Space Complexity: O(n)
+
+Drawback: once elements are dequeued, that space at the front
+is wasted and cannot be reused — solved by Circular Queue.
+
+Visual:
+    front            rear
+      ↓               ↓
+    [ 1 | 2 | 3 | 4 | 5 ]
+dequeue from front, enqueue at rear`,
+
+    'Queue using LL': `Dynamic implementation — no fixed size.
+Maintain both head (front) and tail (rear) pointers.
+
+    Enqueue  →  add new node at tail
+    Dequeue  →  remove node from head, move head forward
+
+Why maintain a tail pointer?
+    Without tail, every enqueue needs O(n) traversal to find end.
+    With tail, enqueue is always O(1).
+
+Operations:
+    Enqueue → O(1)
+    Dequeue → O(1)
+    Peek    → O(1)
+
+Space Complexity: O(n)
+
+Advantage over array: no overflow, no wasted space,
+size grows and shrinks dynamically.
+
+Visual: 
+    head                       tail
+      ↓                         ↓
+    [1|→] → [2|→] → [3|→] → [4|NULL]
+dequeue from head, enqueue at tail`,
+
+    'Circular Queue: insertion and deletion operations': `Solves the wasted space problem of linear array queue.
+The rear wraps around to the front when it reaches the end.
+Treats the array as a circle.
+
+    front and rear move using modulo:
+        rear  = (rear + 1) % n
+        front = (front + 1) % n
+
+Conditions:
+    Empty  →  front == -1
+    Full   →  (rear + 1) % n == front
+
+Operations:
+    Enqueue → O(1)
+    Dequeue → O(1)
+
+Space Complexity: O(n)  — no space wasted unlike linear queue
+
+Visual (n=5):
+    [  |  | 3 | 4 | 5 ]
+           ↑         ↑
+          front     rear
+
+    after enqueue of 6:
+    [ 6 |  | 3 | 4 | 5 ]
+      ↑      ↑
+     rear   front
+
+    rear wrapped around to index 0.
+
+Advantage: reuses freed space from dequeued elements.`,
+
+    'Deque (Doubly ended queue)': `A deque allows insertion and deletion from BOTH ends.
+It is a generalisation of both stack and queue.
+
+Two types:
+    Input Restricted Deque  →  insert only at rear, delete from both
+    Output Restricted Deque →  delete only from front, insert at both
+
+Operations:
+    insertFront  →  add element at front
+    insertRear   →  add element at rear
+    deleteFront  →  remove element from front
+    deleteRear   →  remove element from rear
+    peekFront    →  view front element
+    peekRear     →  view rear element
+
+All operations → O(1)
+Space Complexity: O(n)
+
+Can be implemented using:
+    Circular array  →  efficient, fixed size
+    Doubly LL       →  dynamic, O(1) insert/delete at both ends
+`
+  },
 }

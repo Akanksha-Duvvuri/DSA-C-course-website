@@ -1009,6 +1009,434 @@ int main(){
 }`,
 
     'Recursion implementation': ``,
-  }
+  },
+
+   queues : {
+    'Queue using Array': `#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 100
+
+int queue[MAX];
+int front = -1;
+int rear = -1;
+
+void enqueue(int data) {
+    if(rear == MAX - 1) {
+        printf("queue overflow");
+        return;
+    }
+
+    if(front == -1) front = 0;
+
+    queue[++rear] = data;
+}
+
+void dequeue() {
+    if(front == -1 || front > rear) {
+        printf("queue underflow");
+        return;
+    }
+
+    front++;
+}
+
+void print() {
+    if(front == -1 || front > rear) {
+        printf("empty queue");
+        return;
+    }
+
+    for(int i=front; i<= rear; i++) {
+        printf("%d", queue[i]);
+    }
+    printf(" ");
+}
+
+int main() {
+
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+
+    print();
+
+    dequeue();
+    
+    print();
+
+    return 0;
+}`,
+    'Queue using LL': `#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* front = NULL;
+Node* rear = NULL;
+
+
+Node* createNode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+
+    if(newnode == NULL) {
+        printf("Memory allocation failed");
+        exit(1);
+    }
+
+    newnode->data = data;
+    newnode->next = NULL;
+
+    return newnode;
+}
+
+void enqueue(int data) {
+    Node* newnode = createNode(data);
+
+    if(rear == NULL) {
+        rear = front = newnode;
+    } else {
+        rear->next = newnode;
+        rear = newnode;
+    }
+}
+
+void dequeue(){
+    if(front == NULL){
+        printf("empty queue");
+        return;
+    }
+
+    Node* temp = front;
+    front = front->next;
+
+    free(temp);
+}
+
+void print() {
+    Node* temp = front;
+
+    while(temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL");
+}
+
+int main() {
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+
+    print();
+
+    dequeue();
+
+    print();
+
+    return 0;
+}`,
+    'Circular Queue: insertion and deletion operations':`//using Arrays
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 10
+
+int queue[MAX];
+int rear = -1;
+int front = -1;
+
+int isFull() {
+    return (rear + 1) % MAX == front; 
+}
+
+int isEmpty() {
+    return front == -1;
+}
+
+void enqueue(int data){
+    if(isFull()){
+        printf("queue overflow\n");
+        return;
+    }
+
+    if(front == -1){
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % MAX; 
+    }
+
+    queue[rear] = data;
+}
+
+void dequeue() {
+    if(isEmpty()) {
+        printf("queue underflow");
+        return;
+    }
+
+    if(front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % MAX;
+    }
+}
+
+void print() {
+    if(isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    int i = front;
+
+    while(1) {
+        printf("%d ", queue[i]);
+        if(i == rear) break;
+        i = (i + 1) % MAX;
+    }
+
+    printf("\n");
+}
+
+int main() {
+
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+    enqueue(4);
+
+    print();
+
+    dequeue();
+    dequeue();
+
+    print();
+
+    enqueue(5);
+    enqueue(6);
+
+    print();
+
+    return 0;
+}
+    
+// Using LL 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* front = NULL;
+struct Node* rear = NULL;
+
+int isEmpty(){
+    return front == NULL;
+}
+
+void enqueue(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+
+    if(front == NULL){
+        front = rear = newNode;
+        rear->next = front;
+    }
+    else{
+        newNode->next = front;
+        rear->next = newNode;
+        rear = newNode;
+    }
+}
+
+void dequeue(){
+    if(isEmpty()){
+        printf("Queue Underflow\n");
+        return;
+    }
+
+    if(front == rear){
+        free(front);
+        front = rear = NULL;
+    }
+    else{
+        struct Node* temp = front;
+        front = front->next;
+        rear->next = front;
+        free(temp);
+    }
+}
+
+void print(){
+    if(isEmpty()){
+        printf("Queue is empty\n");
+        return;
+    }
+
+    struct Node* temp = front;
+
+    do{
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }while(temp != front);
+
+    printf("\n");
+}
+
+int main(){
+    enqueue(1);
+    enqueue(2);
+    enqueue(3);
+    enqueue(4);
+
+    print();
+
+    dequeue();
+    dequeue();
+
+    print();
+
+    enqueue(5);
+    enqueue(6);
+
+    print();
+
+    return 0;
+}`,
+    'Deque (Doubly ended queue)': `//using doubly LL
+    
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* front = NULL;
+struct Node* rear = NULL;
+
+int isEmpty(){
+    return front == NULL;
+}
+
+void insertFront(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->prev = NULL;
+    newNode->next = front;
+
+    if(isEmpty()){
+        front = rear = newNode;
+    }
+    else{
+        front->prev = newNode;
+        front = newNode;
+    }
+}
+
+void insertRear(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->next = NULL;
+    newNode->prev = rear;
+
+    if(isEmpty()){
+        front = rear = newNode;
+    }
+    else{
+        rear->next = newNode;
+        rear = newNode;
+    }
+}
+
+void deleteFront(){
+    if(isEmpty()){
+        printf("Deque Underflow\n");
+        return;
+    }
+
+    struct Node* temp = front;
+
+    if(front == rear){
+        front = rear = NULL;
+    }
+    else{
+        front = front->next;
+        front->prev = NULL;
+    }
+
+    free(temp);
+}
+
+void deleteRear(){
+    if(isEmpty()){
+        printf("Deque Underflow\n");
+        return;
+    }
+
+    struct Node* temp = rear;
+
+    if(front == rear){
+        front = rear = NULL;
+    }
+    else{
+        rear = rear->prev;
+        rear->next = NULL;
+    }
+
+    free(temp);
+}
+
+void print(){
+    if(isEmpty()){
+        printf("Deque is empty\n");
+        return;
+    }
+
+    struct Node* temp = front;
+
+    while(temp != NULL){
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("\n");
+}
+
+int main(){
+    insertRear(10);
+    insertRear(20);
+    insertFront(5);
+    insertFront(2);
+
+    print();
+
+    deleteFront();
+    deleteRear();
+
+    print();
+
+    insertRear(30);
+    insertFront(1);
+
+    print();
+
+    return 0;
+}`,
+  },
 
 }

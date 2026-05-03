@@ -19,4 +19,11 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
     'Infix to Postfix Conversion and Postfix expression evaluation': ['/pdfs/stack/stackp1.pdf', '/pdfs/stack/stackp2.pdf'],
     'Recursion implementation': [],
   },
+
+  'queues' : {
+    'Queue using Array': ['/pdfs/queues/queuep1.pdf', '/pdfs/queues/queuep2.pdf'],
+    'Queue using LL':['/pdfs/queues/queuep1.pdf', '/pdfs/queues/queuep2.pdf'],
+    'Circular Queue: insertion and deletion operations': ['/pdfs/queues/queuep2.pdf'],
+    'Deque (Doubly ended queue)': ['/pdfs/queues/queuep3.pdf'],
+  },
 }

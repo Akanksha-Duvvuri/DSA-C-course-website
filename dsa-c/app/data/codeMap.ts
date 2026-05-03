@@ -1365,7 +1365,7 @@ void insertRear(int val){
 
 void deleteFront(){
     if(isEmpty()){
-        printf("Deque Underflow\n");
+        printf("Deque Underflow");
         return;
     }
 
@@ -1384,7 +1384,7 @@ void deleteFront(){
 
 void deleteRear(){
     if(isEmpty()){
-        printf("Deque Underflow\n");
+        printf("Deque Underflow");
         return;
     }
 
@@ -1403,7 +1403,7 @@ void deleteRear(){
 
 void print(){
     if(isEmpty()){
-        printf("Deque is empty\n");
+        printf("Deque is empty");
         return;
     }
 
@@ -1414,7 +1414,7 @@ void print(){
         temp = temp->next;
     }
 
-    printf("\n");
+    printf(" ");
 }
 
 int main(){
@@ -1438,5 +1438,344 @@ int main(){
     return 0;
 }`,
   },
+
+  hashing: {
+    'Hash Functions':`#include<stdio.h>
+#include<stdlib.h>
+
+//Hashing = directly jump to where data should be stored - CORE IDEA. Not searching the whole list
+//table[index] = always points to the head of the list
+
+#define SIZE 10
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* table[SIZE]; //array of LL, each index stores a LL head
+ 
+Node* createnode(int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+
+    if(newnode == NULL) {
+        printf("memory allocation failed");
+        exit(1);
+    }
+
+    newnode->data = data;
+    newnode->next = NULL;
+
+    return newnode;
+}
+
+//hash function - decides which index to go to
+int hash(int key) {
+    return key % SIZE;
+}
+
+void insert(int key) {
+    int index = hash(key);
+
+    Node* newnode = createnode(key); //data is the key
+
+    //insert at beginning of LL in that index
+    newnode->next = table[index];
+    table[index] = newnode;
+}
+
+void search(int key) {
+    int index = hash(key);
+
+    Node* temp = table[index]; //first go to that index in the hash table
+
+    while(temp != NULL){ //then traverse the LL to find the element required
+        if(temp->data == key){
+            printf("found the key at index: %d", index);
+            return;
+        } 
+        temp = temp->next;
+    }
+
+    printf("not found");
+}
+
+void delete(int key){
+    int index = key % SIZE;
+
+    Node* temp = table[index];
+    Node* prev = NULL;
+
+    while(temp != NULL && temp->data != key){
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if(temp == NULL){
+        printf("key not found");
+        return;
+    }
+
+    //first node
+    if(prev == NULL){
+        table[index] = temp->next;
+    } else {
+        prev->next = temp->next; //deleting temp
+    }
+
+    free(temp);
+}
+
+void display() {
+    for(int i = 0; i< SIZE; i++){
+        printf("[%d]: ", i);
+
+        Node* temp = table[i];
+
+        while(temp != NULL){
+            printf("%d -> ", temp->data);
+            temp = temp->next;
+        }
+
+        printf("NULL");
+    }
+}
+
+int main() {
+    //initialising the table
+    for(int i = 0; i< SIZE; i++) {
+        table[i] = NULL;
+    }
+
+    insert(25);
+    insert(35);
+    insert(15);
+    insert(7);
+
+    display();
+
+    search(35);
+    search(100);
+
+    return 0;
+}`,
+
+    'Collision Handling: Chaining and Open Addressing': `//Chaining
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* table[SIZE];
+
+int hash(int key){
+    return key % SIZE;
+}
+
+void insert(int key){
+    int index = hash(key);
+
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = key;
+    newNode->next = table[index];
+
+    table[index] = newNode;
+}
+
+void print(){
+    for(int i = 0; i < SIZE; i++){
+        struct Node* temp = table[i];
+
+        printf("%d : ", i);
+
+        while(temp != NULL){
+            printf("%d -> ", temp->data);
+            temp = temp->next;
+        }
+
+        printf("NULL");
+    }
+}
+
+int main(){
+    insert(10);
+    insert(20);
+    insert(15);
+    insert(25);
+
+    print();
+
+    return 0;
+}
+
+
+─────────────────────────────────────────
+
+//Open Addressing
+
+a. Linear Probing 
+
+#include <stdio.h>
+
+#define SIZE 10
+
+int hashTable[SIZE];
+
+void init(){
+    for(int i = 0; i < SIZE; i++){
+        hashTable[i] = -1;
+    }
+}
+
+int hash(int key){
+    return key % SIZE;
+}
+
+void insert(int key){
+    int index = hash(key);
+
+    while(hashTable[index] != -1){
+        index = (index + 1) % SIZE;
+    }
+
+    hashTable[index] = key;
+}
+
+void print(){
+    for(int i = 0; i < SIZE; i++){
+        printf("%d : %d", i, hashTable[i]);
+    }
+}
+
+int main(){
+    init();
+
+    insert(10);
+    insert(20);
+    insert(15);
+    insert(25);
+
+    print();
+
+    return 0;
+}
+
+─────────────────────────────────────────
+
+b. Quadratic Probing
+
+#include <stdio.h>
+
+#define SIZE 10
+
+int table[SIZE];
+
+void init(){
+    for(int i = 0; i < SIZE; i++){
+        table[i] = -1;
+    }
+}
+
+int hash(int key){
+    return key % SIZE;
+}
+
+void insert(int key){
+    int index = hash(key);
+    int i = 0;
+
+    while(table[(index + i * i) % SIZE] != -1){
+        i++;
+    }
+
+    table[(index + i * i) % SIZE] = key;
+}
+
+void print(){
+    for(int i = 0; i < SIZE; i++){
+        printf("%d : %d", i, table[i]);
+    }
+}
+
+int main(){
+    init();
+
+    insert(10);
+    insert(20);
+    insert(15);
+    insert(25);
+
+    print();
+
+    return 0;
+}
+    
+    
+    `,
+
+    'Hash Maps in C':`#include <stdio.h>
+
+#define SIZE 10
+
+struct Map{
+    int key;
+    int value;
+};
+
+struct Map table[SIZE];
+
+void init(){
+    for(int i = 0; i < SIZE; i++){
+        table[i].key = -1;
+    }
+}
+
+int hash(int key){
+    return key % SIZE;
+}
+
+void insert(int key, int value){
+    int index = hash(key);
+
+    while(table[index].key != -1){
+        index = (index + 1) % SIZE;
+    }
+
+    table[index].key = key;
+    table[index].value = value;
+}
+
+int search(int key){
+    int index = hash(key);
+
+    while(table[index].key != -1){
+        if(table[index].key == key){
+            return table[index].value;
+        }
+
+        index = (index + 1) % SIZE;
+    }
+
+    return -1;
+}
+
+int main(){
+    init();
+
+    insert(1, 100);
+    insert(2, 200);
+    insert(12, 500);
+
+    printf("Key 2 = %d", search(2));
+    printf("Key 12 = %d", search(12));
+
+    return 0;
+}`,
+  }
 
 }

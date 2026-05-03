@@ -26,4 +26,10 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
     'Circular Queue: insertion and deletion operations': ['/pdfs/queues/queuep2.pdf'],
     'Deque (Doubly ended queue)': ['/pdfs/queues/queuep3.pdf'],
   },
+
+  hashing: {
+    'Hash Functions':['/pdfs/hashing/hashing.pdf'],
+    'Collision Handling: Chaining and Open Addressing': ['/pdfs/hashing/hashing.pdf'],
+    'Hash Maps in C':['/pdfs/hashing/hashing.pdf'],
+  }
 }

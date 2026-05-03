@@ -524,4 +524,178 @@ Can be implemented using:
     Doubly LL       →  dynamic, O(1) insert/delete at both ends
 `
   },
+
+  hashing: {
+    'Hash Functions':`A hash function takes a key and converts it into an index in a fixed-size array called a hash table.
+
+    hash(key) → index
+
+Goal: distribute keys uniformly across the table to minimize collisions (two keys mapping to same index).
+
+Common hash functions:
+
+    Division Method (most common):
+        index = key % tableSize
+        tableSize should be a prime number for better distribution
+
+    Multiplication Method:
+        index = floor(n × (key × A % 1))
+        A is a constant, usually 0.618 (golden ratio)
+
+    Mid Square Method:
+        square the key, extract middle digits as index
+
+
+Time Complexity: O(1) average for insert, search, delete
+Space Complexity: O(n)`,
+    'Collision Handling: Chaining and Open Addressing': `A collision occurs when two different keys produce the same index.
+
+    hash("abc") = 5
+    hash("xyz") = 5   ← collision
+
+Collisions are inevitable — by the pigeonhole principle,
+if you have more keys than slots, collisions must occur.
+
+Two main strategies to handle collisions:
+
+    1. Chaining (Open Hashing)
+           → each slot holds a linked list of all keys that map to it
+
+    2. Open Addressing (Closed Hashing)
+           → find another empty slot within the table itself
+           → subtypes: linear probing, quadratic probing, double hashing
+
+Choosing a strategy:
+    Chaining     → better when load factor is high or unknown
+    Open Address → better when load factor is low, cache friendly
+    
+ Each index in the hash table stores a linked list.
+All keys that hash to the same index are stored in that list.
+
+Visual:
+    index 0 → [cat] → NULL
+    index 1 → [dog] → [dig] → NULL
+    index 2 → NULL
+    index 3 → [rat] → NULL
+
+Operations:
+    Insert → hash(key) → go to index → insert at head of LL
+    Search → hash(key) → go to index → traverse LL
+    Delete → hash(key) → go to index → find and remove from LL
+
+Time Complexity:
+    Best/Average → O(1)   short chains, good hash function
+    Worst        → O(n)   all keys hash to same index (one long chain)
+
+Space Complexity: O(n + m)
+    n = number of elements
+    m = table size
+
+Advantages:
+    → Never overflows — LL grows as needed
+    → Simple to implement
+    → Works well with high load factor
+
+Disadvantage:
+    → Extra memory for LL pointers
+    → Cache unfriendly — nodes scattered in memory   
+    
+ All elements stored inside the hash table itself.
+No linked lists — when collision occurs, probe for next empty slot.
+
+Load factor must stay below 1 (table can fill up).
+
+Three probing strategies:
+
+─────────────────────────────────────────
+1. Linear Probing
+    If index is taken, try index+1, index+2, index+3...
+    
+    next = (hash(key) + i) % tableSize     i = 1, 2, 3...
+
+    Problem: Primary Clustering
+        Long runs of filled slots form, making search slower.
+
+─────────────────────────────────────────
+2. Quadratic Probing
+    If index is taken, try index+1², index+2², index+3²...
+
+    next = (hash(key) + i²) % tableSize
+
+    Reduces primary clustering but causes Secondary Clustering
+    (keys with same hash follow same probe sequence).
+
+─────────────────────────────────────────
+3. Double Hashing
+    Use a second hash function to determine step size.
+
+    next = (hash1(key) + i × hash2(key)) % tableSize
+
+    hash2(key) = prime - (key % prime)
+
+    Best distribution — avoids both primary and secondary clustering.
+    Most complex to implement.
+
+─────────────────────────────────────────
+Time Complexity:
+    Average → O(1)    with low load factor
+    Worst   → O(n)    table nearly full
+
+Deletion is tricky in open addressing:
+    Cannot just remove — breaks probe chains.
+    Use a DELETED marker (tombstone) instead. `,
+
+    'Hash Maps in C':`
+A hash map is a data structure that stores key-value pairs.
+Lets you insert, search and delete in O(1) average time.
+
+Core idea:
+    Instead of searching through an array one by one,
+    run the key through a hash function which gives you
+    the exact index to go to.
+
+    key → hash(key) → index → value
+
+    "name" → hash("name") → 3 → "John"
+
+C has no built-in hash map — you implement it manually.
+
+Time Complexity:
+    Insert → O(1) average
+    Search → O(1) average, O(n) worst
+    Delete → O(1) average
+
+Space Complexity: O(n)
+
+─────────────────────────────────────────────────────
+HOW IT WORKS
+
+    Insert:
+        hash(key) → get index → store value at that index
+
+    Search:
+        hash(key) → get index → return value at that index
+
+    Delete:
+        hash(key) → get index → remove value at that index
+
+    All three operations go directly to the index — no loops.
+    This is why average case is O(1).
+
+─────────────────────────────────────────────────────
+VS ARRAY
+
+    Array   →  index is a number you provide manually
+    HashMap →  index is computed from the key automatically
+
+    Array:    arr[3] = "John"        you choose index 3
+    HashMap:  map["name"] = "John"   hash function chooses index
+
+VS LINKED LIST / LINEAR SEARCH / BINARY SEARCH 
+
+    Linked List search  →  O(n)  traverse every node
+    Binary Search       →  O(log n)  array must be sorted
+    Hash Map search     →  O(1)  jump directly to index
+`,
+  }
 }

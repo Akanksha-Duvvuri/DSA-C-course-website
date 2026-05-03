@@ -2,14 +2,6 @@ import { Topic } from '../types'
 
 export const topics: Topic[] = [
   {
-    id: 'itc',
-    label: 'ITC Fundamentals',
-    icon: '⬡',
-    color: '#00ff88',
-    subtopics: ['Arrays', 'Recursion', 'Pointers', 'Memory Management'],
-    description: 'Core programming concepts that form the foundation of DSA.',
-  },
-  {
     id: 'sorting',
     label: 'Sorting Algorithms',
     icon: '≋',
@@ -30,7 +22,7 @@ export const topics: Topic[] = [
     label: 'Time & Space Complexity',
     icon: 'Ω',
     color: '#94a3b8',
-    subtopics: ['Big O Notation', 'Best/Worst/Average Case', 'Recurrence Relations', 'Master Theorem', 'Space Complexity Analysis'],
+    subtopics: [],
     description: 'Asymptotic analysis to measure algorithm efficiency.',
   },
   {

@@ -923,65 +923,171 @@ Space Complexity:
   },
 
   'tc-sc': {
-    'Notes and PDFs':  `TIME COMPLEXITY (TC) measures how runtime grows as input size n increases.
+    'Notes and PDFs':  `
+Big O describes how the runtime or space of an algorithm
+grows as the input size n increases.
+It describes the WORST CASE behaviour.
 
-Ignores machine speed and focuses on the number of operations
+Common complexities (fastest to slowest):
+    O(1)       Constant   — doesn't depend on n
+    O(log n)   Logarithmic — halves the problem each step
+    O(n)       Linear      — one operation per element
+    O(n log n) Linearithmic — divide and conquer
+    O(n²)      Quadratic   — nested loops
+    O(2^n)     Exponential — recursive subsets
+    O(n!)      Factorial   — permutations
 
-Common cases:
+Rules:
+    1. Drop constants     O(2n)    → O(n)
+    2. Drop lower terms   O(n²+n)  → O(n²)
+    3. Different inputs   O(a+b) stays O(a+b) — don't simplify
 
-O(1)   Constant time
-Same time always
-Example: array index access
+Visual growth:
+    n=10:   O(1)=1, O(log n)=3, O(n)=10, O(n²)=100, O(2^n)=1024
 
-O(log n)   Logarithmic
-Input halves each step
-Example: binary search
 
-O(n)   Linear
-Grows directly with input size
-Example: linear search
+Three ways to measure an algorithm's performance:
 
-O(n log n)   Efficient sorting
-Example: merge sort, heap sort
+    Best Case    → Ω (Omega)   — most favourable input
+    Worst Case   → O (Big O)   — most unfavourable input
+    Average Case → Θ (Theta)   — expected over all inputs
 
-O(n²)   Nested loops
-Example: bubble sort, selection sort
+Example — Linear Search on arr = [3, 1, 4, 1, 5]:
 
-O(2^n)   Exponential
-Very slow for large n
+    Best Case    → O(1)   target is arr[0]
+    Worst Case   → O(n)   target is last or not present
+    Average Case → O(n/2) = O(n)
 
-O(n!)   Factorial
-Extremely slow
+Example — Binary Search:
 
-────────────────────────────────────
+    Best Case    → O(1)      target is middle element
+    Worst Case   → O(log n)  target not present
+    Average Case → O(log n)
 
-SPACE COMPLEXITY (SC)
-Measures extra memory used by algorithm as input grows.
+Note:
+    When we say an algorithm is O(n) we usually mean worst case.
+    Best case is rarely useful — you can't guarantee it.
+
+
+A recurrence relation expresses the runtime of a recursive
+algorithm in terms of smaller inputs.
+
+General form:
+    T(n) = aT(n/b) + f(n)
+
+    a = number of recursive calls
+    b = factor by which input is divided
+    f(n) = work done outside recursion
 
 Examples:
 
-O(1)   Constant memory
-Uses fixed variables only
+    Binary Search:
+        T(n) = T(n/2) + O(1)
+        one recursive call, halves input, O(1) work per call
+        → T(n) = O(log n)
 
-O(n)   Extra array/list of size n
+    Merge Sort:
+        T(n) = 2T(n/2) + O(n)
+        two recursive calls, halves input, O(n) to merge
+        → T(n) = O(n log n)
 
-O(log n)   Recursive calls like binary search
+    Naive Fibonacci:
+        T(n) = T(n-1) + T(n-2) + O(1)
+        → T(n) = O(2^n)
 
-────────────────────────────────────
+Solving methods:
+    1. Substitution Method  — guess and verify by induction
+    2. Recursion Tree       — draw out the calls, sum each level
+    3. Master Theorem       — formula for divide and conquer
 
-BEST / AVERAGE / WORST CASE
 
-Best Case     Minimum time taken
-Average Case  Normal expected case
-Worst Case    Maximum time taken
+    A formula to directly solve recurrences of the form:
+    T(n) = aT(n/b) + O(n^d)
 
-Example Linear Search:
+    a = number of subproblems
+    b = factor input is divided by
+    d = exponent of work done per level
 
-Best: O(1)   first element found
-Worst: O(n) last element / not found
+Three cases — compare a vs b^d:
 
-────────────────────────────────────
-go through the pdfs.
+    Case 1: a > b^d  →  T(n) = O(n^(log_b a))
+            more work in recursive calls
+
+    Case 2: a = b^d  →  T(n) = O(n^d log n)
+            equal work at every level
+
+    Case 3: a < b^d  →  T(n) = O(n^d)
+            more work at the top level
+
+─────────────────────────────────────────
+Examples:
+
+    Merge Sort: T(n) = 2T(n/2) + O(n)
+        a=2, b=2, d=1
+        b^d = 2^1 = 2
+        a == b^d  →  Case 2
+        T(n) = O(n log n)  ✓
+
+    Binary Search: T(n) = T(n/2) + O(1)
+        a=1, b=2, d=0
+        b^d = 2^0 = 1
+        a == b^d  →  Case 2
+        T(n) = O(log n)  ✓
+
+    Naive multiply: T(n) = 4T(n/2) + O(n)
+        a=4, b=2, d=1
+        b^d = 2^1 = 2
+        a > b^d  →  Case 1
+        T(n) = O(n^(log_2 4)) = O(n²)
+
+
+Space complexity measures the total memory an algorithm uses
+relative to input size n.
+
+Two components:
+    Auxiliary Space  →  extra space used by the algorithm
+    Input Space      →  space taken by the input itself
+
+Usually we care about auxiliary space.
+
+─────────────────────────────────────────
+Common cases:
+
+    O(1) — Constant Space
+        No extra memory regardless of input size.
+        Examples: iterative binary search, bubble sort
+
+    O(n) — Linear Space
+        Extra space grows with input.
+        Examples: storing a copy of array, hash map, recursion on LL
+
+    O(log n) — Logarithmic Space
+        Recursive call stack that halves each time.
+        Examples: recursive binary search, merge sort stack frames
+
+    O(n²) — Quadratic Space
+        2D matrix or nested storage.
+        Examples: adjacency matrix for graph of n nodes
+
+─────────────────────────────────────────
+Recursion and Stack Space:
+
+    Every recursive call adds a frame to the call stack.
+    Space used = depth of recursion × space per frame.
+
+    Factorial(n):      depth = n      → O(n)
+    Binary Search(n):  depth = log n  → O(log n)
+    Merge Sort(n):     depth = log n  → O(log n) stack
+                       + O(n) for temp arrays = O(n) total
+
+─────────────────────────────────────────
+Time vs Space tradeoff:
+
+    Often you can trade one for the other.
+    Example: memoization uses O(n) space to reduce
+    exponential time to O(n).
+    Sorting in-place saves space but may increase time.
+
 `
   },
 }

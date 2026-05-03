@@ -1,8 +1,11 @@
 # DSA in C — Study Tracker
 
 A Next.js study tracker for Data Structures & Algorithms in C.
+## Live Site
 
-## Setup
+---
+
+## Local Development
 
 ```bash
 npm install
@@ -18,85 +21,148 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 app/
 ├── data/
-│   └── topics.js          ← All topics, subtopics, colors, icons
+│   ├── topics.ts          ← all 12 topics and subtopics
+│   ├── codeMap.ts         ← C code for each subtopic
+│   ├── notesMap.ts        ← theory notes for each subtopic
+│   └── pdfMap.ts          ← PDF paths per subtopic
+│
 ├── hooks/
-│   └── useProgress.js     ← Progress state (localStorage)
+│   └── useProgress.ts     ← localStorage progress tracking
 ├── [topic]/
-│   ├── page.js            ← Server component, generates static params
-│   ├── TopicClient.js     ← ⭐ EDIT THIS to add your code
-│   └── topic.module.css   ← Topic page styles
-├── page.js                ← Homepage
-├── page.module.css        ← Homepage styles
-├── layout.js              ← Root layout
-└── globals.css            ← Global styles, CSS variables
+│   ├── page.tsx           ← server component, dynamic route
+│   ├── TopicClient.tsx    ← client component, interactive UI
+│   └── topic.module.css   ← topic page styles
+├── page.tsx               ← homepage
+├── page.module.css        ← homepage styles
+├── layout.tsx             ← root layout
+├── globals.css            ← global styles + CSS variables
+└── types.ts               ← shared TypeScript interfaces
 ```
 
 ---
 
-## How to Add Your Code
+## Adding Your Code
 
-Open `app/[topic]/TopicClient.js`.
+Open `app/data/codeMap.ts` and add entries:
 
-You'll find a `codePlaceholder` div in the `codeBody` section. Replace it with a code map:
-
-```js
-const codeMap = {
-  "Arrays": `
-#include <stdio.h>
-
-int main() {
-    int arr[] = {1, 2, 3, 4, 5};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    return 0;
-}
-  `,
-  "Recursion": `
-#include <stdio.h>
-
-int factorial(int n) {
-    if (n == 0) return 1;
-    return n * factorial(n - 1);
-}
-
-int main() {
-    printf("%d", factorial(5)); // 120
-    return 0;
-}
-  `
+```ts
+export const codeMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': `#include <stdio.h>
+...`,
+  },
+  sorting: {
+    'Bubble Sort': `#include <stdio.h>
+...`,
+  },
 }
 ```
 
-Then in the JSX, replace the placeholder with:
+Key must match `topic.id` from `topics.ts` exactly.
+Subtopic key must match the subtopic string exactly — case sensitive.
 
-```jsx
-<pre className={styles.pre}>
-  <code>{codeMap[topic.subtopics[activeSubtopic]] || '// Code coming soon...'}</code>
-</pre>
+---
+
+## Adding Notes
+
+Same pattern in `app/data/notesMap.ts`:
+
+```ts
+export const notesMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': `your notes here`,
+  },
+}
 ```
 
-Same pattern for the notes section — make a `notesMap` object.
+Use backtick template literals. Indentation is preserved with `white-space: pre-wrap`.
+
+---
+
+## Adding PDFs
+
+Put PDFs in the `public/` folder:
+
+```
+public/
+  pdfs/
+    searching/
+      linear-search.pdf
+    tc-sc/
+      notes.pdf
+    tutorials/
+      tutorial1.pdf
+```
+
+Then reference in `app/data/pdfMap.ts`:
+
+```ts
+export const pdfMap: Record<string, Record<string, string[]>> = {
+  searching: {
+    'Linear Search': ['/pdfs/searching/linear-search.pdf'],
+    'Binary Search': ['/pdfs/searching/binary-search.pdf'],
+  },
+  'tc-sc': {
+    'Notes & PDFs': ['/pdfs/tc-sc/notes1.pdf', '/pdfs/tc-sc/notes2.pdf'],
+  },
+}
+```
+
+Always use arrays — even for single PDFs wrap in `[]`.
+
+---
+
+## Adding Resources (Homepage Dropdowns)
+
+Edit the `resourceCategories` array at the top of `app/page.tsx`:
+
+```ts
+{
+  id: 'handouts',
+  label: 'Handouts',
+  color: '#00cfff',
+  items: [
+    { label: 'Unit 1 Handout', url: 'https://your-link.com' },
+    { label: 'Unit 2 Handout', url: 'https://your-link.com' },
+  ],
+},
+```
+
+For local PDFs use `/pdfs/...` paths. For external links paste the full URL.
+
+---
+
+## Deploying to Vercel
+
+```bash
+# install Vercel CLI
+npm i -g vercel
+
+# deploy
+vercel
+```
+
+Or push to GitHub and connect the repo on [vercel.com](https://vercel.com) — it auto-deploys on every push to main.
 
 ---
 
 ## Topics Covered
 
-1. ITC Fundamentals (Arrays, Recursion, Pointers)
-2. Searching Algorithms
-3. Sorting Algorithms
-4. Linked Lists
-5. Stacks
-6. Queues
-7. Hashing
-8. Binary Trees
-9. Binary Search Trees
-10. Time & Space Complexity
-11. Dynamic Programming
-12. Graphs
+| # | Topic | ID |
+|---|-------|----|
+| 1 | Searching Algorithms | `searching` |
+| 2 | Sorting Algorithms | `sorting` |
+| 3 | Linked Lists | `linked-list` |
+| 4 | Stacks | `stacks` |
+| 5 | Queues | `queues` |
+| 6 | Hashing | `hashing` |
+| 7 | Binary Trees | `binary-trees` |
+| 8 | Binary Search Trees | `bst` |
+| 9 | Time & Space Complexity | `tc-sc` |
+| 10 | Dynamic Programming | `dp` |
+| 11 | Graphs | `graphs` |
 
-Progress is saved automatically in `localStorage`.
+Progress is saved automatically in `localStorage` — persists across sessions per browser.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

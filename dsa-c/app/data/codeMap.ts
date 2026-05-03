@@ -299,7 +299,7 @@ void insertatend(int data) {
     Node* newnode = createNode(data);
 
     if(head == NULL) {
-        head = tail = NULL;
+        head = tail = newnode;
     } else {
         tail->next = newnode;
         tail = newnode;
@@ -311,6 +311,7 @@ void deleteatfront(){
 
     if(head == NULL) {
         printf("empty LL");
+        return;
     }
 
     head = head->next;
@@ -319,13 +320,22 @@ void deleteatfront(){
 }
 
 void deleteatend(){
-    Node* temp = head;
+    if(head == NULL) return;
 
+    if(head->next == NULL) {
+        free(head);
+        head = tail = NULL;
+        return;
+    }
+
+    Node* temp = head;
     while(temp->next->next != NULL) {
         temp = temp->next;
     }
 
+    free(temp->next);
     temp->next = NULL;
+    tail = temp;  // ← update tail
 }
 
 void deleteatposition(int position) {
@@ -560,7 +570,7 @@ void insertatend(int data) {
         head = tail = newnode;
     } else {
         tail->next = newnode;
-        newnode->next = NULL;
+        newnode->prev = tail;
         tail = newnode;
     }
 }
@@ -583,15 +593,16 @@ void deleteatfront() {
 void deleteatend() {
     if(head == NULL) return;
 
-    Node* temp = head;
+    Node* temp = tail;
 
-    while(temp->next->next != NULL) {
-        temp = temp->next;
+    if(head == tail) {
+        head = tail = NULL;
+    } else {
+        tail = tail->prev;
+        tail->next = NULL;
     }
 
-    tail->prev = NULL;
-    temp->next = NULL;
-    tail = temp;
+    free(temp);
 }
 
 void print() {
@@ -824,6 +835,7 @@ void push(int data) {
 void pop(){
     if(top == -1) {
         printf("empty stack\n");
+        return;
     }
 
     top--;
@@ -832,9 +844,10 @@ void pop(){
 int peek(){
     if(top == -1) {
         printf("empty stack\n");
+        return -1
     }
 
-    printf("%d", stack[top]);
+   return stack[top];
 }
 
 void display() {
@@ -862,7 +875,7 @@ int main() {
     display();
 
     printf("stack top: ");
-    peek();
+    printf("%d", peek());
 
     display();
     return 0;
@@ -900,19 +913,22 @@ void push(int data) {
 }
 
 void pop() {
+    if(top == NULL) {
+        printf("empty stack");
+        return;
+    }
     Node* temp = top;
-
     top = top->next;
     free(temp);
 }
 
 int peek() {
     if(top == NULL) {
-        printf("empty stack\n");
+        printf("empty stack");
         return -1;
     }
 
-    printf("%d\n", top->data);
+    return top->data;
 }
 
 void display() {
@@ -939,7 +955,7 @@ int main() {
 
     display();
 
-    peek();
+    printf("%d", peek());
 
     display();
 
@@ -1134,7 +1150,7 @@ int main() {
 
     print();
 
-    dequeue();
+    printf("%d", dequeue());
 
     print();
 

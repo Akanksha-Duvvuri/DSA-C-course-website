@@ -22,7 +22,7 @@ export const topics: Topic[] = [
     label: 'Time & Space Complexity',
     icon: 'Ω',
     color: '#94a3b8',
-    subtopics: [],
+    subtopics: ['Notes and PDFs'],
     description: 'Asymptotic analysis to measure algorithm efficiency.',
   },
   {

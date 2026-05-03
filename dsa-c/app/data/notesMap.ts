@@ -920,5 +920,68 @@ Space Complexity:
     DFS (recursive) → O(h)  call stack, h = height
     BFS (level order) → O(w) queue, w = max width`, 
     'Priority Queue: implementation': ``,
-  }
+  },
+
+  'tc-sc': {
+    'Notes and PDFs':  `TIME COMPLEXITY (TC) measures how runtime grows as input size n increases.
+
+Ignores machine speed and focuses on the number of operations
+
+Common cases:
+
+O(1)   Constant time
+Same time always
+Example: array index access
+
+O(log n)   Logarithmic
+Input halves each step
+Example: binary search
+
+O(n)   Linear
+Grows directly with input size
+Example: linear search
+
+O(n log n)   Efficient sorting
+Example: merge sort, heap sort
+
+O(n²)   Nested loops
+Example: bubble sort, selection sort
+
+O(2^n)   Exponential
+Very slow for large n
+
+O(n!)   Factorial
+Extremely slow
+
+────────────────────────────────────
+
+SPACE COMPLEXITY (SC)
+Measures extra memory used by algorithm as input grows.
+
+Examples:
+
+O(1)   Constant memory
+Uses fixed variables only
+
+O(n)   Extra array/list of size n
+
+O(log n)   Recursive calls like binary search
+
+────────────────────────────────────
+
+BEST / AVERAGE / WORST CASE
+
+Best Case     Minimum time taken
+Average Case  Normal expected case
+Worst Case    Maximum time taken
+
+Example Linear Search:
+
+Best: O(1)   first element found
+Worst: O(n) last element / not found
+
+────────────────────────────────────
+go through the pdfs.
+`
+  },
 }

@@ -39,5 +39,9 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
     'BT representation using LL': ['/pdfs/trees/treep1.pdf'], 
     'BT traversals': ['/pdfs/trees/treep2.pdf'], 
     'Priority Queue: implementation': [],
-  }
+  },
+
+  'tc-sc': {
+    'Notes and PDFs': ['/pdfs/tc/CS1002_Feb06_Asymptotic_Complexity_260224_113342.pdf', '/pdfs/tc/CS1002_Feb09_Asymptotic_Notations.pdf']
+  },
 }

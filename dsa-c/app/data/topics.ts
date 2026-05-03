@@ -14,7 +14,7 @@ export const topics: Topic[] = [
     label: 'Sorting Algorithms',
     icon: '≋',
     color: '#a78bfa',
-    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort', 'Heap Sort', 'Radix Sort'],
+    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'],
     description: 'Methods to arrange elements in a specific order.',
   },
   {
@@ -38,7 +38,7 @@ export const topics: Topic[] = [
     label: 'Linked Lists',
     icon: '⬦',
     color: '#f59e0b',
-    subtopics: ['Singly Linked List : Insertion, deletion, concatenating singly LL', 'Doubly Linked List: Operations: insertion, deletion', 'Circular Linked List and its operations', 'Reverse a LL', "Floyd's Cycle Detection", 'Representation of a single two-dimensional array', 'Sparse matrices-array and LL representation'],
+    subtopics: ['Singly Linked List : Insertion, deletion, reversing', 'concatenating two LL', 'Doubly Linked List: Operations: insertion, deletion', 'Circular Linked List and its operations', "Floyd's Cycle Detection", 'Representation of a single two-dimensional array', 'Sparse matrices-array and LL representation'],
     description: 'Dynamic linear data structure with node-based chaining.',
   },
   {

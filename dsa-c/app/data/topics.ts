@@ -70,7 +70,7 @@ export const topics: Topic[] = [
     label: 'Binary Trees',
     icon: '⑂',
     color: '#60a5fa',
-    subtopics: ['Representation of Trees', 'Binary tree and its properties', 'BT representation using Arrays', 'BT representation using LL', 'BT traversals', 'Priority Queue: implementation'],
+    subtopics: ['Representation of Trees, Binary trees and its properties', 'BT representation using Arrays', 'BT representation using LL', 'BT traversals', 'Priority Queue: implementation'],
     description: 'Hierarchical structure where each node has at most two children.',
   },
   {

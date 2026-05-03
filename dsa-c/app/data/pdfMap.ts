@@ -31,5 +31,13 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
     'Hash Functions':['/pdfs/hashing/hashing.pdf'],
     'Collision Handling: Chaining and Open Addressing': ['/pdfs/hashing/hashing.pdf'],
     'Hash Maps in C':['/pdfs/hashing/hashing.pdf'],
+  },
+
+  Trees: {
+    'Representation of Trees, Binary trees and its properties': ['/pdfs/trees/treep1.pdf'],
+    'BT representation using Arrays': ['/pdfs/trees/treep1.pdf'], 
+    'BT representation using LL': ['/pdfs/trees/treep1.pdf'], 
+    'BT traversals': ['/pdfs/trees/treep2.pdf'], 
+    'Priority Queue: implementation': [],
   }
 }

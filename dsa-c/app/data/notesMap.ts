@@ -697,5 +697,228 @@ VS LINKED LIST / LINEAR SEARCH / BINARY SEARCH
     Binary Search       →  O(log n)  array must be sorted
     Hash Map search     →  O(1)  jump directly to index
 `,
+  },
+
+  Trees: {
+    'Representation of Trees, Binary trees and its properties': `TREE
+    A hierarchical non-linear data structure.
+    Consists of nodes connected by edges.
+    Has one root node, no cycles.
+
+Terminology:
+    Root       →  topmost node, no parent
+    Parent     →  node with children
+    Child      →  node with a parent
+    Leaf       →  node with no children
+    Siblings   →  nodes with the same parent
+    Height     →  longest path from root to a leaf
+    Depth      →  distance of a node from the root
+    Degree     →  number of children a node has
+    Subtree    →  a node and all its descendants
+
+─────────────────────────────────────────────────────
+BINARY TREE
+    A tree where every node has at most 2 children.
+    Called left child and right child.
+
+─────────────────────────────────────────────────────
+TYPES OF BINARY TREES
+
+    Full Binary Tree
+        Every node has either 0 or 2 children.
+        No node has exactly 1 child.
+
+              1
+            /   \\
+           2     3
+          / \\
+         4   5
+
+    Complete Binary Tree
+        All levels are completely filled except possibly the last.
+        Last level has all nodes as far left as possible.
+
+              1
+            /   \\
+           2     3
+          / \\  /
+         4   5 6
+
+    Perfect Binary Tree
+        All internal nodes have exactly 2 children.
+        All leaves are at the same level.
+
+              1
+            /   \\
+           2     3
+          / \\  / \\
+         4   5 6   7
+
+    Balanced Binary Tree
+        Height of left and right subtree of every node
+        differs by at most 1.
+        Height = O(log n)
+        Example: AVL Tree
+
+    Degenerate (Skewed) Tree
+        Every node has only one child.
+        Essentially a linked list.
+        Height = O(n)  →  worst case for BST
+
+─────────────────────────────────────────────────────
+PROPERTIES
+
+    Max nodes at level i          →  2^i
+    Max nodes in tree of height h →  2^(h+1) - 1
+    Min height for n nodes        →  floor(log₂n)
+    For full BT: leaves = internal nodes + 1`,
+    'BT representation using Arrays': `A binary tree can be stored in a 1D array using index formulas.
+Root is stored at index 1 (1-based indexing).
+
+For a node at index i:
+    Left child   →  2i
+    Right child  →  2i + 1
+    Parent       →  floor(i / 2)
+
+Example:
+          1          index 1
+        /   \\
+       2     3       index 2, 3
+      / \\     \\
+     4   5     6     index 4, 5, 6
+
+    Array: [ _ | 1 | 2 | 3 | 4 | 5 | _ | 6 ]
+              0   1   2   3   4   5   6   7
+
+    Index 0 is unused (easier math with 1-based).
+    Missing nodes stored as NULL or 0.
+
+Advantage:
+    → Simple, no pointers needed
+    → Random access — reach any node in O(1)
+
+Disadvantage:
+    → Wastes space for skewed trees
+      (a skewed tree of n nodes needs 2^n array size)
+    → Fixed size — must know max nodes upfront
+    → Best suited for Complete Binary Trees`, 
+
+    'BT representation using LL': `Each node is a struct with data and two pointers.
+
+    struct Node {
+        int data;
+        struct Node* left;
+        struct Node* right;
+    };
+
+Creating a node:
+    struct Node* newNode(int val) {
+        struct Node* node = malloc(sizeof(struct Node));
+        node->data  = val;
+        node->left  = NULL;
+        node->right = NULL;
+        return node;
+    }
+
+Building a tree:
+    struct Node* root = newNode(1);
+    root->left        = newNode(2);
+    root->right       = newNode(3);
+    root->left->left  = newNode(4);
+    root->left->right = newNode(5);
+
+Visual:
+         [1]
+        /    \\
+      [2]    [3]
+      / \\
+    [4] [5]
+
+Advantage:
+    → Dynamic size — grows as needed
+    → No wasted space for sparse trees
+    → Natural representation for unbalanced trees
+
+Disadvantage:
+    → Extra memory for two pointers per node
+    → No random access — must traverse from root`, 
+    'BT traversals': `Traversal = visiting every node exactly once in a specific order.
+
+─────────────────────────────────────────────────────
+Three recursive DFS traversals:
+
+    Inorder   (Left → Root → Right)
+    Preorder  (Root → Left → Right)
+    Postorder (Left → Right → Root)
+
+Tree used for dry run:
+         1
+        / \\
+       2   3
+      / \\
+     4   5
+
+─────────────────────────────────────────────────────
+INORDER  (L → Root → R)
+    Visit left subtree, then root, then right subtree.
+    For a BST, inorder gives sorted output.
+
+    void inorder(struct Node* root) {
+        if(root == NULL) return;
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+
+    Output: 4 2 5 1 3
+
+─────────────────────────────────────────────────────
+PREORDER  (Root → L → R)
+    Visit root first, then left, then right.
+    Used to copy or serialize a tree.
+
+    void preorder(struct Node* root) {
+        if(root == NULL) return;
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+
+    Output: 1 2 4 5 3
+
+─────────────────────────────────────────────────────
+POSTORDER  (L → R → Root)
+    Visit left, then right, then root.
+    Used to delete a tree (children before parent).
+
+    void postorder(struct Node* root) {
+        if(root == NULL) return;
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+
+    Output: 4 5 2 3 1
+
+─────────────────────────────────────────────────────
+LEVEL ORDER (BFS)
+    Visit nodes level by level, left to right.
+    Uses a Queue instead of recursion.
+
+    Output: 1 2 3 4 5
+
+    Algorithm:
+        1. Enqueue root
+        2. While queue is not empty:
+               dequeue node → print it
+               enqueue left child if exists
+               enqueue right child if exists
+
+─────────────────────────────────────────────────────
+Time Complexity:  O(n)  — every node visited once
+Space Complexity:
+    DFS (recursive) → O(h)  call stack, h = height
+    BFS (level order) → O(w) queue, w = max width`, 
+    'Priority Queue: implementation': ``,
   }
 }

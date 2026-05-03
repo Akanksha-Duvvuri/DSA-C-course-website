@@ -1776,6 +1776,123 @@ int main(){
 
     return 0;
 }`,
-  }
+  },
+
+  Trees: {
+    'Representation of Trees, Binary trees and its properties': `refer to the notes :)
+`,
+    'BT representation using Arrays': `#include <stdio.h>
+
+int tree[10];
+
+int main(){
+    tree[1] = 10;
+    tree[2] = 20;
+    tree[3] = 30;
+    tree[4] = 40;
+    tree[5] = 50;
+
+    for(int i = 1; i <= 5; i++){
+        printf("%d ", tree[i]);
+    }
+
+    return 0;
+}`, 
+    'BT representation using LL': `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+int main(){
+    struct Node* root = createNode(10);
+
+    root->left = createNode(20);
+    root->right = createNode(30);
+
+    root->left->left = createNode(40);
+    root->left->right = createNode(50);
+
+    printf("%d", root->data);
+
+    return 0;
+}`, 
+    'BT traversals': `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* createNode(int val){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    newNode->data = val;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+void preorder(struct Node* root){
+    if(root != NULL){
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+void inorder(struct Node* root){
+    if(root != NULL){
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+void postorder(struct Node* root){
+    if(root != NULL){
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+int main(){
+    struct Node* root = createNode(10);
+
+    root->left = createNode(20);
+    root->right = createNode(30);
+    root->left->left = createNode(40);
+    root->left->right = createNode(50);
+
+    printf("Preorder: ");
+    preorder(root);
+
+    printf("Inorder: ");
+    inorder(root);
+
+    printf("Postorder: ");
+    postorder(root);
+
+    return 0;
+}`, 
+    'Priority Queue: implementation': ``,
+  },
 
 }

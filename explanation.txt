@@ -1,0 +1,270 @@
+
+PAGE.TSX - main page
+
+React Basics
+State — useState is how you store data that can change over time. When state changes, React re-renders the component.
+tsconst [value, setValue] = useState<boolean>(false)
+// value = current data
+// setValue = the only way to update it
+// false = initial value
+useEffect — runs after the component renders. The second argument controls when it runs:
+tsuseEffect(() => { ... }, [])        // runs once after first render
+useEffect(() => { ... }, [count])   // runs whenever count changes
+useEffect(() => { ... })            // runs after every render
+Controlled inputs — React owns the value, not the browser:
+tsx<input checked={done} onChange={() => toggle()} />
+// checked= makes React control it
+// without onChange React will warn you and the checkbox won't work
+
+The Key Prop
+When you .map() a list in React, every element needs a unique key:
+tsxtopics.map((topic) => <div key={topic.id}>...</div>)
+React uses keys to track which items changed, moved, or were removed between renders. Without keys React re-renders the entire list from scratch every time anything changes. With keys it only updates the specific items that actually changed — much more efficient. Keys must be unique and stable — don't use the array index (idx) as a key if the list can reorder, because the index changes and React gets confused.
+
+Async State Updates
+State updates in React are asynchronous — they don't happen immediately when you call the setter.
+ts// RISKY — reads expandedCard at render time, might be stale
+setExpandedCard(expandedCard === id ? null : id)
+
+// SAFE — prev is guaranteed to be the latest value
+setExpandedCard((prev) => (prev === id ? null : id))
+Always use the function form when your new state depends on the old state.
+
+Hydration
+Next.js renders your page on the server first as plain HTML, then React "hydrates" it on the client (browser) by attaching event listeners and taking over.
+The problem: the server has no localStorage. So if your component reads progress from localStorage on first render, the server produces different HTML than the browser — React sees a mismatch and throws a hydration error.
+The fix — the mounted pattern:
+tsconst [mounted, setMounted] = useState<boolean>(false)
+useEffect(() => { setMounted(true) }, [])
+
+// In JSX:
+{mounted ? `${completedSubtopics} / ${totalSubtopics}` : '— / —'}
+Both server and browser render '— / —' on the first pass. After hydration, mounted flips to true in the browser only, and real data loads in. They agree on the first render, React is happy.
+
+Union Types
+tsconst [expandedCard, setExpandedCard] = useState<string | null>(null)
+string | null means the value is allowed to be either a string or null — TypeScript accepts both. Common pattern for "something or nothing."
+
+CSS Modules
+tsimport styles from './page.module.css'
+// used as:
+<div className={styles.card}>
+Class names are scoped to this file only — .card in page.module.css will never clash with a .card in another stylesheet. Under the hood Next.js transforms them to unique names like page_card__x7k2.
+
+CSS Custom Properties (Variables) in Inline Styles
+tsxstyle={{ '--topic-color': topic.color } as React.CSSProperties}
+You're setting a CSS variable per element directly from JavaScript. Your CSS then reads it:
+csscolor: var(--topic-color);
+This is how each card gets its own accent colour from the data file without writing 12 separate CSS classes. The as React.CSSProperties cast is needed because TypeScript's built-in type for inline styles doesn't include custom properties.
+
+Short Circuit Evaluation
+tsconst done = mounted && isChecked(topic.id, sub)
+If mounted is false, JavaScript stops immediately and returns false without even calling isChecked. Only evaluates the right side if the left side is truthy. Used here as a performance guard — no point checking localStorage before the component has mounted.
+
+Conditional Class Names
+tsxclassName={`${styles.card} ${topicComplete ? styles.cardComplete : ''}`}
+Template literal combining class names. The ternary adds a second class conditionally. A common pattern in React since you can't write class and you often need dynamic classes.
+
+The expand/collapse animation trick
+css.subtopics { max-height: 0; overflow: hidden; transition: max-height 0.35s; }
+.subtopicsOpen { max-height: 400px; }
+You can't CSS-animate height: auto — it doesn't work. So the trick is to animate max-height from 0 to a large enough fixed value instead. overflow: hidden hides anything beyond the current max-height. This gives you a smooth expand/collapse with pure CSS and just a class toggle from React.
+
+e.preventDefault()
+tsconst toggleCard = (e: React.MouseEvent, id: string): void => {
+  e.preventDefault()
+  ...
+}
+Every browser event has a default behaviour — for clicks near links that default is navigation. preventDefault() cancels it so your JavaScript handler runs instead of the browser doing its own thing.
+
+
+
+Here we go — everything in the project, file by file.
+
+types.ts
+tsexport interface Topic {
+  id: string
+  label: string
+  icon: string
+  color: string
+  subtopics: string[]
+  description: string
+}
+Interfaces are TypeScript's way of defining the shape of an object. Think of it as a contract — any object that claims to be a Topic must have exactly these fields with exactly these types. If you try to create a topic without a color field, TypeScript will yell at you before the code even runs.
+string[] means an array of strings. subtopics: string[] means subtopics is a list like ['Arrays', 'Recursion', 'Pointers'].
+export means other files can import this interface. Without it, it's private to this file.
+tsexport interface TopicProgress {
+  done: number
+  total: number
+}
+A simple shape for the return value of topicProgress(). Instead of returning a plain object and guessing what's in it, TypeScript now knows it always has done and total as numbers.
+tsexport interface CheckedState {
+  [key: string]: boolean
+}
+This is an index signature — it means the object can have any number of keys, as long as every key is a string and every value is a boolean. At runtime this looks like:
+ts{
+  "searching::Linear Search": true,
+  "sorting::Bubble Sort": false,
+}
+
+data/topics.ts
+tsimport { Topic } from '../types'
+
+export const topics: Topic[] = [ ... ]
+Topic[] means an array of Topic objects. By typing it this way, TypeScript will catch it immediately if you add a topic with a missing field or wrong type. The ../ in the import means go up one folder level — since topics.ts is inside data/, you need to go up to app/ first to find types.ts.
+This file is just a data store — no logic, no hooks, no JSX. Pure data that gets imported wherever it's needed.
+
+hooks/useProgress.ts
+What is a custom hook?
+A custom hook is just a regular function that uses React hooks inside it (useState, useEffect etc). The naming convention use... is required — React uses it to enforce the rules of hooks. You extract logic into a custom hook to keep your components clean and to reuse the same logic across multiple components.
+
+State
+tsconst [checked, setChecked] = useState<CheckedState>({})
+The entire progress of the app lives in this one object. Empty {} on start. After loading from localStorage it looks like:
+ts{ "searching::Linear Search": true, "sorting::Bubble Sort": false }
+
+useEffect — loading from localStorage
+tsuseEffect(() => {
+  const stored = localStorage.getItem('dsa-progress')
+  if (stored) {
+    try {
+      setChecked(JSON.parse(stored) as CheckedState)
+    } catch {
+      // ignore
+    }
+  }
+}, [])
+Runs once after mount. localStorage.getItem returns a string or null. JSON.parse converts the string back into a JavaScript object. The try/catch is a safety net — if the stored string is somehow corrupted and JSON.parse throws an error, you catch it silently instead of crashing the app. The as CheckedState is a type assertion — you're telling TypeScript "trust me, this parsed object matches this interface."
+
+toggle
+tsconst toggle = (topicId: string, subtopic: string): void => {
+  const key = `${topicId}::${subtopic}`
+  setChecked((prev) => {
+    const next: CheckedState = { ...prev, [key]: !prev[key] }
+    localStorage.setItem('dsa-progress', JSON.stringify(next))
+    return next
+  })
+}
+topicId::subtopic creates a unique key — using :: as a separator because neither topic ids nor subtopic names will ever contain ::, so there's no risk of collision.
+{ ...prev, [key]: !prev[key] } — the spread ...prev copies all existing entries, then [key]: !prev[key] adds or overwrites just the one that was clicked, flipping its boolean. This creates a brand new object rather than mutating the existing one — React requires this because it detects changes by reference, not by deep comparison.
+JSON.stringify converts the object back to a string for storage — localStorage can only store strings.
+
+isChecked
+tsconst isChecked = (topicId: string, subtopic: string): boolean =>
+  !!checked[`${topicId}::${subtopic}`]
+!! converts any value to a strict boolean. If the key doesn't exist yet, checked[key] returns undefined. !undefined is true, !!undefined is false. This safely returns false for any subtopic that hasn't been interacted with yet.
+
+Calculations
+tsconst totalSubtopics = topics.reduce((sum, t) => sum + t.subtopics.length, 0)
+reduce loops through every topic and accumulates a running total. sum starts at 0 (the second argument), and each iteration adds that topic's subtopic count. End result is the total number of subtopics across all 12 topics.
+tsconst completedSubtopics = Object.values(checked).filter(Boolean).length
+Object.values extracts all the values from the checked object as an array — [true, false, true, true...]. filter(Boolean) keeps only the truthy ones. .length counts them.
+tsconst percent = totalSubtopics > 0 ? Math.round((completedSubtopics / totalSubtopics) * 100) : 0
+The totalSubtopics > 0 guard prevents dividing by zero. Math.round avoids ugly decimals like 42.857%.
+
+topicProgress
+tsconst topicProgress = (topicId: string, subtopics: string[]): TopicProgress => {
+  const done = subtopics.filter((s) => !!checked[`${topicId}::${s}`]).length
+  return { done, total: subtopics.length }
+}
+Same idea as completedSubtopics but scoped to one topic. Filters the subtopics array to only those that are checked, counts them, returns { done, total }. The return type TopicProgress is enforced by TypeScript — if you tried to return { finished: 3, all: 5 } instead, it would error.
+
+layout.tsx
+tsimport type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'DSA in C — Study Tracker',
+  description: 'Data Structures & Algorithms in C — college study tracker',
+}
+import type imports only the TypeScript type, not any actual code — slightly more efficient. Metadata is Next.js's type for the <head> meta tags. Next.js reads the exported metadata object and automatically injects the right <title> and <meta> tags into the HTML head.
+tsxexport default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+Every page in your app gets wrapped by this layout. children is whatever page is currently being rendered — page.tsx, or [topic]/page.tsx etc. React.ReactNode is the type for anything React can render — JSX, strings, numbers, arrays, null. The lang="en" on the html tag is for accessibility — screen readers and search engines use it.
+
+page.tsx (Homepage)
+Already covered in detail above, but the key concepts to remember:
+The render flow:
+
+Next.js server renders the component — mounted is false, placeholders shown
+HTML is sent to browser
+React hydrates — attaches event listeners
+useEffect fires — mounted becomes true
+Component re-renders with real data from localStorage
+
+The card loop:
+tsx{topics.map((topic: Topic, idx: number) => (
+  <div key={topic.id}>...</div>
+))}
+Every list render in React needs a key. React uses it as an identity marker to diff the old list against the new list efficiently. If keys are missing, React re-renders every item from scratch on every update. If keys are unstable (like array indexes on a reorderable list), React misidentifies which items changed.
+
+[topic]/page.tsx
+tsinterface PageProps {
+  params: Promise<{ topic: string }>
+}
+In Next.js 15, params became a Promise — you have to await it before reading from it. This was a breaking change from Next.js 14 where it was a plain object.
+tsexport function generateStaticParams(): { topic: string }[] {
+  return topics.map((t: Topic) => ({ topic: t.id }))
+}
+Tells Next.js which dynamic routes to pre-render at build time. Returns an array like [{ topic: 'searching' }, { topic: 'sorting' }, ...]. Without this, Next.js would only render the pages on demand when someone visits them — with it, they're pre-built and served instantly.
+tsexport default async function TopicPage({ params }: PageProps) {
+  const { topic: topicId } = await params
+async function because you need to await params. { topic: topicId } is destructuring with renaming — you're pulling out the topic property and calling it topicId locally to avoid confusion with the topic variable you're about to create.
+tsconst topic = topics.find((t: Topic) => t.id === topicId)
+if (!topic) notFound()
+Array.find returns the first match or undefined. notFound() is a Next.js function that renders the built-in 404 page and stops execution. TypeScript actually doesn't know that notFound() throws, so after this line it still thinks topic could be undefined — that's a known Next.js TypeScript quirk.
+
+[topic]/TopicClient.tsx
+Why is this split into two files?
+page.tsx is a server component — it runs on the server, fetches data, passes it as props. TopicClient.tsx is a client component ('use client') — it handles all the interactive stuff like state, hooks, and event handlers. You can't use useState or useEffect in a server component, so you split the interactive part out.
+
+The codeMap
+tsconst codeMap: Record<string, Record<string, string>> = {
+  searching: {
+    'Linear Search': `#include <stdio.h>...`,
+  }
+}
+Record<string, string> is a TypeScript utility type — equivalent to { [key: string]: string }. Record<string, Record<string, string>> means an object whose values are themselves objects of string-to-string mappings. So codeMap[topicId][subtopicName] gives you the code string.
+tsx{codeMap[topic.id]?.[activeSubtopicName] ?? '// coming soon...'}
+?. is optional chaining — if codeMap[topic.id] is undefined (topic not in the map yet), it returns undefined instead of throwing a TypeError. ?? is the nullish coalescing operator — if the left side is null or undefined, use the right side as a fallback. So if you haven't added code for a topic yet, it gracefully shows '// coming soon...'.
+
+activeSubtopic state
+tsconst [activeSubtopic, setActiveSubtopic] = useState<number>(0)
+Tracks which subtopic is currently selected in the sidebar, as an index. Starts at 0 so the first subtopic is always shown by default. When you click a subtopic in the sidebar, it updates this index, which updates activeSubtopicName, which updates the breadcrumb, the file tab name, and the code shown.
+
+The sidebar checklist
+tsxstyle={{ '--tc': topic.color } as React.CSSProperties}
+Same CSS custom property trick — --tc (topic colour) is set per list item so the checkmark and active state use that topic's colour.
+tsx<button className={styles.checkItemBtn} onClick={() => { toggle(topic.id, sub); setActiveSubtopic(i) }}>
+One click does two things — toggles the checkbox state AND switches the active subtopic shown in the main area. Arrow function in onClick because you need to pass arguments — you can't write onClick={toggle} here since toggle needs topicId and sub.
+
+Prev/Next navigation
+tsx{prev && (
+  <Link href={`/${prev.id}`}>...</Link>
+)}
+Short circuit rendering — if prev is null (you're on the first topic), the Link doesn't render at all. This is the React equivalent of an if statement in JSX.
+
+General TypeScript concepts used throughout
+Type annotations
+tsconst name: string = 'hello'
+function greet(name: string): void { ... }
+You declare what type a variable or parameter is. TypeScript checks these at compile time — the code won't build if you pass the wrong type.
+Generics
+tsuseState<boolean>(false)
+useState<string | null>(null)
+The <Type> tells TypeScript what type the state holds. Without it TypeScript infers it from the initial value, but being explicit is clearer and safer.
+Optional chaining ?.
+tscodeMap[topic.id]?.[activeSubtopicName]
+If the thing on the left is null or undefined, stop and return undefined instead of crashing.
+Nullish coalescing ??
+tsvalue ?? 'fallback'
+If value is null or undefined, use 'fallback'. Different from || which also triggers on 0, '', and false.
+Type assertion as
+tsJSON.parse(stored) as CheckedState
+You're telling TypeScript "I know better than you, treat this as this type." Use sparingly — it bypasses type checking.
+React.CSSProperties
+The TypeScript type for inline style objects. Needed when you use CSS custom properties because they're not in the default type definition.

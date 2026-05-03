@@ -1895,4 +1895,8 @@ int main(){
     'Priority Queue: implementation': ``,
   },
 
+  'tc-sc': {
+    'Notes and PDFs': `No code for this one. Refer to the notes and pdfs`
+  }
+
 }

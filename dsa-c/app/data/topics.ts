@@ -2,20 +2,20 @@ import { Topic } from '../types'
 
 export const topics: Topic[] = [
   {
-    id: 'sorting',
-    label: 'Sorting Algorithms',
-    icon: '≋',
-    color: '#a78bfa',
-    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'],
-    description: 'Methods to arrange elements in a specific order.',
-  },
-  {
     id: 'searching',
     label: 'Searching Algorithms',
     icon: '◎',
     color: '#00cfff',
     subtopics: ['Linear Search', 'Binary Search'],
     description: 'Algorithms to efficiently locate elements in data structures.',
+  },
+  {
+    id: 'sorting',
+    label: 'Sorting Algorithms',
+    icon: '≋',
+    color: '#a78bfa',
+    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'],
+    description: 'Methods to arrange elements in a specific order.',
   },
   {
     id: 'tc-sc',

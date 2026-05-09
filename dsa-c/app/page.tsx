@@ -243,6 +243,9 @@ export default function Home() {
               )}
             </div>
           ))}
+          <Link href="https://visualgo.net/en" className={styles.heroSub}>
+          To help you visualise data structures, click here. 
+        </Link>
         </div>
       </section>
 

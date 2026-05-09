@@ -212,46 +212,51 @@ void print(int arr[], int n){
     }
 }
 
-void swap(int *a, int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-// pivot and sort
 int partition(int arr[], int start, int end){
+
     int idx = start - 1;
     int pivot = arr[end];
 
     for(int j = start; j < end; j++){
+
         if(arr[j] <= pivot){
+
             idx++;
-            swap(&arr[j], &arr[idx]);
+
+            // swap arr[j] and arr[idx]
+            int temp = arr[j];
+            arr[j] = arr[idx];
+            arr[idx] = temp;
         }
     }
 
     idx++;
-    swap(&arr[end], &arr[idx]);
+
+    int temp = arr[end];
+    arr[end] = arr[idx];
+    arr[idx] = temp;
 
     return idx;
 }
 
 void quick(int arr[], int start, int end){
+
     if(start < end){
+
         int pivotIdx = partition(arr, start, end);
 
-        quick(arr, start, pivotIdx - 1);   // left half
-        quick(arr, pivotIdx + 1, end);     // right half
+        quick(arr, start, pivotIdx - 1);
+        quick(arr, pivotIdx + 1, end);
     }
 }
 
 int main(){
+
     int arr[6] = {12, 31, 35, 8, 32, 17};
     int n = sizeof(arr) / sizeof(int);
 
     quick(arr, 0, n - 1);
     print(arr, n);
-
     return 0;
 }`,
     'Heap Sort': ``,

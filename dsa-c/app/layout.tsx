@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: 'DSA in C — Study Tracker',
-  description: 'Data Structures & Algorithms in C — college study tracker',
+  description: 'Data Structures & Algorithms in C — study tracker',
 }
 
 export default function RootLayout({

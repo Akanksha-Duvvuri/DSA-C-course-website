@@ -143,6 +143,7 @@ export default function TopicClient({
 
       {/* ── Main Content ── */}
       <main className={styles.content}>
+        <span className={styles.codeTab} >Note that none of the codes here have a "\n" as it alters with the spacing of the code</span>
         {/* Breadcrumb */}
         <div className={styles.breadcrumb}>
           <Link href="/">home</Link>

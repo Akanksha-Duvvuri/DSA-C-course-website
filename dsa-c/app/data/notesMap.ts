@@ -145,12 +145,16 @@ Operations:
     Insertion at position → O(n)
     Deletion at head      → O(1)
     Deletion at position  → O(n)
+    Deletion of tail      → O(n)  
     Search                → O(n)
 
 Space Complexity: O(n)
 
 No random access — to reach index i you must traverse from head.
 Dynamic size — no need to declare size upfront unlike arrays - use memory allocation to do so
+
+
+Reversing an LL- 
 
 Change the direction of all next pointers so the list goes backwards.
 Head becomes tail, tail becomes head.
@@ -174,8 +178,8 @@ Space Complexity: O(1)  — only 3 pointers used
 Visual:
     Before:  1 → 2 → 3 → 4 → NULL
     After:   NULL ← 1 ← 2 ← 3 ← 4
-                                  ↑
-                                 head
+                                ↑
+                               head
 `,
 
     'concatenating two LL':  `Concatenating two linked lists means attaching the tail of the first list

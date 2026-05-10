@@ -279,7 +279,7 @@ Node* createNode(int data) {
     Node* newnode = (Node*)malloc(sizeof(Node));
 
     if(newnode == NULL) {
-        printf("memory allocation failed\n");
+        printf("memory allocation failed");
         exit(1);
     }
 
@@ -358,7 +358,7 @@ void insertatposition(int data, int position) {
     Node* temp = head;
 
     if(head == NULL) {
-        printf("empty LL\n");
+        printf("empty LL");
         exit(1);
     }
 
@@ -394,7 +394,7 @@ void printLL() {
         printf("%d  -->  ", temp->data);
         temp = temp->next;
     }
-    printf("NULL\n");
+    printf("NULL");
 }
 
 int main() {
@@ -452,7 +452,7 @@ Node* createNode(int data) {
     Node* newnode = (Node*)malloc(sizeof(Node));
 
     if(newnode == NULL) {
-        printf("memory allocation failed\n");
+        printf("memory allocation failed");
         exit(1);
     }
 
@@ -506,7 +506,7 @@ void print(Node* head) {
         printf("%d  -->  ", temp->data);
         temp = temp->next;
     }
-    printf("NULL\n");
+    printf("NULL");
 }
 
 int main() {
@@ -618,7 +618,7 @@ void print() {
         temp = temp->next;
     }
 
-    printf("NULL\n");
+    printf("NULL");
 }
 
 int main() {
@@ -683,7 +683,7 @@ void print(struct Node* headNode){
         temp = temp->next;
     }
 
-    printf("NULL\n");
+    printf("NULL");
 }
 
 // Floyd's cycle finding algorithm
@@ -696,12 +696,12 @@ int isCycle(struct Node* headNode){
         fast = fast->next->next;
 
         if(slow == fast){
-            printf("Cycle exists\n");
+            printf("Cycle exists");
             return 1;
         }
     }
 
-    printf("Cycle doesn't exist\n");
+    printf("Cycle doesn't exist");
     return 0;
 }
 
@@ -715,14 +715,14 @@ void removeCycle(struct Node* headNode){
         fast = fast->next->next;
 
         if(slow == fast){
-            printf("Cycle exists\n");
+            printf("Cycle exists");
             cycleFound = 1;
             break;
         }
     }
 
     if(cycleFound == 0){
-        printf("Cycle doesn't exist\n");
+        printf("Cycle doesn't exist");
         return;
     }
 
@@ -797,7 +797,7 @@ void print(){
         temp = temp->next;
     }
 
-    printf("NULL\n");
+    printf("NULL");
 }
 
 int main(){
@@ -829,7 +829,7 @@ int top = -1;
 
 void push(int data) {
     if(top == MAX - 1) { //full
-        printf("stack overflow\n");
+        printf("stack overflow");
         return;
     }
 
@@ -839,7 +839,7 @@ void push(int data) {
 
 void pop(){
     if(top == -1) {
-        printf("empty stack\n");
+        printf("empty stack");
         return;
     }
 
@@ -848,7 +848,7 @@ void pop(){
 
 int peek(){
     if(top == -1) {
-        printf("empty stack\n");
+        printf("empty stack");
         return -1
     }
 
@@ -857,12 +857,12 @@ int peek(){
 
 void display() {
     if(top == -1) {
-        printf("empty stack\n");
+        printf("empty stack");
         return;
     }
 
     for(int i=top; i>=0; i--) {
-        printf("%d\n", stack[i]);
+        printf("%d", stack[i]);
     }
 }
 
@@ -875,7 +875,7 @@ int main() {
     display();
 
     pop();
-    printf("popped: \n");
+    printf("popped: ");
 
     display();
 
@@ -900,7 +900,7 @@ Node* createnode(int data) {
     Node* newnode = (Node*)malloc(sizeof(Node));
 
     if(newnode == NULL) {
-        printf("memory allocation failed\n");
+        printf("memory allocation failed");
         exit(1);
     }
 
@@ -940,11 +940,11 @@ void display() {
     Node* temp = top;
 
     while(temp != NULL) {
-        printf("%d \n", temp->data);
+        printf("%d ", temp->data);
         temp = temp->next;
     }
 
-    printf("NULL\n");
+    printf("NULL ");
 
 }
 
@@ -1024,7 +1024,7 @@ int main(){
 
     infixToPostfix(infix, postfix);
 
-    printf("Postfix = %s\n", postfix);
+    printf("Postfix = %s", postfix);
 
     return 0;
 }`,
@@ -1182,7 +1182,7 @@ int isEmpty() {
 
 void enqueue(int data){
     if(isFull()){
-        printf("queue overflow\n");
+        printf("queue overflow");
         return;
     }
 
@@ -1210,7 +1210,7 @@ void dequeue() {
 
 void print() {
     if(isEmpty()) {
-        printf("Queue is empty\n");
+        printf("Queue is empty");
         return;
     }
 
@@ -1222,7 +1222,7 @@ void print() {
         i = (i + 1) % MAX;
     }
 
-    printf("\n");
+    printf(" ");
 }
 
 int main() {
@@ -1282,7 +1282,7 @@ void enqueue(int val){
 
 void dequeue(){
     if(isEmpty()){
-        printf("Queue Underflow\n");
+        printf("Queue Underflow");
         return;
     }
 
@@ -1300,7 +1300,7 @@ void dequeue(){
 
 void print(){
     if(isEmpty()){
-        printf("Queue is empty\n");
+        printf("Queue is empty");
         return;
     }
 
@@ -1311,7 +1311,7 @@ void print(){
         temp = temp->next;
     }while(temp != front);
 
-    printf("\n");
+    printf(" ");
 }
 
 int main(){

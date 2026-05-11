@@ -1392,62 +1392,60 @@ int main(){
     
 // Using LL 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-struct Node{
+typedef struct Node {
     int data;
-    struct Node* next;
-};
+    struct Node *next;
+} Node;
 
-struct Node* front = NULL;
-struct Node* rear = NULL;
+Node* front = NULL;
+Node* rear = NULL;
+
+Node* createNode(int data){
+    Node* newnode = (Node*)malloc(sizeof(Node));
+
+    newnode->data = data;
+    newnode->next = NULL;
+}
 
 int isEmpty(){
     return front == NULL;
 }
 
-void enqueue(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+void enqueue(int data){
+    Node* newnode = createNode(data);
 
-    newNode->data = val;
-
-    if(front == NULL){
-        front = rear = newNode;
+    if(isEmpty()){
+        front = rear = newnode;
         rear->next = front;
-    }
-    else{
-        newNode->next = front;
-        rear->next = newNode;
-        rear = newNode;
+    } else {
+        newnode->next = front;
+        rear->next = newnode;
+        rear = newnode;
     }
 }
 
 void dequeue(){
     if(isEmpty()){
-        printf("Queue Underflow");
+        printf("empty queue");
         return;
     }
 
-    if(front == rear){
-        free(front);
-        front = rear = NULL;
-    }
-    else{
-        struct Node* temp = front;
-        front = front->next;
-        rear->next = front;
-        free(temp);
-    }
+    Node* temp = front;
+    front = front->next;
+    rear->next = front;
+    free(temp);
 }
 
 void print(){
-    if(isEmpty()){
+     if(isEmpty()){
         printf("Queue is empty");
         return;
     }
 
-    struct Node* temp = front;
+    Node* temp = front;
 
     do{
         printf("%d ", temp->data);
@@ -1474,7 +1472,6 @@ int main(){
     enqueue(6);
 
     print();
-
     return 0;
 }`,
     'Deque (Doubly ended queue)': `//using doubly LL

@@ -342,6 +342,10 @@ export default function Home() {
       {/* Footer */}
       <footer className={styles.footer}>
         <span className={styles.footerText}>DSA in C · keep grinding</span>
+        <p className={styles.heroSub}>
+            If you find any errors, feel free to drop me a message - it would help everyone
+        </p>
+        <p className={styles.heroSub}>Akanksha D - se25ucse070@mahindrauniversity.edu.in</p>
       </footer>
     </main>
   )

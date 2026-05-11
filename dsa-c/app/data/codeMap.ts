@@ -1310,17 +1310,17 @@ int main(){
 #include<stdio.h>
 #include<stdlib.h>
 
-#define MAX 10
+#define MAX 100
 
 int queue[MAX];
 int rear = -1;
 int front = -1;
 
-int isFull() {
-    return (rear + 1) % MAX == front; 
+int isFull(){
+    return (rear + 1) % MAX == front;
 }
 
-int isEmpty() {
+int isEmpty(){
     return front == -1;
 }
 
@@ -1333,28 +1333,29 @@ void enqueue(int data){
     if(front == -1){
         front = rear = 0;
     } else {
-        rear = (rear + 1) % MAX; 
+        rear = (rear + 1) % MAX;
     }
 
     queue[rear] = data;
 }
 
-void dequeue() {
-    if(isEmpty()) {
+void dequeue(){
+    if(isEmpty()){
         printf("queue underflow");
         return;
     }
 
-    if(front == rear) {
+    if(front == rear){
         front = rear = -1;
-    } else {
-        front = (front + 1) % MAX;
+        return;
     }
+
+    front = (front + 1) % MAX;
 }
 
-void print() {
-    if(isEmpty()) {
-        printf("Queue is empty");
+void print(){
+    if(isEmpty()){
+        printf("empty queue");
         return;
     }
 
@@ -1369,8 +1370,7 @@ void print() {
     printf(" ");
 }
 
-int main() {
-
+int main(){
     enqueue(1);
     enqueue(2);
     enqueue(3);
@@ -1387,7 +1387,6 @@ int main() {
     enqueue(6);
 
     print();
-
     return 0;
 }
     

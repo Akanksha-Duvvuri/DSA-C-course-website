@@ -1598,11 +1598,9 @@ int main(){
   },
 
   hashing: {
-    'Hash Functions':`#include<stdio.h>
+    'Hash Functions':`//Chaining - using LL
+#include<stdio.h>
 #include<stdlib.h>
-
-//Hashing = directly jump to where data should be stored - CORE IDEA. Not searching the whole list
-//table[index] = always points to the head of the list
 
 #define SIZE 10
 
@@ -1611,8 +1609,8 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-Node* table[SIZE]; //array of LL, each index stores a LL head
- 
+Node* table[SIZE];
+
 Node* createnode(int data) {
     Node* newnode = (Node*)malloc(sizeof(Node));
 
@@ -1627,31 +1625,30 @@ Node* createnode(int data) {
     return newnode;
 }
 
-//hash function - decides which index to go to
-int hash(int key) {
+int hash(int key){
     return key % SIZE;
 }
 
-void insert(int key) {
+void insert(int key){
     int index = hash(key);
 
-    Node* newnode = createnode(key); //data is the key
+    Node* newnode = createnode(key);
 
-    //insert at beginning of LL in that index
     newnode->next = table[index];
     table[index] = newnode;
 }
 
-void search(int key) {
+void search(int key){
     int index = hash(key);
 
-    Node* temp = table[index]; //first go to that index in the hash table
+    Node* temp = table[index];
 
-    while(temp != NULL){ //then traverse the LL to find the element required
+    while(temp != NULL){
         if(temp->data == key){
-            printf("found the key at index: %d", index);
+            printf("found the key at the index: %d", index);
             return;
-        } 
+        }
+
         temp = temp->next;
     }
 
@@ -1659,7 +1656,7 @@ void search(int key) {
 }
 
 void delete(int key){
-    int index = key % SIZE;
+    int index = hash(key);
 
     Node* temp = table[index];
     Node* prev = NULL;
@@ -1674,18 +1671,17 @@ void delete(int key){
         return;
     }
 
-    //first node
     if(prev == NULL){
         table[index] = temp->next;
     } else {
-        prev->next = temp->next; //deleting temp
+        prev->next = temp->next;
     }
 
     free(temp);
 }
 
-void display() {
-    for(int i = 0; i< SIZE; i++){
+void display(){
+    for(int i=0; i<SIZE; i++){
         printf("[%d]: ", i);
 
         Node* temp = table[i];
@@ -1699,11 +1695,11 @@ void display() {
     }
 }
 
-int main() {
-    //initialising the table
-    for(int i = 0; i< SIZE; i++) {
+int main(){
+    for(int i=0; i<SIZE; i++){
         table[i] = NULL;
     }
+
 
     insert(25);
     insert(35);

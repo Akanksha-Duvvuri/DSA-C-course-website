@@ -1,57 +1,94 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct Node {
-    int data;
-    struct Node *next;
-} Node;
+// Char stack for infix→postfix 
+char cstack[100];
+int ctop = -1;
 
-Node* head = NULL;
-Node* tail = NULL;
+void cpush(char x)  { cstack[++ctop] = x; }
+char cpop()         { return cstack[ctop--]; }
+char cpeek()        { return cstack[ctop]; }
 
-Node* createNode(int data){
-    Node* newnode = (Node*)malloc(sizeof(Node));
+// Int stack for postfix evaluation 
+int istack[100];
+int itop = -1;
 
-    newnode->data = data;
-    newnode->next = NULL;
+void ipush(int x)   { istack[++itop] = x; }
+int  ipop()         { return istack[itop--]; }
 
-    return newnode;
+
+
+int priority(char x){
+    if(x == '+' || x == '-') return 1;
+    if(x == '*' || x == '/') return 2;
+    return 0;
 }
 
-void insertatend(int data){
-    Node* newnode = createNode(data);
+void infixToPostfix(char infix[], char postfix[]){
+    int k = 0;
+    ctop = -1;
 
-    if(head == NULL){
-        head = tail = newnode;
-    }
+    for(int i = 0; infix[i] != '\0'; i++){
 
-    tail->next = newnode;
-    tail = newnode;
-}
-
-void print(){
-    if(head == NULL){
-        printf("empty LL");
-    }
-
-    Node* temp = head;
-
-    while(temp != NULL){
-        printf("%d -> ", temp->data);
-        temp = temp->next;
-    }
-    printf("NULL");
-}
-
-int main(){
-    int arr[2][3] = {{1, 2, 3},{4, 5, 6}};
-
-    for(int i=0; i<2; i++){
-        for(int j=0; j<3; j++){
-            insertatend(arr[i][j]);
+        if(infix[i] >= '0' && infix[i] <= '9'){
+            postfix[k++] = infix[i];
+        }
+        else if(infix[i] == '('){
+            cpush(infix[i]);
+        }
+        else if(infix[i] == ')'){
+            while(ctop != -1 && cpeek() != '('){
+                postfix[k++] = cpop();
+            }
+            cpop(); // discard '('
+        }
+        else{
+            while(ctop != -1 && cpeek() != '(' && priority(cpeek()) >= priority(infix[i])){
+                postfix[k++] = cpop();
+            }
+            cpush(infix[i]);
         }
     }
 
-    print();
+    while(ctop != -1){
+        postfix[k++] = cpop();
+    }
+
+    postfix[k] = '\0';
+}
+
+int evaluatePostfix(char postfix[]){
+    itop = -1;
+
+    for(int i = 0; postfix[i] != '\0'; i++){
+
+        if(postfix[i] >= '0' && postfix[i] <= '9'){
+            ipush(postfix[i] - '0');   // convert char to int
+        }
+        else{
+            int b = ipop();            // right operand
+            int a = ipop();            // left operand
+
+            switch(postfix[i]){
+                case '+': ipush(a + b); break;
+                case '-': ipush(a - b); break;
+                case '*': ipush(a * b); break;
+                case '/': ipush(a / b); break;
+            }
+        }
+    }
+
+    return ipop(); // final result
+}
+
+int main(){
+    char infix[100]   = "(2+3)*4";
+    char postfix[100];
+
+    infixToPostfix(infix, postfix);
+    printf("Infix   = %s\n", infix);
+    printf("Postfix = %s\n", postfix);
+    printf("Result  = %d\n", evaluatePostfix(postfix));
+
     return 0;
 }

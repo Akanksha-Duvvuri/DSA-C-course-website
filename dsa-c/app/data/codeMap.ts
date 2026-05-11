@@ -821,7 +821,7 @@ int stack[MAX];
 int top = -1;
 
 void push(int data) {
-    if(top == MAX - 1) { //full
+    if(top == MAX - 1) { 
         printf("stack overflow");
         return;
     }
@@ -875,7 +875,6 @@ int main() {
     printf("stack top: ");
     printf("%d", peek());
 
-    display();
     return 0;
 }`,
 
@@ -961,63 +960,96 @@ int main() {
 }`,
 
     'Infix to Postfix Conversion and Postfix expression evaluation': `#include <stdio.h>
+#include <stdlib.h>
 
-char stack[100];
-int top = -1;
+// Char stack for infix→postfix 
+char cstack[100];
+int ctop = -1;
 
-void push(char x){
-    stack[++top] = x;
-}
+void cpush(char x)  { cstack[++ctop] = x; }
+char cpop()         { return cstack[ctop--]; }
+char cpeek()        { return cstack[ctop]; }
 
-char pop(){
-    return stack[top--];
-}
+// Int stack for postfix evaluation 
+int istack[100];
+int itop = -1;
 
-char peek(){
-    return stack[top];
-}
+void ipush(int x)   { istack[++itop] = x; }
+int  ipop()         { return istack[itop--]; }
+
+
 
 int priority(char x){
-    if(x == '+' || x == '-'){
-        return 1;
-    }
-    if(x == '*' || x == '/'){
-        return 2;
-    }
+    if(x == '+' || x == '-') return 1;
+    if(x == '*' || x == '/') return 2;
     return 0;
 }
 
 void infixToPostfix(char infix[], char postfix[]){
     int k = 0;
+    ctop = -1;
 
     for(int i = 0; infix[i] != '\0'; i++){
 
         if(infix[i] >= '0' && infix[i] <= '9'){
             postfix[k++] = infix[i];
         }
-        else{
-            while(top != -1 && priority(peek()) >= priority(infix[i])){
-                postfix[k++] = pop();
+        else if(infix[i] == '('){
+            cpush(infix[i]);
+        }
+        else if(infix[i] == ')'){
+            while(ctop != -1 && cpeek() != '('){
+                postfix[k++] = cpop();
             }
-
-            push(infix[i]);
+            cpop(); // discard '('
+        }
+        else{
+            while(ctop != -1 && cpeek() != '(' && priority(cpeek()) >= priority(infix[i])){
+                postfix[k++] = cpop();
+            }
+            cpush(infix[i]);
         }
     }
 
-    while(top != -1){
-        postfix[k++] = pop();
+    while(ctop != -1){
+        postfix[k++] = cpop();
     }
 
     postfix[k] = '\0';
 }
 
+int evaluatePostfix(char postfix[]){
+    itop = -1;
+
+    for(int i = 0; postfix[i] != '\0'; i++){
+
+        if(postfix[i] >= '0' && postfix[i] <= '9'){
+            ipush(postfix[i] - '0');   // convert char to int
+        }
+        else{
+            int b = ipop();            // right operand
+            int a = ipop();            // left operand
+
+            switch(postfix[i]){
+                case '+': ipush(a + b); break;
+                case '-': ipush(a - b); break;
+                case '*': ipush(a * b); break;
+                case '/': ipush(a / b); break;
+            }
+        }
+    }
+
+    return ipop(); // final result
+}
+
 int main(){
-    char infix[100] = "2+3*4";
+    char infix[100]   = "(2+3)*4";
     char postfix[100];
 
     infixToPostfix(infix, postfix);
-
+    printf("Infix   = %s", infix);
     printf("Postfix = %s", postfix);
+    printf("Result  = %d", evaluatePostfix(postfix));
 
     return 0;
 }`,

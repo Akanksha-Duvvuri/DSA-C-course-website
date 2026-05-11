@@ -1192,6 +1192,15 @@ void dequeue() {
     front++;
 }
 
+int peek(){
+    if(front == -1 || front > rear){
+        printf("empty queue");
+        return -1;
+    }
+
+    return queue[front];
+}
+
 void print() {
     if(front == -1 || front > rear) {
         printf("empty queue");

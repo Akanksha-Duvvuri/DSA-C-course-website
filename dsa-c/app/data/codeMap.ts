@@ -1476,66 +1476,65 @@ int main(){
 }`,
     'Deque (Doubly ended queue)': `//using doubly LL
     
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-struct Node{
+typedef struct Node{
     int data;
     struct Node* prev;
     struct Node* next;
-};
+}Node;
 
-struct Node* front = NULL;
-struct Node* rear = NULL;
+Node* front = NULL;
+Node* rear = NULL;
+
+Node* createNode(int data){
+    Node* newnode = (Node*)malloc(sizeof(Node));
+
+    newnode->data = data;
+    newnode->next = NULL;
+    newnode->prev = NULL;
+}
 
 int isEmpty(){
     return front == NULL;
 }
 
-void insertFront(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    newNode->data = val;
-    newNode->prev = NULL;
-    newNode->next = front;
+void insertatbeg(int data){
+    Node* newnode = createNode(data);
 
     if(isEmpty()){
-        front = rear = newNode;
-    }
-    else{
-        front->prev = newNode;
-        front = newNode;
+        front = rear = newnode;
+    }else {
+        newnode->next = front;
+        front->prev = newnode;
+        front = newnode;
     }
 }
 
-void insertRear(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    newNode->data = val;
-    newNode->next = NULL;
-    newNode->prev = rear;
+void insertatend(int data){
+    Node* newnode = createNode(data);
 
     if(isEmpty()){
-        front = rear = newNode;
-    }
-    else{
-        rear->next = newNode;
-        rear = newNode;
+        front = rear = newnode;
+    } else {
+        rear->next = newnode;
+        newnode->prev = rear;
+        rear = newnode;
     }
 }
 
-void deleteFront(){
+void deleteatbeg(){
     if(isEmpty()){
-        printf("Deque Underflow");
+        printf("deque underflow");
         return;
     }
 
-    struct Node* temp = front;
+    Node* temp = front;
 
     if(front == rear){
         front = rear = NULL;
-    }
-    else{
+    } else {
         front = front->next;
         front->prev = NULL;
     }
@@ -1543,18 +1542,17 @@ void deleteFront(){
     free(temp);
 }
 
-void deleteRear(){
+void deleteatend(){
     if(isEmpty()){
-        printf("Deque Underflow");
+        printf("deque underflow");
         return;
     }
 
-    struct Node* temp = rear;
+    Node* temp = rear;
 
     if(front == rear){
-        front = rear = NULL;
-    }
-    else{
+        front = rear =  NULL;
+    } else {
         rear = rear->prev;
         rear->next = NULL;
     }
@@ -1564,38 +1562,37 @@ void deleteRear(){
 
 void print(){
     if(isEmpty()){
-        printf("Deque is empty");
+        printf("empty deque");
         return;
     }
 
-    struct Node* temp = front;
+    Node* temp = front;
 
     while(temp != NULL){
         printf("%d ", temp->data);
         temp = temp->next;
     }
 
-    printf(" ");
+    printf("  ");
 }
 
 int main(){
-    insertRear(10);
-    insertRear(20);
-    insertFront(5);
-    insertFront(2);
+    insertatend(10);
+    insertatend(20);
+    insertatbeg(5);
+    insertatbeg(2);
 
     print();
 
-    deleteFront();
-    deleteRear();
+    deleteatbeg();
+    deleteatend();
 
     print();
 
-    insertRear(30);
-    insertFront(1);
+    insertatend(30);
+    insertatbeg(1);
 
     print();
-
     return 0;
 }`,
   },

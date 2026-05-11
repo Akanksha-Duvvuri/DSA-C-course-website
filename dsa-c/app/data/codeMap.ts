@@ -1793,7 +1793,7 @@ int main(){
   },
 
   Trees: {
-    'Representation of Trees, Binary trees and its properties': `refer to the notes :)
+    'Representation of Trees, Binary trees and its properties': `refer to the notes and PDFs
 `,
     'BT representation using Arrays': `#include <stdio.h>
 

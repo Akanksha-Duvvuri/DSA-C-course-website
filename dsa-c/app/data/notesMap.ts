@@ -409,8 +409,93 @@ Result: A B C * + D -
 
 Time Complexity:  O(n)  - traverser through the entire array 
 Space Complexity: O(n)  — stack can hold up to n operators`,
-    'Recursion implementation': ``
-  },
+    'Recursion implementation': `Output of the code
+Pushed: 10  (depth = 0)
+Pushed: 20  (depth = 1)
+Pushed: 30  (depth = 2)
+Pushed: 40  (depth = 3)
+Pushed: 50  (depth = 4)
+
+─────────────
+|  50        |
+|  40        |
+|  30        |
+|  20        |
+|  10        |
+─────────────
+
+Sum = 150
+
+Found 30 at distance 2 from top
+
+
+Popped: 50  (depth = 4)
+Popped: 40  (depth = 3)
+
+─────────────
+|  30        |
+|  20        |
+|  10        |
+─────────────
+
+─────────────
+|  10        |
+|  20        |
+|  30        |
+─────────────
+
+What is a Recursive Stack?
+
+A recursive stack uses function calls themselves as the mechanism to traverse, modify, or build the stack. Instead of iterating with a loop, each function call handles one level of the stack and delegates the rest to itself.
+
+push(10) then push(20) then push(30) — each call stays suspended, holding its value, until the recursion unwinds.
+
+---
+
+Core Idea — The Call Stack mirrors the Data Stack
+
+Every recursive function call is stored in the call stack (activation records). Each frame holds the return address, local variables, and parameters. So when you recurse, you are literally using the CPUs own stack to manage your data.
+
+---
+
+insertAtBottom — How it works
+
+Stack: [10, 20, 30], insert 5 at bottom
+
+Step 1: pop 30, recurse with [10, 20]
+Step 2: pop 20, recurse with [10]
+Step 3: pop 10, recurse with []
+Step 4: empty, push 5 giving [5]
+Step 5: return, push 10 back giving [5, 10]
+Step 6: return, push 20 back giving [5, 10, 20]
+Step 7: return, push 30 back giving [5, 10, 20, 30]
+
+The key insight — recursion unwinds in reverse, so elements are restored in their original order on top of the newly inserted bottom element.
+
+---
+
+reverse — How it works
+
+Stack: [10, 20, 30] with 30 on top
+
+Step 1: pop 30, reverse remaining [10, 20]
+Step 2: pop 20, reverse remaining [10]
+Step 3: pop 10, reverse remaining []
+Step 4: base case, return
+Step 5: insertAtBottom(10) gives [10]
+Step 6: insertAtBottom(20) gives [20, 10]
+Step 7: insertAtBottom(30) gives [30, 20, 10]
+
+Every element that was on top gets placed at the bottom after reversal — two recursions working together.
+
+---
+
+Recursive vs Iterative Stack
+
+Speed        — Iterative is faster, Recursive has function call overhead
+Memory       — Iterative uses O(1) extra, Recursive uses O(n) call stack frames
+Readability  — Iterative uses simple loops, Recursive is elegant but tricky
+Overflow risk— Iterative only risks data, Recursive risks both data and call stack`},
 
   queues : {
     'Queue using Array': `A queue is a FIFO data structure — First In First Out.

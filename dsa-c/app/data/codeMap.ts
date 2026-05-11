@@ -646,26 +646,23 @@ int main() {
     'Circular Linked List and its operations':  `#include <stdio.h>
 #include <stdlib.h>
 
-struct Node{
+typedef struct Node{
     int data;
     struct Node* next;
-};
+} Node;
 
-struct Node* head = NULL;
-struct Node* tail = NULL;
+Node* head = NULL;
+Node* tail = NULL;
 
-struct Node* createNode(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    newNode->data = val;
+Node* createNode(int data){
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
     newNode->next = NULL;
-
     return newNode;
 }
 
-void push_front(int val){
-    struct Node* newNode = createNode(val);
-
+void insertatbeg(int data){
+    Node* newNode = createNode(data);
     if(head == NULL){
         head = tail = newNode;
     }
@@ -675,45 +672,40 @@ void push_front(int val){
     }
 }
 
-void print(struct Node* headNode){
-    struct Node* temp = headNode;
 
+void print(){
+    Node* temp = head;
     while(temp != NULL){
         printf("%d -> ", temp->data);
         temp = temp->next;
     }
-
     printf("NULL");
 }
 
-// Floyd's cycle finding algorithm
-int isCycle(struct Node* headNode){
-    struct Node* slow = headNode;
-    struct Node* fast = headNode;
-
+int isCycle(){
+    Node* slow = head;
+    Node* fast = head;
     while(fast != NULL && fast->next != NULL){
         slow = slow->next;
         fast = fast->next->next;
-
         if(slow == fast){
             printf("Cycle exists");
             return 1;
         }
     }
-
     printf("Cycle doesn't exist");
     return 0;
 }
 
-void removeCycle(struct Node* headNode){
-    struct Node* slow = headNode;
-    struct Node* fast = headNode;
+
+void removeCycle(){
+    Node* slow = head;
+    Node* fast = head;
     int cycleFound = 0;
 
     while(fast != NULL && fast->next != NULL){
         slow = slow->next;
         fast = fast->next->next;
-
         if(slow == fast){
             printf("Cycle exists");
             cycleFound = 1;
@@ -726,38 +718,35 @@ void removeCycle(struct Node* headNode){
         return;
     }
 
-    slow = headNode;
+    slow = head;
 
     if(slow == fast){
         while(fast->next != slow){
             fast = fast->next;
         }
-
         fast->next = NULL;
     }
     else{
-        struct Node* prev = fast;
-
-        while(slow != fast){
+        slow = head;                      
+        while(slow->next != fast->next){   
             slow = slow->next;
-            prev = fast;
             fast = fast->next;
         }
-
-        prev->next = NULL;
+        fast->next = NULL;
     }
+    printf("Cycle removed");
 }
 
 int main(){
-    push_front(4);
-    push_front(3);
-    push_front(2);
-    push_front(1);
+    insertatbeg(4);
+    insertatbeg(3);
+    insertatbeg(2);
+    insertatbeg(1);
 
-    tail->next = head;
+    tail->next = head;   
 
-    removeCycle(head);
-    print(head);
+    removeCycle();     
+    print();             
 
     return 0;
 }`,

@@ -1225,12 +1225,13 @@ int main() {
     
     print();
 
+    printf("%d", peek());
     return 0;
 }`,
     'Queue using LL': `#include<stdio.h>
 #include<stdlib.h>
 
-typedef struct Node {
+typedef struct Node{
     int data;
     struct Node* next;
 } Node;
@@ -1238,14 +1239,8 @@ typedef struct Node {
 Node* front = NULL;
 Node* rear = NULL;
 
-
-Node* createNode(int data) {
+Node* createnode(int data){
     Node* newnode = (Node*)malloc(sizeof(Node));
-
-    if(newnode == NULL) {
-        printf("Memory allocation failed");
-        exit(1);
-    }
 
     newnode->data = data;
     newnode->next = NULL;
@@ -1253,11 +1248,11 @@ Node* createNode(int data) {
     return newnode;
 }
 
-void enqueue(int data) {
-    Node* newnode = createNode(data);
+void enqueue(int data){
+    Node* newnode = createnode(data);
 
-    if(rear == NULL) {
-        rear = front = newnode;
+    if(rear == NULL){
+        front = rear = newnode;
     } else {
         rear->next = newnode;
         rear = newnode;
@@ -1276,10 +1271,19 @@ void dequeue(){
     free(temp);
 }
 
-void print() {
+int peek(){
+    if(front == NULL){
+        printf("empty queue");
+        return -1;
+    }
+
+    return front->data;
+}
+
+void print(){
     Node* temp = front;
 
-    while(temp != NULL) {
+    while(temp != NULL){
         printf("%d -> ", temp->data);
         temp = temp->next;
     }
@@ -1287,17 +1291,18 @@ void print() {
     printf("NULL");
 }
 
-int main() {
+int main(){
     enqueue(1);
     enqueue(2);
     enqueue(3);
 
     print();
 
-    printf("%d", dequeue());
+    dequeue();
 
     print();
 
+    printf("%d", peek());
     return 0;
 }`,
     'Circular Queue: insertion and deletion operations':`//using Arrays

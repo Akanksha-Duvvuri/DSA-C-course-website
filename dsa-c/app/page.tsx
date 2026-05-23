@@ -43,10 +43,10 @@ const resourceCategories = [
   },
   {
     id: '',
-    label: 'Lab Questions',
+    label: "Animations by Yayati Ma'am",
     color: '#00ff88',
     items: [
-      { label: 'Labs', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FLab%20problems&viewid=46178875%2D5206%2D4fb2%2Dbfc9%2D3efce5b6ceba&ct=1777819275370&or=OWA%2DNT%2DMail' },
+      { label: 'Animation', url: 'https://mahindraecolecentrale-my.sharepoint.com/personal/yayati_gupta_mahindrauniversity_edu_in/_layouts/15/onedrive.aspx?ct=1777819275370&or=OWA%2DNT%2DMail&id=%2Fpersonal%2Fyayati%5Fgupta%5Fmahindrauniversity%5Fedu%5Fin%2FDocuments%2FCS1002%2C%20Data%20Structures%2FAnimations%28Install%20python%20and%20pygame%29' },
     ],
   },
   {
@@ -80,7 +80,7 @@ const resourceCategories = [
 
       { label: 'Trees - Tutorial 9', url: '/pdfs/tutorials/Tutorial 9 - trees.pdf' },
       { label: 'Trees - Tutorial 3', url: '/pdfs/tutorials/Tutorial-Trees.pdf' },
-      { label: 'Trees - Tutorial 11', url: '/pdfs/tutorials/Tutorial 11 Heap and AVL Tree with solution.pdf' },
+      { label: 'Heaps and AVL - Tutorial 11', url: '/pdfs/tutorials/Tutorial 11 Heap and AVL Tree with solution.pdf' },
 
       { label: 'Misc Q -1 ', url: '/pdfs/tutorials/Misc_Questions-1.pdf' },
       { label: 'Practice sheet - 1', url: '/pdfs/tutorials/Practice sheet -1.pdf' },

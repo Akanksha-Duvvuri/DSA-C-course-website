@@ -259,8 +259,122 @@ int main(){
     print(arr, n);
     return 0;
 }`,
-    'Heap Sort': ``,
-    'Radix Sort': ``,
+    'Heap Sort': `#include <stdio.h>
+
+void bubbleDown(int arr[], int n, int i) {
+    int largest = i;
+
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    // compare left child
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    // compare right child
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+        bubbleDown(arr, n, largest);
+    }
+}
+
+void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        bubbleDown(arr, n, i);
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+        bubbleDown(arr, i, 0);
+    }
+}
+
+void print(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf(" ");
+}
+
+int main() {
+    int arr[] = {12, 31, 35, 8, 32, 17};
+
+    int n = sizeof(arr) / sizeof(int);
+
+    printf("Before: ");
+    print(arr, n);
+
+    heapSort(arr, n);
+
+    printf("After:  ");
+    print(arr, n);
+
+    return 0;
+}`,
+
+    'Radix Sort': `#include <stdio.h>
+
+int getMax(int arr[], int n) {
+    int max = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max)
+            max = arr[i];
+    return max;
+}
+
+void countSort(int arr[], int n, int exp) {
+    int output[n];
+    int count[10] = {0};
+
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
+
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
+
+    // copy back
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+}
+
+void radixSort(int arr[], int n) {
+    int max = getMax(arr, n);
+    for (int exp = 1; max / exp > 0; exp *= 10)
+        countSort(arr, n, exp);
+}
+
+void print(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("");
+}
+
+int main() {
+    int arr[] = {170, 45, 75, 90, 802, 24, 2, 66};
+    int n = sizeof(arr) / sizeof(int);
+
+    printf("Before: ");
+    print(arr, n);
+
+    radixSort(arr, n);
+
+    printf("After:  ");
+    print(arr, n);
+
+    return 0;
+}`,
   },
 
   'linked-list': {
@@ -1943,14 +2057,15 @@ int main(){
     'BT representation using LL': `#include <stdio.h>
 #include <stdlib.h>
 
-struct Node{
+typedef struct Tree {
     int data;
-    struct Node* left;
-    struct Node* right;
-};
+    struct Tree* left;
+    struct Tree* right;
 
-struct Node* createNode(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+} Tree;
+
+Tree* createNode(int val) {
+    Tree* newNode =(Tree*)malloc(sizeof(Tree));
 
     newNode->data = val;
     newNode->left = NULL;
@@ -1959,8 +2074,8 @@ struct Node* createNode(int val){
     return newNode;
 }
 
-int main(){
-    struct Node* root = createNode(10);
+int main() {
+    Tree* root = createNode(10);
 
     root->left = createNode(20);
     root->right = createNode(30);
@@ -1975,14 +2090,15 @@ int main(){
     'BT traversals': `#include <stdio.h>
 #include <stdlib.h>
 
-struct Node{
+typedef struct Tree {
     int data;
-    struct Node* left;
-    struct Node* right;
-};
+    struct Tree* left;
+    struct Tree* right;
 
-struct Node* createNode(int val){
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+} Tree;
+
+Tree* createNode(int val) {
+    Tree* newNode = (Tree*)malloc(sizeof(Tree));
 
     newNode->data = val;
     newNode->left = NULL;
@@ -1991,35 +2107,36 @@ struct Node* createNode(int val){
     return newNode;
 }
 
-void preorder(struct Node* root){
-    if(root != NULL){
+void preorder(Tree* root) {
+    if (root != NULL) {
         printf("%d ", root->data);
         preorder(root->left);
         preorder(root->right);
     }
 }
 
-void inorder(struct Node* root){
-    if(root != NULL){
+void inorder(Tree* root) {
+    if (root != NULL) {
         inorder(root->left);
         printf("%d ", root->data);
         inorder(root->right);
     }
 }
 
-void postorder(struct Node* root){
-    if(root != NULL){
+void postorder(Tree* root) {
+    if (root != NULL) {
         postorder(root->left);
         postorder(root->right);
         printf("%d ", root->data);
     }
 }
 
-int main(){
-    struct Node* root = createNode(10);
+int main() {
+    Tree* root = createNode(10);
 
     root->left = createNode(20);
     root->right = createNode(30);
+
     root->left->left = createNode(40);
     root->left->right = createNode(50);
 
@@ -2034,7 +2151,448 @@ int main(){
 
     return 0;
 }`, 
-    'Priority Queue: implementation': ``,
+
+    'Priority Queue: implementation': `#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int heap[MAX];
+int size = 0;
+
+// move element upward after insertion
+void bubbleUp(int i) {
+
+    while (i > 1 && heap[i] > heap[i / 2]) {
+
+        int temp = heap[i];
+        heap[i] = heap[i / 2];
+        heap[i / 2] = temp;
+
+        i = i / 2;
+    }
+}
+
+// move element downward after deletion
+void bubbleDown(int i) {
+
+    int largest = i;
+    int left = 2 * i;
+    int right = 2 * i + 1;
+
+    if (left <= size && heap[left] > heap[largest])
+        largest = left;
+
+
+    if (right <= size && heap[right] > heap[largest])
+        largest = right;
+
+    if (largest != i) {
+
+        int temp = heap[i];
+        heap[i] = heap[largest];
+        heap[largest] = temp;
+
+        bubbleDown(largest);
+    }
+}
+
+void insert(int val) {
+
+    if (size == MAX - 1) {
+        printf("Heap full");
+        return;
+    }
+
+    size++;
+    heap[size] = val;
+
+    bubbleUp(size);
+}
+
+int extractMax() {
+
+    if (size == 0) {
+        printf("Heap empty");
+        return -1;
+    }
+
+    int max = heap[1];
+
+    heap[1] = heap[size];
+    size--;
+
+    bubbleDown(1);
+
+    return max;
+}
+
+void print() {
+
+    for (int i = 1; i <= size; i++) {
+        printf("%d ", heap[i]);
+    }
+
+    printf("");
+}
+
+int main() {
+
+    insert(10);
+    insert(20);
+    insert(15);
+    insert(30);
+    insert(5);
+
+    printf("Heap: ");
+    print();
+
+    printf("Max extracted: %d", extractMax());
+
+    printf("Heap after extraction: ");
+    print();
+
+    return 0;
+}`,
+
+    'Binary Search Trees - Insertion & Deletion, Search in BST, AVL Trees': `#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Tree {
+    int data;
+    struct Tree* left;
+    struct Tree* right;
+} Tree;
+
+
+Tree* createNode(int val) {
+    Tree* newNode = (Tree*)malloc(sizeof(Tree));
+
+    newNode->data = val;
+    newNode->left = NULL;
+    newNode->right = NULL;
+
+    return newNode;
+}
+
+
+Tree* insert(Tree* root, int val) {
+    Tree* newNode = createNode(val);
+
+    if (root == NULL)
+        return newNode;
+
+    Tree* curr = root;
+    Tree* parent = NULL;
+
+    
+    while (curr != NULL) {
+        parent = curr;
+
+        // move left
+        if (val < curr->data)
+            curr = curr->left;
+
+        // move right
+        else
+            curr = curr->right;
+    }
+
+    // insert node
+    if (val < parent->data)
+        parent->left = newNode;
+    else
+        parent->right = newNode;
+
+    return root;
+}
+
+
+Tree* search(Tree* root, int val) {
+    if (root == NULL || root->data == val)
+        return root;
+
+    // search left
+    if (val < root->data)
+        return search(root->left, val);
+
+    // search right
+    return search(root->right, val);
+}
+
+Tree* findMin(Tree* root) {
+    while (root->left != NULL)
+        root = root->left;
+
+    return root;
+}
+
+
+Tree* deleteNode(Tree* root, int val) {
+    if (root == NULL)
+        return NULL;
+
+    // move left
+    if (val < root->data)
+        root->left = deleteNode(root->left, val);
+
+    // move right
+    else if (val > root->data)
+        root->right = deleteNode(root->right, val);
+
+    // node found
+    else {
+
+        // case 1 & 2 : 0 or 1 child
+
+        if (root->left == NULL) {
+            Tree* temp = root->right;
+            free(root);
+            return temp;
+        }
+
+        if (root->right == NULL) {
+            Tree* temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        // case 3 : 2 children
+        Tree* successor = findMin(root->right);
+        root->data = successor->data;
+        root->right =
+            deleteNode(root->right, successor->data);
+    }
+
+    return root;
+}
+
+void inorder(Tree* root) {
+
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+
+    Tree* root = NULL;
+
+    root = insert(root, 50);
+    root = insert(root, 70);
+    root = insert(root, 30);
+    root = insert(root, 60);
+    root = insert(root, 40);
+    root = insert(root, 20);
+
+    printf("Inorder: ");
+    inorder(root);
+
+    root = deleteNode(root, 50);
+
+    printf("After deleting 50: ");
+    inorder(root);
+
+    Tree* found = search(root, 40);
+
+    if (found)
+        printf("40 found");
+    else
+        printf("40 not found");
+
+    return 0;
+}`, 
+    
+    'Heaps - Defination, insertion into a Max Heap, Deletion from a Max Heap': `MAX HEAP-
+#include <stdio.h>
+#define MAX 100
+
+int heap[MAX];
+int size = 0;
+
+void insert(int val) {
+    if (size == MAX - 1) {
+        printf("Heap Full");
+        return;
+    }
+
+    size++;
+    heap[size] = val;
+
+    int i = size;
+
+    // bubble upward
+    while (i > 1 && heap[i] > heap[i / 2]) {
+        int temp = heap[i];
+        heap[i] = heap[i / 2];
+        heap[i / 2] = temp;
+        i = i / 2;
+    }
+}
+
+// restore heap downward
+void bubbleDown(int i) {
+    int largest = i;
+
+    int left = 2 * i;
+    int right = 2 * i + 1;
+
+    // compare left child
+    if (left <= size &&
+        heap[left] > heap[largest]) {
+        largest = left;
+    }
+
+    // compare right child
+    if (right <= size &&
+        heap[right] > heap[largest]) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        int temp = heap[i];
+        heap[i] = heap[largest];
+        heap[largest] = temp;
+        bubbleDown(largest);
+    }
+}
+
+int deleteMax() {
+    if (size == 0) {
+        printf("Heap Empty");
+        return -1;
+    }
+    int max = heap[1];
+    heap[1] = heap[size];
+    size--;
+    bubbleDown(1);
+    return max;
+}
+
+void print() {
+    for (int i = 1; i <= size; i++) {
+        printf("%d ", heap[i]);
+    }
+    printf("");
+}
+
+int main() {
+
+    insert(10);
+    insert(20);
+    insert(15);
+    insert(30);
+    insert(5);
+
+    printf("Max Heap:");
+    print();
+
+    int deleted = deleteMax();
+
+    printf("Deleted Element: %d", deleted);
+
+    printf("Heap After Deletion:");
+    print();
+
+    return 0;
+}
+    
+-------------------------------------------------------------
+MIN HEAP-
+
+#include <stdio.h>
+#define MAX 100
+
+int heap[MAX];
+int size = 0;
+
+void insert(int val) {
+    if (size == MAX - 1) {
+
+        printf("Heap Full");
+        return;
+    }
+    size++;
+    heap[size] = val;
+    int i = size;
+
+    // bubble upward
+    while (i > 1 && heap[i] < heap[i / 2]) {
+        int temp = heap[i];
+        heap[i] = heap[i / 2];
+        heap[i / 2] = temp;
+
+        i = i / 2;
+    }
+}
+
+// restore heap downward
+void bubbleDown(int i) {
+    int smallest = i;
+    int left = 2 * i;
+    int right = 2 * i + 1;
+
+    // compare left child
+    if (left <= size &&
+        heap[left] < heap[smallest]) {
+        smallest = left;
+    }
+
+    // compare right child
+    if (right <= size &&
+        heap[right] < heap[smallest]) {
+        smallest = right;
+    }
+
+    if (smallest != i) {
+        int temp = heap[i];
+        heap[i] = heap[smallest];
+        heap[smallest] = temp;
+        bubbleDown(smallest);
+    }
+}
+
+int deleteMin() {
+    if (size == 0) {
+        printf("Heap Empty");
+        return -1;
+    }
+
+    int min = heap[1];
+    heap[1] = heap[size];
+    size--;
+    bubbleDown(1);
+    return min;
+}
+
+// print heap
+void print() {
+    for (int i = 1; i <= size; i++) {
+        printf("%d ", heap[i]);
+    }
+    printf("");
+}
+
+int main() {
+    insert(30);
+    insert(20);
+    insert(10);
+    insert(40);
+    insert(5);
+
+    printf("Min Heap:");
+    print();
+
+    int deleted = deleteMin();
+
+    printf("Deleted Element: %d", deleted);
+    printf("Heap After Deletion:");
+    print();
+
+    return 0;
+}`,
   },
 
   'tc-sc': {

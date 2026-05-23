@@ -31,11 +31,13 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
   },
 
   Trees: {
-    'Representation of Trees, Binary trees and its properties': ['/pdfs/trees/treesp1.pdf'],
-    'BT representation using Arrays': ['/pdfs/trees/treesp1.pdf'], 
-    'BT representation using LL': ['/pdfs/trees/treesp1.pdf'], 
-    'BT traversals': ['/pdfs/trees/treesp2.pdf'], 
+    'Representation of Trees, Binary trees and its properties': ['/pdfs/trees/treesp1.pdf', '/pdfs/trees/CS1002_Apr20,21_Trees.pdf'],
+    'BT representation using Arrays': ['/pdfs/trees/treesp1.pdf', '/pdfs/trees/CS1002_Apr20,21_Trees.pdf'], 
+    'BT representation using LL': ['/pdfs/trees/treesp1.pdf', '/pdfs/trees/CS1002_Apr20,21_Trees.pdf'], 
+    'BT traversals': ['/pdfs/trees/treesp2.pdf', '/pdfs/trees/Trees_ Traversals, BSTs ...pdf', '/pdfs/trees/Trees_ Traversals, BSTs.pdf'], 
     'Priority Queue: implementation': [],
+    'Binary Search Trees - Insertion & Deletion, Search in BST, AVL Trees' : ['/pdfs/trees/BBSTs_ AVL Trees.pdf'],
+    'Heaps - Defination, insertion into a Max Heap, Deletion from a Max Heap': ['/pdfs/trees/Heaps_Complexities.pdf']
   },
 
   'tc-sc': {

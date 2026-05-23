@@ -14,7 +14,7 @@ export const topics: Topic[] = [
     label: 'Sorting Algorithms',
     icon: '≋',
     color: '#a78bfa',
-    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort'],
+    subtopics: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Merge Sort', 'Quick Sort', 'Radix Sort', 'Heap Sort'],
     description: 'Methods to arrange elements in a specific order.',
   },
   {
@@ -62,7 +62,7 @@ export const topics: Topic[] = [
     label: 'Binary Trees',
     icon: '⑂',
     color: '#60a5fa',
-    subtopics: ['Representation of Trees, Binary trees and its properties', 'BT representation using Arrays', 'BT representation using LL', 'BT traversals', 'Priority Queue: implementation', 'Binary Search Trees - Insertion & Deletion, Search in BST, AVL Trees', 'Heaps - Defination, insertion into a Max Heap, Deletion from a Max Heap'],
+    subtopics: ['Representation of Trees, Binary trees and its properties', 'BT representation using Arrays', 'BT representation using LL', 'BT traversals', 'Binary Search Trees - Insertion & Deletion, Search in BST, AVL Trees', 'Heaps - Defination, insertion into a Max Heap, Deletion from a Max Heap', 'Priority Queue: implementation'],
     description: 'Hierarchical structure where each node has at most two children.',
   },
   {

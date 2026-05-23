@@ -124,7 +124,143 @@ Space Complexity:
 
 Fastest in practice for most inputs despite same Big O as Merge Sort
 Worst case avoided by random pivot selection`,
-  },
+    
+    'Radix Sort': `Non-comparison based sorting algorithm.
+Sorts integers digit by digit from least significant (units) to most significant digit using Counting Sort at each step.
+
+─────────────────────────────────────────────────────
+HOW IT WORKS
+
+Example: {170, 45, 75, 90, 802, 24, 2, 66}
+
+Pass 1 - sort by units digit:
+    170, 90, 802, 2, 24, 45, 75, 66
+
+Pass 2 - sort by tens digit:
+    802, 2, 24, 45, 66, 170, 75, 90
+
+Pass 3 - sort by hundreds digit:
+    2, 24, 45, 66, 75, 90, 170, 802
+
+─────────────────────────────────────────────────────
+COUNTING SORT (used at each digit step)
+
+1. Count how many numbers have each digit (0-9) at position exp
+2. Build cumulative count array
+3. Place elements into output array using the count
+4. Copy output back to original array
+
+Traversing right to left ensures stability
+(equal elements maintain their relative order).
+
+─────────────────────────────────────────────────────
+TIME COMPLEXITY
+
+    n = number of elements
+    k = number of digits in the largest number
+
+    Each pass (counting sort) -> O(n + 10) = O(n)
+    Number of passes          -> k
+
+    Total -> O(nk)
+
+    When k is small (e.g. 32-bit integers -> k = 10)
+    this is effectively O(n) which beats O(n log n) sorts.
+
+SPACE COMPLEXITY: O(n + 10) = O(n)  for output and count arrays
+
+─────────────────────────────────────────────────────
+COMPARISON WITH OTHER SORTS
+
+    Algorithm       TC              Stable
+    ──────────────────────────────────────
+    Merge Sort      O(n log n)      Yes
+    Quick Sort      O(n log n) avg  No
+    Heap Sort       O(n log n)      No
+    Radix Sort      O(nk)           Yes     <- faster when k is small
+
+Limitation: only works on integers or fixed-length strings.
+Cannot sort floating point numbers or general objects directly.`,
+    'Heap Sort': `Heap Sort uses a Max Heap to sort elements.
+
+Main Idea:
+1. Build a Max Heap
+2. Largest element comes to root
+3. Swap root with last element
+4. Reduce heap size
+5. Restore heap
+6. Repeat
+
+────────────────────────────────────
+MAX HEAP PROPERTY
+
+Parent >= Children
+
+Largest element always at root.
+
+Example:
+
+        50
+       /  \\
+     30    40
+
+────────────────────────────────────
+WORKING
+
+Example:
+12 31 35 8 32 17
+
+Build Max Heap:
+
+35 32 17 8 31 12
+
+Swap root with last:
+
+12 32 17 8 31 35
+
+Restore heap:
+
+32 31 17 8 12 35
+
+Repeat until sorted.
+
+Final:
+
+8 12 17 31 32 35
+
+────────────────────────────────────
+TIME COMPLEXITY
+
+Building Heap:
+    O(n)
+
+Heapify for all elements:
+    O(n log n)
+
+Overall:
+    Best    → O(n log n)
+    Average → O(n log n)
+    Worst   → O(n log n)
+
+────────────────────────────────────
+SPACE COMPLEXITY
+
+O(1)
+
+In-place sorting algorithm.
+
+────────────────────────────────────
+IMPORTANT POINTS
+
+• Comparison-based sorting
+• Uses Binary Heap
+• Not stable
+• Better space efficiency than Merge Sort
+• Slower than Quick Sort in practice
+• Root contains maximum element
+• Heap restored using Bubble Down
+• Uses array representation of heap`,
+},
 
   'linked-list': {
     'Singly Linked List : Insertion, deletion, reversing' : `A linear data structure where each element (node) contains data and a pointer to the next node. The last node points to NULL.
@@ -1008,7 +1144,527 @@ Time Complexity:  O(n)  — every node visited once
 Space Complexity:
     DFS (recursive) → O(h)  call stack, h = height
     BFS (level order) → O(w) queue, w = max width`, 
-    'Priority Queue: implementation': ``,
+
+    'Priority Queue: implementation': `A priority queue is an ADT where each element has a priority.
+The element with the highest priority is served first.
+Not FIFO like a regular queue.
+
+Types:
+    Max Priority Queue  ->  highest value = highest priority
+    Min Priority Queue  ->  lowest value  = highest priority
+
+Implementation options:
+    Method          Insert      Delete      Peek
+    ─────────────────────────────────────────────
+    Unsorted Array  O(1)        O(n)        O(n)
+    Sorted Array    O(n)        O(1)        O(1)
+    Linked List     O(n)        O(1)        O(1)
+    Binary Heap     O(log n)    O(log n)    O(1)  <- best
+
+Binary Heap is the standard implementation.
+A heap is a Complete Binary Tree stored as an array.`,
+
+    'Binary Search Trees - Insertion & Deletion, Search in BST, AVL Trees': `BINARY SEARCH TREE (BST)
+══════════════════════════════════════════════════════
+
+A Binary Search Tree is a binary tree with the property:
+
+        Left subtree < Parent < Right subtree
+
+For every node:
+• all nodes in left subtree are smaller
+• all nodes in right subtree are larger
+
+BST allows fast searching, insertion and deletion.
+
+──────────────────────────────────────────────────────
+EXAMPLE BST
+
+Insert:
+50, 70, 30, 60, 40, 20, 80, 90
+
+Tree formed:
+
+             50
+            /  \\
+          30    70
+         / \\    / \\
+       20  40 60  80
+                    \\
+                      90
+
+──────────────────────────────────────────────────────
+IMPORTANT PROPERTY
+
+Inorder Traversal of a BST always gives SORTED output.
+
+Traversal order:
+    LEFT → ROOT → RIGHT
+
+Example inorder:
+    20 30 40 50 60 70 80 90
+
+──────────────────────────────────────────────────────
+INSERTION (Iterative)
+
+Algorithm:
+1. Start from root.
+2. Compare new value with current node.
+3. If smaller → move left.
+4. If larger  → move right.
+5. Repeat until NULL found.
+6. Insert node there.
+
+Pseudo:
+
+while(current != NULL)
+{
+    if(val < current->data)
+        current = current->left;
+
+    else if(val > current->data)
+        current = current->right;
+}
+
+──────────────────────────────────────────────────────
+INSERTION DRY RUN
+
+Insert 50:
+    50
+
+Insert 70:
+    70 > 50 → right
+
+        50
+          \\
+           70
+
+Insert 30:
+    30 < 50 → left
+
+         50
+        /  \\
+      30    70
+
+Insert 60:
+    60 > 50 → right
+    60 < 70 → left
+
+         50
+        /  \\
+      30    70
+            /
+           60
+
+──────────────────────────────────────────────────────
+SEARCHING (Recursive)
+
+Rules:
+• If node == NULL      → not found
+• If value == node     → found
+• If value < node      → search left subtree
+• If value > node      → search right subtree
+
+Pseudo:
+
+search(root, val)
+{
+    if(root == NULL)
+        return NOT FOUND;
+
+    if(root->data == val)
+        return FOUND;
+
+    if(val < root->data)
+        return search(root->left, val);
+
+    else
+        return search(root->right, val);
+}
+
+──────────────────────────────────────────────────────
+SEARCH EXAMPLE
+
+Search 60:
+
+            50
+              \\
+               70
+              /
+             60
+
+60 > 50 → move right
+60 < 70 → move left
+Found 60
+
+──────────────────────────────────────────────────────
+TIME COMPLEXITY
+
+Time depends on height of tree (h).
+
+Balanced BST:
+    Height = log n
+
+Skewed BST:
+    Height = n
+
+Operations:
+    Search  → O(h)
+    Insert  → O(h)
+    Delete  → O(h)
+
+Best/Average:
+    O(log n)
+
+Worst:
+    O(n)
+
+──────────────────────────────────────────────────────
+SKEWED TREE (Worst Case)
+
+Insert sorted values:
+10, 20, 30, 40, 50
+
+Tree becomes:
+
+10
+  \\
+   20
+     \\
+      30
+        \\
+         40
+           \\
+            50
+
+This behaves like a linked list.
+
+Searching becomes O(n).
+
+──────────────────────────────────────────────────────
+DELETION IN BST
+
+3 CASES
+
+══════════════════════════════════════════════════════
+CASE 1: NODE IS A LEAF
+
+Simply delete the node.
+
+Example:
+
+      50
+     /  \\
+   30    70
+
+Delete 30
+
+      50
+        \\
+         70
+
+──────────────────────────────────────────────────────
+CASE 2: NODE HAS ONE CHILD
+
+Replace node with its child.
+
+Example:
+
+        50
+       /
+      30
+     /
+    20
+
+Delete 30
+
+        50
+       /
+      20
+
+Parent now directly points to grandchild.
+
+──────────────────────────────────────────────────────
+CASE 3: NODE HAS TWO CHILDREN
+
+Most important case.
+
+Steps:
+1. Find inorder successor
+   OR inorder predecessor
+2. Copy its value into node
+3. Delete successor/predecessor
+
+──────────────────────────────────────────────────────
+INORDER SUCCESSOR
+
+Smallest node in RIGHT subtree.
+
+How to find:
+    Move one step right,
+    then keep moving left.
+
+──────────────────────────────────────────────────────
+INORDER PREDECESSOR
+
+Largest node in LEFT subtree.
+
+How to find:
+    Move one step left,
+    then keep moving right.
+
+──────────────────────────────────────────────────────
+EXAMPLE: DELETE 100
+
+                100
+               /   \\
+             50     150
+                   /   \\
+                 115   200
+
+Inorder successor of 100:
+    115
+
+Replace 100 with 115:
+
+                115
+               /   \\
+             50     150
+                      \\
+                      200
+
+Then delete original 115 node.
+
+──────────────────────────────────────────────────────
+If root is removed, the inorder predecessor from the left subtree (Largest node in left subtree) replaces it.
+
+──────────────────────────────────────────────────────
+WHY BST IS EFFICIENT
+
+At every comparison:
+    half the tree gets ignored.
+
+Exactly like Binary Search in arrays.
+
+──────────────────────────────────────────────────────
+BST vs AVL TREE
+
+AVL Tree:
+• Self-balancing BST
+• Prevents skewed trees
+• Guarantees O(log n)
+
+──────────────────────────────────────────────────────
+COMPLEXITY TABLE
+
+Operation      BST Avg      BST Worst      AVL
+────────────────────────────────────────────────
+Insert         O(log n)    O(n)           O(log n)
+Search         O(log n)    O(n)           O(log n)
+Delete         O(log n)    O(n)           O(log n)
+
+──────────────────────────────────────────────────────
+Some IMPORTANT Points- 
+• Left subtree < root < right subtree
+• Inorder traversal gives sorted order
+• BST operations depend on tree height
+• Worst case occurs in skewed tree
+• Inorder successor:
+      smallest in right subtree
+• Inorder predecessor:
+      largest in left subtree
+• AVL trees avoid skewness using balancing
+
+══════════════════════════════════════════════════════
+An AVL Tree is a self-balancing BST.
+After every insert or delete, it checks if the tree is balanced
+and performs rotations to fix any imbalance.
+
+Balance Factor (BF) = Height of left subtree - Height of right subtree
+
+    BF = 0, 1, -1  ->  Balanced
+    BF = 2, -2     ->  Unbalanced, perform rotation
+
+─────────────────────────────────────────────────────
+4 ROTATION CASES
+
+LL Case (BF = +2, imbalance from left of left subtree)
+    Perform RIGHT rotation on unbalanced node.
+
+RR Case (BF = -2, imbalance from right of right subtree)
+    Perform LEFT rotation on unbalanced node.
+
+LR Case (BF = +2, imbalance from right of left subtree)
+    First perform LEFT rotation on left child.
+    Then perform RIGHT rotation on unbalanced node.
+
+RL Case (BF = -2, imbalance from left of right subtree)
+    First perform RIGHT rotation on right child.
+    Then perform LEFT rotation on unbalanced node.
+
+─────────────────────────────────────────────────────
+COMPLEXITIES (vs BST worst case)
+
+    Method      Insert      Search      Delete
+    ────────────────────────────────────────────
+    BST         O(n)        O(n)        O(n)      <- skewed
+    AVL Tree    O(log n)    O(log n)    O(log n)  <- always balanced
+
+Height is always O(log n) because rotations keep the tree balanced.`
+, 
+
+    'Heaps - Defination, insertion into a Max Heap, Deletion from a Max Heap': `A Heap is a Complete Binary Tree that satisfies the Heap Property.
+
+    Complete Binary Tree:
+        All levels completely filled except possibly the last.
+        Last level filled from LEFT TO RIGHT.
+
+        Example:
+                 50
+                /  \\
+              30    40
+             / \\
+           10  20    <- complete, last level filled left to right
+
+─────────────────────────────────────────────────────
+TYPES
+
+    Max Heap  ->  parent >= children  (root = maximum element)
+    Min Heap  ->  parent <= children  (root = minimum element)
+
+    Max Heap example:        Min Heap example:
+            50                      10
+           /  \\                    /  \\
+         30    40                20    30
+        / \\                     / \\
+      10  20                   40  50
+
+─────────────────────────────────────────────────────
+ARRAY REPRESENTATION
+
+    Heaps are stored in arrays — no pointers needed.
+    Works because heaps are complete, so no gaps exist.
+
+    Using 1-based indexing, for node at index i:
+        Parent       ->  i / 2
+        Left child   ->  2 * i
+        Right child  ->  2 * i + 1
+
+    Example:
+             50
+            /  \\
+          30    40
+         / \\
+       10  20
+
+    Index:  1   2   3   4   5
+    Value: 50  30  40  10  20
+
+─────────────────────────────────────────────────────
+INSERTION INTO MAX HEAP
+
+    Steps:
+        1. Insert new element at end of array
+        2. Bubble Up - compare with parent
+        3. If larger than parent -> swap
+        4. Repeat upward until heap property restored
+
+    Time: O(log n)  — at most log n swaps (= height of tree)
+
+    Dry Run: Insert 10, 20, 15, 30
+
+        Insert 10:  [10]
+
+        Insert 20:  [10, 20]  ->  20 > 10, swap  ->  [20, 10]
+
+        Insert 15:  [20, 10, 15]  ->  15 < 20, no swap
+
+        Insert 30:  [20, 10, 15, 30]
+                    30 > 10, swap  ->  [20, 30, 15, 10]
+                    30 > 20, swap  ->  [30, 20, 15, 10]
+
+    Final:
+              30
+             /  \\
+           20    15
+          /
+        10
+
+─────────────────────────────────────────────────────
+DELETION FROM MAX HEAP
+
+    Deletion always removes the ROOT (maximum element).
+
+    Steps:
+        1. Save root value
+        2. Move last element to root
+        3. Reduce heap size by 1
+        4. Bubble Down - compare with larger child
+        5. If smaller than larger child -> swap
+        6. Repeat downward until heap property restored
+
+    Time: O(log n)
+
+    Dry Run: Delete from [50, 30, 40, 10, 20]
+
+             50
+            /  \\
+          30    40
+         / \\
+       10  20
+
+        Step 1: Save 50, move 20 to root
+             20
+            /  \\
+          30    40
+         /
+       10
+
+        Step 2: Bubble Down - compare 20 with children 30 and 40
+                Larger child = 40, swap
+             40
+            /  \\
+          30    20
+         /
+       10
+
+        Heap restored.
+
+─────────────────────────────────────────────────────
+BUILDING A HEAP (repeated insertions)
+
+    Insert n elements one by one.
+    Each insertion -> O(log n)
+    Total          -> O(n log n)
+
+    Proof from handout:
+        At depth i: nodes = 2^i, max swaps = i
+        Total work = sum of i * 2^i across all levels
+                   = n log n - 2n
+                   = O(n log n)
+
+─────────────────────────────────────────────────────
+COMPLEXITIES
+
+    Operation       Time
+    ─────────────────────────
+    Insertion       O(log n)
+    Deletion        O(log n)
+    Get Max/Min     O(1)       <- root access, instant
+    Build Heap      O(n log n)
+
+
+IMPORTANT POINTS
+
+    Heap = Complete Binary Tree
+    Max Heap:  parent >= children
+    Min Heap:  parent <= children
+    Root always stores max (or min)
+    Insertion  ->  Bubble Up
+    Deletion   ->  Bubble Down
+    Heap Sort  ->  O(n log n), NOT stable, O(1) space
+    Array representation uses 1-based indexing
+    Parent of i = i/2, Left = 2i, Right = 2i+1`,
   },
 
   'tc-sc': {

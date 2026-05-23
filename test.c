@@ -3,104 +3,106 @@
 
 #define MAX 100
 
-int storage[MAX];   // backing array to hold values between calls
+int storage[MAX];
 int top = -1;
 
-// ─── Recursive Push 
 void push(int val){
     if(top >= MAX - 1){
         printf("Stack Overflow");
         return;
     }
     storage[++top] = val;
-    printf("Pushed: %d  (depth = %d)", val, top);
 }
 
-// ─── Recursive Pop 
 int pop(){
     if(top == -1){
-        printf("Stack Underflow!");
+        printf("Stack Underflow");
         return -1;
     }
-    int val = storage[top--];
-    printf("Popped: %d  (depth = %d)", val, top + 1);
-    return val;
+    return storage[top--];
 }
 
-// ─── Recursive Insert at Bottom 
-// Used internally by reverse()
 void insertAtBottom(int val){
     if(top == -1){
-        push(val);
+        storage[++top] = val;
         return;
     }
-    int temp = pop();           // hold current top
-    insertAtBottom(val);        // recurse deeper
-    push(temp);                 // restore on way back up
+    int temp = storage[top--];
+    insertAtBottom(val);
+    storage[++top] = temp;
 }
 
-// ─── Recursive Reverse 
 void reverse(){
     if(top == -1) return;
-    int temp = pop();           // take top element
-    reverse();                  // reverse the rest
-    insertAtBottom(temp);       // place it at the bottom
+    int temp = storage[top--];
+    reverse();
+    insertAtBottom(temp);
 }
 
-// ─── Recursive Print (top → bottom) 
-void printStack(int index){
-    if(index < 0){
-        return;
-    }
-    if(index == top) 
-    printf("| %3d        |", storage[index]);
-    printStack(index - 1);
+
+void printStack(){
+    if(top == -1) return; 
+
+    int temp = storage[top--];
+
+    printf("%d  ", temp);
+    
+    printStack();
+
+    storage[++top] = temp;
 }
 
-// ─── Recursive Search 
-int search(int index, int val){
-    if(index < 0)         return -1;   
-    if(storage[index] == val) return top - index; // distance from top
-    return search(index - 1, val);
+
+int sum(){
+    if(top == -1) return 0;
+
+    int temp = storage[top--];
+
+    int result = temp + sum();
+
+    storage[++top] = temp;
+    return result;
 }
 
-// ─── Recursive Sum 
-int sum(int index){
-    if(index < 0) return 0;
-    return storage[index] + sum(index - 1);
+
+int search(int val){
+    if(top == -1) return -1;
+
+    int temp = storage[top--];
+
+    int pos = search(val);
+
+    storage[++top] = temp;
+
+    if(temp == val) return top - (top);  
+    return (pos == -1) ? -1 : pos + 1; ;
 }
 
 int main(){
-
     push(10);
     push(20);
     push(30);
     push(40);
     push(50);
 
+    printStack();
 
-    printStack(top);
+    printf("Sum = %d ", sum());
 
-
-    printf("Sum = %d", sum(top));
-
-
-    int pos = search(top, 30);
+    int pos = search(30);
     if(pos != -1)
         printf("Found 30 at distance %d from top", pos);
     else
         printf("Not found");
 
-
     pop();
     pop();
 
-
-    printStack(top);
-
+    printStack();
 
     reverse();
-    printStack(top);
+    printf("After reversing:");
+    printStack();
 
     return 0;
 }

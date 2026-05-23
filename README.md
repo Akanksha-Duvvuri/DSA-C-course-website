@@ -1,56 +1,73 @@
-# DSA in C — Study Tracker
+# DSA in C — Study Tracker (A FRONTEND BASED PROJECT)
 
-A clean and interactive **Next.js study tracker** built for learning **Data Structures & Algorithms in C**.  -- Made for CS1002
+A clean and interactive **DSA Study Tracker** built using **Next.js** for learning **Data Structures & Algorithms in C** — designed specifically for **CS1002**.
 
-Track your progress topic-by-topic, read theory notes, view C implementations, and organize all your DSA prep in one place.
+Track your syllabus progress, revise theory notes, view complete C implementations, and keep all your DSA prep organized in one place.
 
 ---
 
 ## Features
 
-* Track completed subtopics with persistent progress
-* View C programs for every algorithm / data structure
-* Read short notes and theory explanations
-* Attach PDFs and study material
-* Organized topic-wise learning flow
-* Clean responsive UI
-* Progress saved automatically using `localStorage`
+- Track completed topics and subtopics
+- Persistent progress using `localStorage`
+- Topic-wise DSA organization
+- Clean and responsive UI
+- Built-in C code implementations
+- Short exam-oriented theory notes
+- PDF / handout support
+- Graphs, Trees, Heaps, Sorting, Searching and more
+- Simple lightweight architecture
 
 ---
 
 ## Topics Covered
 
-| #  | Topic                   | ID             |
-| -- | ----------------------- | -------------- |
-| 1  | Searching Algorithms    | `searching`    |
-| 2  | Sorting Algorithms      | `sorting`      |
-| 3  | Linked Lists            | `linked-list`  |
-| 4  | Stacks                  | `stacks`       |
-| 5  | Queues                  | `queues`       |
-| 6  | Hashing                 | `hashing`      |
-| 7  | Binary Trees            | `binary-trees` |
-| 8  | Binary Search Trees     | `bst`          |
-| 9  | Time & Space Complexity | `tc-sc`        |
-| 10 |Heaps                    | `heaps`        |
-| 11 | Graphs                  | `graphs`       |
+| # | Topic | ID |
+|---|---|---|
+| 1 | Time & Space Complexity | `tc-sc` |
+| 2 | Searching Algorithms | `searching` |
+| 3 | Sorting Algorithms | `sorting` |
+| 4 | Linked Lists | `linked-list` |
+| 5 | Stacks | `stacks` |
+| 6 | Queues | `queues` |
+| 7 | Hashing | `hashing` |
+| 8 | Binary Trees | `binary-trees` |
+| 9 | Binary Search Trees | `bst` |
+| 10 | Heaps | `heaps` |
+| 11 | Graphs | `graphs` |
 
+---
+
+## Included Implementations
+
+- Linear Search
+- Binary Search
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+- Merge Sort
+- Quick Sort
+- Heap Sort
+- Radix Sort
+- Linked Lists
+- Stack using Array / Linked List
+- Queue using Array / Linked List
+- Binary Trees
+- BST Operations
+- Max Heap / Min Heap
+- BFS / DFS
+- Graph Representations
+
+and more
 ---
 
 ## Tech Stack
 
-* Next.js (App Router)
-* TypeScript
-* React
-* CSS Modules
-* localStorage
-
----
-
-## Live Demo
-
-Add your deployed link here:
-
-https://your-site.vercel.app
+- Next.js (App Router)
+- React
+- TypeScript
+- CSS Modules
+- localStorage
 
 ---
 
@@ -63,7 +80,9 @@ npm run dev
 
 Open:
 
+```txt
 http://localhost:3000
+```
 
 ---
 
@@ -94,13 +113,15 @@ app/
 
 ---
 
-## Customization
-
-### Add C Programs
+## Adding C Programs
 
 Edit:
 
-`app/data/codeMap.ts`
+```txt
+app/data/codeMap.ts
+```
+
+Example:
 
 ```ts
 export const codeMap = {
@@ -108,27 +129,24 @@ export const codeMap = {
     'Linear Search': `#include <stdio.h>
 ...`,
   },
-
-  sorting: {
-    'Bubble Sort': `#include <stdio.h>
-...`,
-  },
 }
 ```
 
 Rules:
-
-* Topic key must match topic ID exactly
-* Subtopic key must match exactly
-* Case sensitive
+- Topic ID must match exactly
+- Subtopic names are case-sensitive
 
 ---
 
-### Add Notes
+## Adding Notes
 
 Edit:
 
-`app/data/notesMap.ts`
+```txt
+app/data/notesMap.ts
+```
+
+Example:
 
 ```ts
 export const notesMap = {
@@ -140,39 +158,57 @@ export const notesMap = {
 
 ---
 
-### Add PDFs
+## Adding PDFs
 
-Put files inside:
+Place PDFs inside:
 
-`public/pdfs/`
+```txt
+public/pdfs/
+```
 
 Example:
 
-`public/pdfs/searching/linear-search.pdf`
+```txt
+public/pdfs/searching/linear-search.pdf
+```
 
 Then update:
 
-`app/data/pdfMap.ts`
+```txt
+app/data/pdfMap.ts
+```
+
+Example:
 
 ```ts
 export const pdfMap = {
   searching: {
-    'Linear Search': ['/pdfs/searching/linear-search.pdf'],
+    'Linear Search': [
+      '/pdfs/searching/linear-search.pdf'
+    ],
   },
 }
 ```
 
-Always use arrays, even for one file.
+Always use arrays even for one file.
 
 ---
 
-### Add Homepage Resources
+## Homepage Resources
 
 Edit:
 
-`app/page.tsx`
+```txt
+app/page.tsx
+```
 
-Inside `resourceCategories`:
+Inside:
+
+```ts
+resourceCategories
+```
+
+Example:
 
 ```ts
 {
@@ -180,8 +216,10 @@ Inside `resourceCategories`:
   label: 'Handouts',
   color: '#00cfff',
   items: [
-    { label: 'Unit 1', url: '/pdfs/unit1.pdf' },
-    { label: 'Playlist', url: 'https://youtube.com/...' }
+    {
+      label: 'Unit 1',
+      url: '/pdfs/unit1.pdf'
+    }
   ]
 }
 ```
@@ -197,54 +235,22 @@ npm i -g vercel
 vercel
 ```
 
-Or connect your GitHub repo on Vercel for auto deploys.
+Or connect the GitHub repository directly on Vercel.
 
 ---
-
 
 ## Future Improvements
 
-* Dark mode
-* Search topics
-* Quiz mode
-* Code runner
-* Cloud sync
+- Search Topics
+- Quiz Mode
+- Code Runner
+- Copy Paste option
+- Cloud Sync
 
 ---
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Notes
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Built for quick DSA revision
+- Focused on concise theory + C implementation
+- Optimized for semester preparation and labs

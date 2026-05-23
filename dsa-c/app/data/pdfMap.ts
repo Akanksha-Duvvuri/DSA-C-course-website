@@ -31,10 +31,10 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
   },
 
   Trees: {
-    'Representation of Trees, Binary trees and its properties': ['/pdfs/trees/treep1.pdf'],
-    'BT representation using Arrays': ['/pdfs/trees/treep1.pdf'], 
-    'BT representation using LL': ['/pdfs/trees/treep1.pdf'], 
-    'BT traversals': ['/pdfs/trees/treep2.pdf'], 
+    'Representation of Trees, Binary trees and its properties': ['/pdfs/trees/treesp1.pdf'],
+    'BT representation using Arrays': ['/pdfs/trees/treesp1.pdf'], 
+    'BT representation using LL': ['/pdfs/trees/treesp1.pdf'], 
+    'BT traversals': ['/pdfs/trees/treesp2.pdf'], 
     'Priority Queue: implementation': [],
   },
 

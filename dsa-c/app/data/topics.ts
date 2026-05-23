@@ -70,7 +70,7 @@ export const topics: Topic[] = [
     label: 'Graphs',
     icon: '◉',
     color: '#f87171',
-    subtopics: ['Introduction and Terminology', 'Graph ADT', 'Representation using Adjacency matrix', 'Representation using Adjecency lists', 'Traversal using DFS', 'Traversal using BFS'],
+    subtopics: ['Introduction and Terminology and Graph ADT', 'Representation using Adjacency matrix and Adjecency lists', 'Traversal using DFS and BFS'],
     description: 'Non-linear structure for modelling networks and paths.',
   },
 ]

@@ -2597,6 +2597,316 @@ int main() {
 
   'tc-sc': {
     'Notes and PDFs': `No code for this one. Refer to the notes and pdfs`
-  }
+  },
+
+  'graphs' : {
+    'Introduction and Terminology and Graph ADT': `#include <stdio.h>
+#include <stdlib.h>
+
+#define V 6
+
+typedef struct Graph {
+    int data;
+    struct Graph* next;
+} Graph;
+
+Graph* adjList[V];
+
+int visited[V];
+
+Graph* createNode(int val) {
+    Graph* newNode =(Graph*)malloc(sizeof(Graph));
+
+    newNode->data = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void addEdge(int u, int v) {
+    Graph* newNode = createNode(v);
+
+    newNode->next = adjList[u];
+    adjList[u] = newNode;
+
+    newNode = createNode(u);
+    newNode->next = adjList[v];
+    adjList[v] = newNode;
+}
+
+void printList() {
+    printf("Adjacency List:");
+    for (int i = 1; i < V; i++) {
+        printf("%d -> ", i);
+
+        Graph* temp = adjList[i];
+
+        while (temp != NULL) {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+        printf("NULL");
+    }
+}
+
+void dfs(int vertex) {
+    visited[vertex] = 1;
+    printf("%d ", vertex);
+
+    Graph* temp = adjList[vertex];
+
+    while (temp != NULL) {
+        if (!visited[temp->data]) {
+            dfs(temp->data);
+        }
+        temp = temp->next;
+    }
+}
+
+int queue[V];
+
+int front = -1;
+int rear = -1;
+
+void enqueue(int val) {
+    if (rear == V - 1)
+        return;
+
+    if (front == -1)
+        front = 0;
+
+    queue[++rear] = val;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear)
+        return -1;
+
+    return queue[front++];
+}
+
+int isEmpty() {
+    return front == -1 || front > rear;
+}
+
+void bfs(int start) {
+    visited[start] = 1;
+    enqueue(start);
+
+    while (!isEmpty()) {
+        int vertex = dequeue();
+        printf("%d ", vertex);
+
+        Graph* temp = adjList[vertex];
+
+        while (temp != NULL) {
+            if (!visited[temp->data]) {
+                visited[temp->data] = 1;
+                enqueue(temp->data);
+            }
+            temp = temp->next;
+        }
+    }
+}
+
+int main() {
+    for (int i = 0; i < V; i++) {
+        adjList[i] = NULL;
+        visited[i] = 0;
+    }
+
+    addEdge(1, 2);
+    addEdge(1, 4);
+    addEdge(2, 3);
+    addEdge(3, 5);
+    addEdge(4, 5);
+
+    printList();
+
+    printf("BFS from 1: ");
+    for (int i = 0; i < V; i++)
+        visited[i] = 0;
+
+    front = rear = -1;
+
+    bfs(1);
+
+    printf("DFS from 5: ");
+    for (int i = 0; i < V; i++)
+        visited[i] = 0;
+
+    dfs(5);
+
+    return 0;
+}`,
+    'Representation using Adjacency matrix and Adjecency lists': `#include <stdio.h>
+#include <stdlib.h>
+#define V 5
+
+//ADJACENCY MATRIX 
+
+int matrix[V][V];
+
+void initMatrix() {
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            matrix[i][j] = 0;
+}
+
+void addEdgeMatrix(int u, int v) {
+    matrix[u][v] = 1;
+    matrix[v][u] = 1; 
+}
+
+void printMatrix() {
+    printf("Adjacency Matrix:");
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("");  //include new space here
+    }
+}
+
+// ADJACENCY LIST 
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* adjList[V];
+
+void initList() {
+    for (int i = 0; i < V; i++)
+        adjList[i] = NULL;
+}
+
+void addEdgeList(int u, int v) {
+
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = v;
+    newNode->next = adjList[u];
+    adjList[u] = newNode;
+
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = u;
+    newNode->next = adjList[v];
+    adjList[v] = newNode;
+}
+
+void printList() {
+    printf("Adjacency List:");
+    for (int i = 0; i < V; i++) {
+        printf("%d -> ", i);
+        struct Node* temp = adjList[i];
+        while (temp != NULL) {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+        printf("NULL");
+    }
+}
+
+int main() {
+    initMatrix();
+    addEdgeMatrix(0, 1);
+    addEdgeMatrix(0, 3);
+    addEdgeMatrix(1, 2);
+    addEdgeMatrix(2, 3);
+    printMatrix();
+
+    printf("");
+
+    initList();
+    addEdgeList(0, 1);
+    addEdgeList(0, 3);
+    addEdgeList(1, 2);
+    addEdgeList(2, 3);
+    printList();
+
+    return 0;
+}`,
+    'Traversal using DFS and BFS': `#include <stdio.h>
+#include <stdlib.h>
+
+#define V 5
+int adjMatrix[V][V];
+int visited[V];
+
+void addEdge(int u, int v) {
+    adjMatrix[u][v] = 1;
+    adjMatrix[v][u] = 1;
+}
+
+// ─── DFS (Recursive) 
+
+void dfs(int vertex) {
+    visited[vertex] = 1;
+    printf("%d ", vertex);
+
+    for (int i = 0; i < V; i++) {
+        if (adjMatrix[vertex][i] == 1 && !visited[i]) {
+            dfs(i);
+        }
+    }
+}
+
+// ─── BFS (Iterative using Queue) 
+
+int queue[V];
+int front = -1;
+int rear = -1;
+
+void enqueue(int val) {
+    if (rear == V - 1) return;
+    if (front == -1) front = 0;
+    queue[++rear] = val;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) return -1;
+    return queue[front++];
+}
+
+int isEmpty() {
+    return front == -1 || front > rear;
+}
+
+void bfs(int start) {
+    visited[start] = 1;
+    enqueue(start);
+
+    while (!isEmpty()) {
+        int vertex = dequeue();
+        printf("%d ", vertex);
+
+        for (int i = 0; i < V; i++) {
+            if (adjMatrix[vertex][i] == 1 && !visited[i]) {
+                visited[i] = 1;
+                enqueue(i);
+            }
+        }
+    }
+}
+
+int main() {
+    addEdge(0, 1);
+    addEdge(0, 2);
+    addEdge(1, 3);
+    addEdge(2, 4);
+
+    for (int i = 0; i < V; i++) visited[i] = 0;
+    printf("DFS from 0: ");
+    dfs(0);
+
+    for (int i = 0; i < V; i++) visited[i] = 0;
+    front = rear = -1;
+    printf("BFS from 0: ");
+    bfs(0);
+
+    printf("");
+    return 0;
+}`,
+  },
 
 }

@@ -43,4 +43,10 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
   'tc-sc': {
     'Notes and PDFs': ['/pdfs/tc/CS1002_Feb06_Asymptotic_Complexity_260224_113342.pdf', '/pdfs/tc/CS1002_Feb09_Asymptotic_Notations.pdf']
   },
+
+  'graphs' : {
+    'Introduction and Terminology and Graph ADT': ['/pdfs/graphs/Graphs.pdf'], 
+    'Representation using Adjacency matrix and Adjecency lists': ['/pdfs/graphs/Graphs.pdf'],
+    'Traversal using DFS and BFS': ['/pdfs/graphs/Graphs.pdf'],
+  }
 }

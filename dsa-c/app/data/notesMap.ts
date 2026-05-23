@@ -1835,4 +1835,224 @@ Time vs Space tradeoff:
 
 `
   },
+
+  'graphs' : {
+    'Introduction and Terminology and Graph ADT': `A graph is a non-linear data structure consisting of:
+    Vertices (nodes) — the entities
+    Edges            — connections between vertices
+
+Represented as G = (V, E)
+    V = set of vertices
+    E = set of edges
+
+─────────────────────────────────────────────────────
+TERMINOLOGY
+
+Directed Graph (Digraph)
+    Edges have direction. A -> B does not mean B -> A.
+
+Undirected Graph
+    Edges have no direction. A -- B means both ways.
+
+Weighted Graph
+    Each edge has a weight/cost associated with it.
+
+Adjacent Vertices
+    Two vertices connected by an edge.
+
+Degree of a vertex
+    Number of edges connected to it.
+    In directed graph:
+        In-degree  -> edges coming IN to the vertex
+        Out-degree -> edges going OUT of the vertex
+
+Path
+    A sequence of vertices where each consecutive pair
+    is connected by an edge.
+
+Cycle
+    A path that starts and ends at the same vertex.
+
+Connected Graph
+    Every vertex is reachable from every other vertex.
+
+─────────────────────────────────────────────────────
+GRAPH ADT
+
+Operations:
+    addVertex(v)        ->  add a vertex to the graph
+    addEdge(u, v)       ->  add an edge between u and v
+    removeVertex(v)     ->  remove vertex and its edges
+    removeEdge(u, v)    ->  remove edge between u and v
+    isAdjacent(u, v)    ->  check if u and v are connected
+    getNeighbors(v)     ->  return all adjacent vertices of v
+    display()           ->  print the graph
+
+Two standard ways to implement:
+    1. Adjacency Matrix
+    2. Adjacency List
+    
+    Two ways to traverse:
+    1. DFS
+    2. BFS
+
+This code includes implementation through Adjacency List and traversal through both DFS and BFS - Refer to the respective subtopics for better understanding. This is an overview of graphs.`,
+    'Representation using Adjacency matrix and Adjecency lists': `ADJACENCY MATRIX
+
+A 2D array of size V x V.
+    matrix[i][j] = 1  ->  edge exists between i and j
+    matrix[i][j] = 0  ->  no edge
+
+Undirected Graph (symmetric matrix):
+    if edge (u,v) exists -> matrix[u][v] = 1 AND matrix[v][u] = 1
+
+Directed Graph (not symmetric):
+    if edge u->v exists  -> matrix[u][v] = 1 only
+
+Example — Undirected graph with vertices 0,1,2,3:
+    0 -- 1
+    |
+    2 -- 3
+
+        0  1  2  3
+    0 [ 0  1  0  0 ]
+    1 [ 1  0  1  0 ]
+    2 [ 0  1  0  1 ]
+    3 [ 0  0  1  0 ]
+
+Space: O(V²)
+
+Advantages:
+    O(1) to check if edge exists between any two vertices
+    Simple to implement
+
+Disadvantages:
+    Wastes space for sparse graphs
+    Even if graph has few edges, entire V x V matrix is stored
+
+─────────────────────────────────────────────────────
+ADJACENCY LIST
+
+An array of linked lists of size V.
+Each index i stores a list of all vertices that i is connected to.
+
+Undirected graph — add both directions:
+    edge (u,v) -> add v to u's list AND add u to v's list
+
+Directed graph — add only one direction:
+    edge u->v  -> add v to u's list only
+
+Example — Undirected graph (vertices 1 to 5):
+    1 -> [2] -> [4] -> NULL
+    2 -> [1] -> [3] -> [4] -> NULL
+    3 -> [2] -> [5] -> NULL
+    4 -> [1] -> [2] -> [5] -> NULL
+    5 -> [3] -> [4] -> NULL
+
+Same graph directed:
+    1 -> [2] -> NULL
+    2 -> [4] -> NULL
+    3 -> [2] -> [1] -> NULL
+    4 -> [1] -> [5] -> NULL
+    5 -> [3] -> NULL
+
+Space: O(V + E)
+
+Advantages:
+    Memory efficient for sparse graphs
+    Easy to find all neighbors of a vertex
+
+Disadvantages:
+    O(V) to check if edge exists between two vertices
+
+─────────────────────────────────────────────────────
+INCIDENCE MATRIX
+
+A 2D array of size V x E (vertices x edges).
+    matrix[v][e] = 1  ->  vertex v is an endpoint of edge e
+    matrix[v][e] = 0  ->  vertex v is not connected to edge e
+
+Each column represents one edge.
+Each row represents one vertex.
+
+Example — graph with vertices a,b,c,d,e and edges 1-6:
+    Edges: 1=(a,c), 2=(a,b), 3=(c,d), 4=(b,d), 5=(b,e), 6=(d,e)
+
+        e1 e2 e3 e4 e5 e6
+    a [  1  1  0  0  0  0 ]
+    b [  0  1  0  1  1  0 ]
+    c [  1  0  1  0  0  0 ]
+    d [  0  0  1  1  0  1 ]
+    e [  0  0  0  0  1  1 ]
+
+Space: O(V x E)
+Less commonly used than adjacency matrix/list.
+
+─────────────────────────────────────────────────────
+COMPARISON
+
+    Property        Adj Matrix    Adj List      Incidence Matrix
+    ────────────────────────────────────────────────────────────
+    Space           O(V²)         O(V + E)      O(V x E)
+    Check Edge      O(1)          O(V)          O(E)
+    Find Neighbors  O(V)          O(degree)     O(E)
+    Add Edge        O(1)          O(1)          O(1)
+
+Use adjacency matrix for dense graphs (many edges).
+Use adjacency list for sparse graphs (few edges).`,
+    'Traversal using DFS and BFS': `Both are graph traversal algorithms — ways to visit every vertex in a graph systematically.
+
+─────────────────────────────────────────────────────
+DFS (Depth First Search)
+
+Go as deep as possible along one path before backtracking.
+Uses a Stack (or recursion which uses the call stack).
+
+Algorithm:
+    1. Start at source vertex, mark as visited
+    2. Visit an unvisited neighbor, mark as visited, go deeper
+    3. If no unvisited neighbors, backtrack
+    4. Repeat until all vertices visited
+
+Example graph:
+    0 -- 1 -- 3
+    |
+    2 -- 4
+
+DFS from 0: 0 -> 1 -> 3 -> backtrack -> backtrack -> 2 -> 4
+Output: 0 1 3 2 4
+
+Time: O(V + E)
+Space: O(V)  — visited array + call stack
+
+─────────────────────────────────────────────────────
+BFS (Breadth First Search)
+
+Visit all neighbors at the current level before going deeper.
+Uses a Queue.
+
+Algorithm:
+    1. Start at source, mark as visited, enqueue
+    2. Dequeue a vertex, print it
+    3. Enqueue all unvisited neighbors, mark as visited
+    4. Repeat until queue is empty
+
+Example (same graph):
+BFS from 0: 0 -> 1, 2 (level 1) -> 3, 4 (level 2)
+Output: 0 1 2 3 4
+
+Time: O(V + E)
+Space: O(V)  — visited array + queue
+─────────────────────────────────────────────────────
+DFS vs BFS
+
+    Property        DFS             BFS
+    ─────────────────────────────────────────────
+    Data Structure  Stack           Queue
+    Order           Depth first     Level by level
+    Space           O(h)            O(w)
+                    h = max depth   w = max width
+    Shortest Path   No              Yes (unweighted)
+    Implementation  Recursive       Iterative`,
+  },
 }

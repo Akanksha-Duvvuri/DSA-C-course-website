@@ -61,6 +61,7 @@ export default function TopicClient({
         </div>
 
         <p className={styles.sidebarDesc}>{topic.description}</p>
+        <p className={styles.sidebarDesc}>Click the small arrow beside the subtopics when you hover over them to navigate without triggering the checkbox</p>
 
         {/* Topic progress */}
         <div className={styles.topicProgressBox}>

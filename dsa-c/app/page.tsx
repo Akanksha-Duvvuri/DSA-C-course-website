@@ -145,7 +145,7 @@ export default function Home() {
           <span className={styles.heroAccent}>&amp; Algorithms</span>
         </h1>
         <p className={styles.heroSub}>
-          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to view the codes.
+          Tick off topics as you finish them. Click ▼ to expand subtopics inline, or ↗ to view the codes. This website purely runs on localStorage, so your data will be saved only in that respective browser.
         </p>
       </section>
 

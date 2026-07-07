@@ -1,13 +1,13 @@
-'use client'
+'use client' //used to render this page on the client side, as it uses localStorage and React hooks - Next js has server-side rendering by default, so we need to specify this for client-side rendering
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { topics } from './data/topics'
-import { useProgress } from './hooks/useProgess'
+import { useProgress } from './hooks/useProgess' //custom hook to manage progress state and localStorage
 import { Topic } from './types'
 import styles from './page.module.css'
 
-// ─── RESOURCES DATA ───────────────────────────────────────────────────────────
+
 const resourceCategories = [
   {
     id: 'handouts',
@@ -88,7 +88,7 @@ const resourceCategories = [
     ],
   },
 ]
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 export default function Home() {
   const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } =

@@ -798,10 +798,10 @@ Choosing a strategy:
 All keys that hash to the same index are stored in that list.
 
 Visual:
-    index 0 → [cat] → NULL
-    index 1 → [dog] → [dig] → NULL
+    index 0 → [2] → NULL
+    index 1 → [3] → [6] → NULL
     index 2 → NULL
-    index 3 → [rat] → NULL
+    index 3 → [9] → NULL
 
 Operations:
     Insert → hash(key) → go to index → insert at head of LL

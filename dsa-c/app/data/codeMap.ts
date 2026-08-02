@@ -1596,6 +1596,8 @@ Node* createNode(int data){
     newnode->data = data;
     newnode->next = NULL;
     newnode->prev = NULL;
+
+    return newnode;
 }
 
 int isEmpty(){

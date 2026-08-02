@@ -1,14 +1,22 @@
 'use client' //used to render this page on the client side, as it uses localStorage and React hooks - Next js has server-side rendering by default, so we need to specify this for client-side rendering
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
+//client vs server - a server provides all the info whereas the client is the one that requests the info from the server. The client is the one that renders the page and handles user interactions, while the server is the one that provides the data and handles requests. In Next.js, pages are rendered on the server by default, but we can specify that a page should be rendered on the client by using 'use client'.
+
+//in next js, the pages are rendered on the server by default because it is a server-side rendering framework. This means that the HTML is generated on the server and sent to the client, which then renders the page. However, we can specify that a page should be rendered on the client by using 'use client'. This is useful for pages that use localStorage or React hooks, as these are only available on the client side.
+
+// A server is a computer program or device that provides functionality for other programs or devices, called clients. Servers can provide various functionalities, such as hosting websites, storing data, or running applications. In the context of web development, a server is responsible for handling requests from clients (such as web browsers) and sending back the appropriate responses (such as HTML pages, JSON data, etc.).
+
+//hooks are basically functions that let you "hook into" React state and lifecycle features from function components. They allow you to use state and other React features without writing a class. Some common hooks are useState, useEffect, useContext, useReducer, etc. In this code, we are using the useState and useEffect hooks to manage the state of the component and perform side effects. They let components remember code in a way - or remember the actions / changes that are taking place in the component. For example, useState lets us add state to a functional component, and useEffect lets us perform side effects (like fetching data or updating the DOM) in a functional component.
+
+import { useState, useEffect } from 'react' //react hooks
+import Link from 'next/link' //used to navigate between pages 
 import { topics } from './data/topics'
 import { useProgress } from './hooks/useProgess' //custom hook to manage progress state and localStorage
 import { Topic } from './types'
 import styles from './page.module.css'
 
 
-const resourceCategories = [
+const resourceCategories = [  //an array of objects that contains the resource categories and their respective items. Each category has an id, label, color, and an array of items. Each item has a label and a url. The url is the link to the resource. The color is used to style the dropdown button and the items in the dropdown menu. The id is used to identify the category and toggle the dropdown menu. The label is used to display the name of the category and the items in the dropdown menu.
   {
     id: 'handouts',
     label: 'Handouts',
@@ -50,7 +58,10 @@ const resourceCategories = [
     ],
   },
   {
-    id: 'tutorials',
+    id: 'tutorials', //when images or pdfs are there in the public folder, we can access them using the relative path from the public folder. For example, if we have a pdf file in the public/pdfs/tutorials folder, we can access it using /pdfs/tutorials/file.pdf.
+
+    //this is because the web severs are explicitly configured to expose this directory's contents to the internet
+
     label: 'Tutorials',
     color: '#f472b6',
     items: [
@@ -90,7 +101,7 @@ const resourceCategories = [
 ]
 
 
-export default function Home() {
+export default function Home() { //default function specifies that it is the main part of the page, and it is the one that will be rendered when the page is loaded. It is a React functional component, which means that it is a function that returns JSX (JavaScript XML) that describes what the UI should look like. The function can also use React hooks to manage state and side effects. In this case, we are using useState and useEffect hooks to manage the state of the component and perform side effects.
   const { toggle, isChecked, percent, completedSubtopics, totalSubtopics, topicProgress } =
     useProgress(topics)
   const [mounted, setMounted] = useState<boolean>(false)
@@ -110,21 +121,19 @@ export default function Home() {
     setOpenDropdown((prev) => (prev === id ? null : id))
   }
 
-  // close dropdown when clicking outside
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
+    const handleClick = (e: MouseEvent) => { //if my mouse event is not the drop down, set the drop down to be null (so it closes when i click on another drop down, or on another HTML element)
       const target = e.target as HTMLElement
       if (!target.closest('[data-dropdown]')) {
         setOpenDropdown(null)
       }
     }
-    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('mousedown', handleClick)   //so when the mouse is down - run handle click , and then remove it
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
   return (
-    <main className={styles.main}>
-      {/* Header */}
+    <main className={styles.main}>  {/* styles.main imports a CSS file as a JS object. This syntax is important becauuse  - it allows for modular scoping*/}
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.logo}>

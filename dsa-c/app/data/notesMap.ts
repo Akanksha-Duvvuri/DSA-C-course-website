@@ -436,7 +436,7 @@ PRINT FUNCTION
 MEMORY
 
     Each node is a separate allocation
-    Should free each node after use to avoid memory leaks:
+    Should free each node after use to avoid memory leaks.
 
 
 Time Complexity:  O(n)  — one pass to insert, one to print

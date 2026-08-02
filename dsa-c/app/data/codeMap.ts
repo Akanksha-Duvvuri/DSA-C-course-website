@@ -1882,43 +1882,84 @@ a. Linear Probing
 
 #define SIZE 10
 
-int hashTable[SIZE];
+int table[SIZE];
 
-void init(){
-    for(int i = 0; i < SIZE; i++){
-        hashTable[i] = -1;
-    }
-}
-
-int hash(int key){
+int hashFunc(int key){
     return key % SIZE;
 }
 
 void insert(int key){
-    int index = hash(key);
+    int index = hashFunc(key);
 
-    while(hashTable[index] != -1){
+    while(table[index] != -1){
         index = (index + 1) % SIZE;
     }
 
-    hashTable[index] = key;
+    table[index] = key;
 }
 
-void print(){
+void search(int key){
+    int index = hashFunc(key);
+    int start = index;
+
+    while(table[index] != -1){
+        if(table[index] == key){
+            printf("Found at index %d", index);
+            return;
+        }
+
+        index = (index + 1) % SIZE;
+
+        if(index == start)
+            break;
+    }
+
+    printf("Key not found");
+}
+
+void delete(int key){
+    int index = hashFunc(key);
+    int start = index;
+
+    while(table[index] != -1){
+        if(table[index] == key){
+            table[index] = -1;
+            return;
+        }
+
+        index = (index + 1) % SIZE;
+
+        if(index == start)
+            break;
+    }
+
+    printf("Key not found");
+}
+
+void display(){
     for(int i = 0; i < SIZE; i++){
-        printf("%d : %d", i, hashTable[i]);
+        printf("[%d]: ", i);
     }
 }
 
 int main(){
-    init();
 
-    insert(10);
-    insert(20);
+    for(int i = 0; i < SIZE; i++){
+        table[i] = -1;
+    }
+
+    insert(5);
     insert(15);
     insert(25);
+    insert(7);
 
-    print();
+    display();
+
+    search(15);
+
+    delete(15);
+
+    display();
 
     return 0;
 }
@@ -1933,18 +1974,12 @@ b. Quadratic Probing
 
 int table[SIZE];
 
-void init(){
-    for(int i = 0; i < SIZE; i++){
-        table[i] = -1;
-    }
-}
-
-int hash(int key){
+int hashFunc(int key){
     return key % SIZE;
 }
 
 void insert(int key){
-    int index = hash(key);
+    int index = hashFunc(key);
     int i = 0;
 
     while(table[(index + i * i) % SIZE] != -1){
@@ -1954,25 +1989,73 @@ void insert(int key){
     table[(index + i * i) % SIZE] = key;
 }
 
-void print(){
+void search(int key){
+    int index = hashFunc(key);
+    int i = 0;
+
+    while(table[(index + i * i) % SIZE] != -1){
+
+        if(table[(index + i * i) % SIZE] == key){
+            printf("Found at index %d", (index + i * i) % SIZE);
+            return;
+        }
+
+        i++;
+
+        if(i == SIZE)
+            break;
+    }
+
+    printf("Key not found");
+}
+
+void delete(int key){
+    int index = hashFunc(key);
+    int i = 0;
+
+    while(table[(index + i * i) % SIZE] != -1){
+
+        if(table[(index + i * i) % SIZE] == key){
+            table[(index + i * i) % SIZE] = -1;
+            return;
+        }
+
+        i++;
+
+        if(i == SIZE)
+            break;
+    }
+
+    printf("Key not found");
+}
+
+void display(){
     for(int i = 0; i < SIZE; i++){
-        printf("%d : %d", i, table[i]);
+        printf("[%d]: ", i);
     }
 }
 
 int main(){
-    init();
 
-    insert(10);
-    insert(20);
+    for(int i = 0; i < SIZE; i++){
+        table[i] = -1;
+    }
+
+    insert(5);
     insert(15);
     insert(25);
+    insert(7);
 
-    print();
+    display();
+
+    search(25);
+
+    delete(25);
+
+    display();
 
     return 0;
-}
-    
+}  
     
     `
   },

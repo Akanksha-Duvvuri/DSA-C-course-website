@@ -1974,66 +1974,7 @@ int main(){
 }
     
     
-    `,
-
-    'Hash Maps in C':`#include <stdio.h>
-
-#define SIZE 10
-
-struct Map{
-    int key;
-    int value;
-};
-
-struct Map table[SIZE];
-
-void init(){
-    for(int i = 0; i < SIZE; i++){
-        table[i].key = -1;
-    }
-}
-
-int hash(int key){
-    return key % SIZE;
-}
-
-void insert(int key, int value){
-    int index = hash(key);
-
-    while(table[index].key != -1){
-        index = (index + 1) % SIZE;
-    }
-
-    table[index].key = key;
-    table[index].value = value;
-}
-
-int search(int key){
-    int index = hash(key);
-
-    while(table[index].key != -1){
-        if(table[index].key == key){
-            return table[index].value;
-        }
-
-        index = (index + 1) % SIZE;
-    }
-
-    return -1;
-}
-
-int main(){
-    init();
-
-    insert(1, 100);
-    insert(2, 200);
-    insert(12, 500);
-
-    printf("Key 2 = %d", search(2));
-    printf("Key 12 = %d", search(12));
-
-    return 0;
-}`,
+    `
   },
 
   Trees: {

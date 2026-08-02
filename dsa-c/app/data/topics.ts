@@ -54,7 +54,7 @@ export const topics: Topic[] = [
   label: 'Hashing',
   icon: '#',
   color: '#f472b6',
-  subtopics: ['Hash Functions', 'Collision Handling: Chaining and Open Addressing', 'Hash Maps in C'],
+  subtopics: ['Hash Functions', 'Collision Handling: Chaining and Open Addressing'],
   description: 'Key-value mapping with O(1) average-case operations.',
 },
   {

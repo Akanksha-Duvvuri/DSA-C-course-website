@@ -868,60 +868,7 @@ Time Complexity:
 
 Deletion is tricky in open addressing:
     Cannot just remove — breaks probe chains.
-    Use a DELETED marker (tombstone) instead. `,
-
-    'Hash Maps in C':`
-A hash map is a data structure that stores key-value pairs.
-Lets you insert, search and delete in O(1) average time.
-
-Core idea:
-    Instead of searching through an array one by one,
-    run the key through a hash function which gives you
-    the exact index to go to.
-
-    key → hash(key) → index → value
-
-    "name" → hash("name") → 3 → "John"
-
-C has no built-in hash map — you implement it manually.
-
-Time Complexity:
-    Insert → O(1) average
-    Search → O(1) average, O(n) worst
-    Delete → O(1) average
-
-Space Complexity: O(n)
-
-─────────────────────────────────────────────────────
-HOW IT WORKS
-
-    Insert:
-        hash(key) → get index → store value at that index
-
-    Search:
-        hash(key) → get index → return value at that index
-
-    Delete:
-        hash(key) → get index → remove value at that index
-
-    All three operations go directly to the index — no loops.
-    This is why average case is O(1).
-
-─────────────────────────────────────────────────────
-VS ARRAY
-
-    Array   →  index is a number you provide manually
-    HashMap →  index is computed from the key automatically
-
-    Array:    arr[3] = "John"        you choose index 3
-    HashMap:  map["name"] = "John"   hash function chooses index
-
-VS LINKED LIST / LINEAR SEARCH / BINARY SEARCH 
-
-    Linked List search  →  O(n)  traverse every node
-    Binary Search       →  O(log n)  array must be sorted
-    Hash Map search     →  O(1)  jump directly to index
-`,
+    Use a DELETED marker (tombstone) instead. `
   },
 
   Trees: {

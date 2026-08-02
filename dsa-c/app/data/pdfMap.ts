@@ -27,7 +27,6 @@ export const pdfMap: Record<string, Record<string, string[]>> = {
   hashing: {
     'Hash Functions':['/pdfs/hashing/hashing.pdf'],
     'Collision Handling: Chaining and Open Addressing': ['/pdfs/hashing/hashing.pdf'],
-    'Hash Maps in C':['/pdfs/hashing/hashing.pdf'],
   },
 
   Trees: {
